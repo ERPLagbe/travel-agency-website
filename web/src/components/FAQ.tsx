@@ -1,0 +1,80 @@
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface FAQProps {
+  title?: string;
+  subtitle?: string;
+  faqs: FAQItem[];
+}
+
+const FAQ: React.FC<FAQProps> = ({ 
+  title = "Frequently Asked Questions", 
+  subtitle = "Find answers to common questions about our travel services",
+  faqs 
+}) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          {/* Decorative Elements */}
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-3 h-3 bg-secondary rounded-full"></div>
+            <div className="w-16 h-0.5 bg-secondary mx-4"></div>
+            <div className="w-3 h-3 bg-secondary rounded-full"></div>
+          </div>
+          
+          <h2 className="text-primary text-4xl md:text-5xl font-bold uppercase mb-4">
+            {title}
+          </h2>
+          
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* FAQ Items */}
+        <div className="max-w-4xl mx-auto">
+          {faqs.map((faq, index) => (
+            <div key={index} className="mb-4">
+              <button
+                onClick={() => toggleFAQ(index)}
+                className="w-full bg-white border border-gray-200 rounded-lg p-6 text-left hover:shadow-md transition-shadow flex justify-between items-center"
+              >
+                <h3 className="text-primary text-lg font-semibold pr-4">
+                  {faq.question}
+                </h3>
+                {openIndex === index ? (
+                  <ChevronUp className="w-6 h-6 text-primary flex-shrink-0" />
+                ) : (
+                  <ChevronDown className="w-6 h-6 text-primary flex-shrink-0" />
+                )}
+              </button>
+              
+              {openIndex === index && (
+                <div className="bg-gray-50 border-l-4 border-secondary p-6 mt-2 rounded-r-lg">
+                  <p className="text-gray-700 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FAQ;

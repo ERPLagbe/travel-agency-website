@@ -1,0 +1,390 @@
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  --color-primary: #432b7c;
+  --color-secondary: #d4af37;
+  --color-accent: #d4af37;
+  --color-white: #ffffff;
+  --color-black: #111827;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-purple-300: #d4af37;
+  --color-purple-600: #432b7c;
+  
+  /* Custom color utilities */
+  --color-bg-primary: #432b7c;
+  --color-bg-secondary: #d4af37;
+  --color-text-primary: #432b7c;
+  --color-text-secondary: #d4af37;
+  
+  --font-family-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* Additional CSS Variables for Custom Components */
+:root {
+  /* Container */
+  --container-max-width: 1200px;
+  --container-padding: 1rem;
+  
+  /* Text Colors (for custom components) */
+  --text-primary: var(--color-gray-800);
+  --text-secondary: var(--color-gray-600);
+  --text-muted: var(--color-gray-500);
+  --text-white: var(--color-white);
+  --text-black: var(--color-black);
+
+  /* Background Colors (for custom components) */
+  --bg-primary: var(--color-white);
+  --bg-dark: var(--color-gray-800);
+}
+
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-primary);
+  line-height: 1.6;
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  font-size: var(--font-size-base);
+  min-height: 100vh;
+}
+
+/* Typography Classes - Use Tailwind utilities instead */
+.heading-primary {
+  @apply text-4xl font-bold leading-tight text-gray-800 mb-6;
+}
+
+.heading-secondary {
+  @apply text-3xl font-semibold leading-snug text-gray-800 mb-4;
+}
+
+.heading-tertiary {
+  @apply text-2xl font-semibold leading-normal text-gray-800 mb-3;
+}
+
+.body-text {
+  @apply text-base leading-relaxed text-gray-800 mb-4;
+}
+
+.body-text-large {
+  @apply text-lg leading-relaxed text-gray-800 mb-4;
+}
+
+.body-text-small {
+  @apply text-sm leading-normal text-gray-600 mb-3;
+}
+
+.text-white { color: var(--text-white); }
+.text-black { color: var(--text-black); }
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+
+/* Custom Utility Classes (Tailwind provides basic ones) */
+
+/* Link Styles */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary);
+  opacity: 0.8;
+}
+
+/* Button Base Styles - Use Tailwind utilities */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 border-0 rounded-md font-medium text-base no-underline cursor-pointer transition-all duration-150 leading-none;
+}
+
+.btn-primary {
+  @apply bg-primary text-white;
+}
+
+.btn-primary:hover {
+  @apply opacity-90 -translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply text-black;
+  background-color: #d4af37;
+}
+
+.btn-secondary:hover {
+  @apply opacity-90 -translate-y-0.5;
+}
+
+/* Container and Layout - Use Tailwind utilities */
+.section-container {
+  @apply max-w-6xl mx-auto px-4;
+}
+
+.section {
+  @apply py-16;
+}
+
+.section-sm {
+  @apply py-12;
+}
+
+.section-lg {
+  @apply py-24;
+}
+
+/* Background Classes - Use Tailwind utilities */
+.bg-primary { @apply bg-white; }
+.bg-dark { @apply bg-gray-800; }
+.bg-white { @apply bg-white; }
+
+/* Custom Border and Shadow Classes (Tailwind provides basic ones) */
+
+/* Custom Grid Classes (Tailwind provides basic grid utilities) */
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .md\:grid-cols-2 { grid-template-columns: repeat(1, 1fr); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(1, 1fr); }
+      .md\:grid-cols-4 { grid-template-columns: repeat(1, 1fr); }
+
+      .heading-primary {
+        font-size: var(--font-size-3xl);
+      }
+
+      .heading-secondary {
+        font-size: var(--font-size-2xl);
+      }
+
+      .section {
+        padding: var(--spacing-8) 0;
+      }
+
+      .section-lg {
+        padding: var(--spacing-12) 0;
+      }
+
+/* Mobile Typography */
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+
+/* Image Loading */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+img[src=""], img:not([src]) {
+  opacity: 0;
+}
+
+      /* Typography Classes */
+      .heading-primary { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); }
+      .heading-secondary { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); }
+      .heading-tertiary { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+      .heading-quaternary { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); }
+      .heading-quinary { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); }
+      .heading-senary { font-size: var(--font-size-base); font-weight: var(--font-weight-bold); }
+      .body-text { font-size: var(--font-size-base); }
+      .body-text-large { font-size: var(--font-size-lg); }
+      .body-text-small { font-size: var(--font-size-sm); }
+
+      /* Mobile Container */
+      .section-container {
+        padding: 0 var(--spacing-4);
+      }
+
+      /* Mobile Buttons */
+      .btn {
+        padding: var(--spacing-3) var(--spacing-4);
+        font-size: var(--font-size-sm);
+      }
+
+      .btn-lg {
+        padding: var(--spacing-3) var(--spacing-6);
+        font-size: var(--font-size-base);
+      }
+
+      /* Mobile Grid */
+      .grid {
+        gap: var(--spacing-4);
+      }
+
+      /* Mobile Hero Buttons */
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-3) !important;
+      }
+
+      .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      /* Mobile Cards */
+      .card {
+        margin-bottom: var(--spacing-4);
+      }
+
+      /* Mobile Images */
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Mobile Forms */
+      input, textarea, select {
+        font-size: var(--font-size-base);
+      }
+    }
+
+@media (min-width: 769px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+      .lg\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+      .lg\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+    }
+
+/* Hero Section - Clean Design with Background Images */
+.hero-section {
+  @apply relative min-h-[60vh] flex items-center text-white;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
+              url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&h=1080&fit=crop') center/cover;
+}
+
+.hero-section.packages-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
+              url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop') center/cover;
+}
+
+.hero-section.contact-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
+              url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1920&h=1080&fit=crop') center/cover;
+}
+
+.hero-section > * {
+  @apply relative z-10;
+}
+
+/* Navigation Responsive Styles - Use Tailwind utilities */
+@media (max-width: 768px) {
+  .desktop-nav {
+    @apply hidden;
+  }
+  
+  .mobile-menu-btn {
+    @apply flex;
+  }
+
+  /* Mobile Hero Section */
+  .hero-section {
+    @apply min-h-[70vh];
+    background-position: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .desktop-nav {
+    @apply flex;
+  }
+  
+  .mobile-menu-btn {
+    @apply hidden;
+  }
+}
+
+/* Custom color classes to ensure proper color application */
+.bg-primary {
+  background-color: #432b7c !important;
+}
+
+.bg-secondary {
+  background-color: #d4af37 !important;
+}
+
+.text-primary {
+  color: #432b7c !important;
+}
+
+.text-secondary {
+  color: #d4af37 !important;
+}
