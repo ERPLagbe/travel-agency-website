@@ -1,0 +1,381 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:title",
+ "creation": "2025-01-27 10:00:00.000000",
+ "default_view": "Form",
+ "doctype": "DocType",
+ "name": "Website CMS",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "section_break_business",
+  "business_name",
+  "business_phone",
+  "business_email",
+  "business_address",
+  "whatsapp_number",
+  "company_number",
+  "atol_number",
+  "atol_certificate_url",
+  "logo",
+  "section_break_navigation",
+  "navigation_dropdowns",
+  "section_break_hero",
+  "hero_background_image",
+  "hero_floating_image",
+  "hero_trusted_text",
+  "hero_main_title",
+  "hero_subtitle",
+  "section_break_packages",
+  "featured_packages_title",
+  "featured_packages_subtitle",
+  "featured_packages",
+  "hajj_deals_title",
+  "hajj_packages",
+  "section_break_testimonials",
+  "testimonials_title",
+  "testimonials_subtitle",
+  "testimonials",
+  "section_break_welcome",
+  "welcome_title",
+  "welcome_description",
+  "welcome_services_title",
+  "welcome_services_description",
+  "welcome_image",
+  "section_break_packages_desc",
+  "umrah_title",
+  "umrah_description",
+  "hajj_title",
+  "hajj_description",
+  "packages_image",
+  "section_break_faq",
+  "faq_title",
+  "faq_subtitle",
+  "faq_items",
+  "section_break_footer",
+  "footer_quick_links",
+  "footer_terms_links",
+  "footer_social_media",
+  "footer_copyright",
+  "footer_legal_text"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Website Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_business",
+   "fieldtype": "Section Break",
+   "label": "Business Settings"
+  },
+  {
+   "fieldname": "business_name",
+   "fieldtype": "Data",
+   "label": "Business Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_phone",
+   "fieldtype": "Data",
+   "label": "Business Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_email",
+   "fieldtype": "Data",
+   "label": "Business Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_address",
+   "fieldtype": "Text",
+   "label": "Business Address"
+  },
+  {
+   "fieldname": "whatsapp_number",
+   "fieldtype": "Data",
+   "label": "WhatsApp Number",
+   "description": "If provided, WhatsApp icon will be shown in navigation"
+  },
+  {
+   "fieldname": "company_number",
+   "fieldtype": "Data",
+   "label": "Company Number"
+  },
+  {
+   "fieldname": "atol_number",
+   "fieldtype": "Data",
+   "label": "ATOL Number"
+  },
+  {
+   "fieldname": "atol_certificate_url",
+   "fieldtype": "Data",
+   "label": "ATOL Certificate URL"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo",
+   "description": "Upload your company logo"
+  },
+  {
+   "fieldname": "section_break_navigation",
+   "fieldtype": "Section Break",
+   "label": "Navigation Settings"
+  },
+  {
+   "fieldname": "navigation_dropdowns",
+   "fieldtype": "Table",
+   "label": "Navigation Dropdowns",
+   "options": "Navigation Dropdown",
+   "description": "Create dropdown menus for navigation. Each dropdown can contain multiple item groups from ERPNext."
+  },
+  {
+   "fieldname": "section_break_hero",
+   "fieldtype": "Section Break",
+   "label": "Hero Section"
+  },
+  {
+   "fieldname": "hero_background_image",
+   "fieldtype": "Attach Image",
+   "label": "Hero Background Image",
+   "description": "Main banner image for the hero section"
+  },
+  {
+   "fieldname": "hero_floating_image",
+   "fieldtype": "Attach Image",
+   "label": "Hero Floating Image",
+   "description": "Image that appears in the floating box (e.g., Kaaba image)"
+  },
+  {
+   "fieldname": "hero_trusted_text",
+   "fieldtype": "Data",
+   "label": "Hero Trusted Text",
+   "default": "Trusted"
+  },
+  {
+   "fieldname": "hero_main_title",
+   "fieldtype": "Data",
+   "label": "Hero Main Title",
+   "default": "ISLAMIC TRAVEL AGENCY"
+  },
+  {
+   "fieldname": "hero_subtitle",
+   "fieldtype": "Data",
+   "label": "Hero Subtitle",
+   "default": "For British Muslims"
+  },
+  {
+   "fieldname": "section_break_packages",
+   "fieldtype": "Section Break",
+   "label": "Package Sections"
+  },
+  {
+   "fieldname": "featured_packages_title",
+   "fieldtype": "Data",
+   "label": "Featured Packages Title",
+   "default": "Featured Packages"
+  },
+  {
+   "fieldname": "featured_packages_subtitle",
+   "fieldtype": "Data",
+   "label": "Featured Packages Subtitle",
+   "default": "Discover our most popular travel experiences"
+  },
+  {
+   "fieldname": "featured_packages",
+   "fieldtype": "Table",
+   "label": "Featured Packages",
+   "options": "Featured Package",
+   "description": "Select packages from ERPNext Items to display as featured"
+  },
+  {
+   "fieldname": "hajj_deals_title",
+   "fieldtype": "Data",
+   "label": "Hajj Deals Title",
+   "default": "Cheap Deals for Hajj 2026"
+  },
+  {
+   "fieldname": "hajj_packages",
+   "fieldtype": "Table",
+   "label": "Hajj Packages",
+   "options": "Hajj Package",
+   "description": "Select Hajj packages from ERPNext Items"
+  },
+  {
+   "fieldname": "section_break_testimonials",
+   "fieldtype": "Section Break",
+   "label": "Testimonials Section"
+  },
+  {
+   "fieldname": "testimonials_title",
+   "fieldtype": "Data",
+   "label": "Testimonials Title",
+   "default": "What Our Customers Say"
+  },
+  {
+   "fieldname": "testimonials_subtitle",
+   "fieldtype": "Data",
+   "label": "Testimonials Subtitle"
+  },
+  {
+   "fieldname": "testimonials",
+   "fieldtype": "Table",
+   "label": "Testimonials",
+   "options": "Testimonial"
+  },
+  {
+   "fieldname": "section_break_welcome",
+   "fieldtype": "Section Break",
+   "label": "Welcome Section"
+  },
+  {
+   "fieldname": "welcome_title",
+   "fieldtype": "Data",
+   "label": "Welcome Title",
+   "default": "Welcome to Bismillah Travel - Your Trusted Umrah Travel Agency in the UK."
+  },
+  {
+   "fieldname": "welcome_description",
+   "fieldtype": "Text",
+   "label": "Welcome Description"
+  },
+  {
+   "fieldname": "welcome_services_title",
+   "fieldtype": "Data",
+   "label": "Welcome Services Title",
+   "default": "Our Services - Tailored Islamic Travel Solutions"
+  },
+  {
+   "fieldname": "welcome_services_description",
+   "fieldtype": "Text",
+   "label": "Welcome Services Description"
+  },
+  {
+   "fieldname": "welcome_image",
+   "fieldtype": "Attach Image",
+   "label": "Welcome Image"
+  },
+  {
+   "fieldname": "section_break_packages_desc",
+   "fieldtype": "Section Break",
+   "label": "Packages Description Section"
+  },
+  {
+   "fieldname": "umrah_title",
+   "fieldtype": "Data",
+   "label": "Umrah Title",
+   "default": "Umrah Packages"
+  },
+  {
+   "fieldname": "umrah_description",
+   "fieldtype": "Text",
+   "label": "Umrah Description"
+  },
+  {
+   "fieldname": "hajj_title",
+   "fieldtype": "Data",
+   "label": "Hajj Title",
+   "default": "Hajj Packages"
+  },
+  {
+   "fieldname": "hajj_description",
+   "fieldtype": "Text",
+   "label": "Hajj Description"
+  },
+  {
+   "fieldname": "packages_image",
+   "fieldtype": "Attach Image",
+   "label": "Packages Image"
+  },
+  {
+   "fieldname": "section_break_faq",
+   "fieldtype": "Section Break",
+   "label": "FAQ Section"
+  },
+  {
+   "fieldname": "faq_title",
+   "fieldtype": "Data",
+   "label": "FAQ Title",
+   "default": "Frequently Asked Questions"
+  },
+  {
+   "fieldname": "faq_subtitle",
+   "fieldtype": "Data",
+   "label": "FAQ Subtitle",
+   "default": "Find answers to common questions about our travel services"
+  },
+  {
+   "fieldname": "faq_items",
+   "fieldtype": "Table",
+   "label": "FAQ Items",
+   "options": "FAQ Item"
+  },
+  {
+   "fieldname": "section_break_footer",
+   "fieldtype": "Section Break",
+   "label": "Footer Settings"
+  },
+  {
+   "fieldname": "footer_quick_links",
+   "fieldtype": "Table",
+   "label": "Footer Quick Links",
+   "options": "Footer Link"
+  },
+  {
+   "fieldname": "footer_terms_links",
+   "fieldtype": "Table",
+   "label": "Footer Terms Links",
+   "options": "Footer Link"
+  },
+  {
+   "fieldname": "footer_social_media",
+   "fieldtype": "Table",
+   "label": "Social Media Links",
+   "options": "Social Media Link"
+  },
+  {
+   "fieldname": "footer_copyright",
+   "fieldtype": "Data",
+   "label": "Footer Copyright",
+   "default": "All rights reserved Flight Booking @ 2010 - 2025"
+  },
+  {
+   "fieldname": "footer_legal_text",
+   "fieldtype": "Text",
+   "label": "Footer Legal Text"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-27 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Travel Agency Website",
+ "name": "Website CMS",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

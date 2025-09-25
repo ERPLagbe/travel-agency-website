@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:platform_name",
+ "creation": "2025-01-27 10:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "name": "Social Media Link",
+ "editable_grid": 1,
+ "istable": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "parent",
+  "parenttype",
+  "parentfield",
+  "platform_name",
+  "platform_url",
+  "icon_class",
+  "display_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "parent",
+   "fieldtype": "Data",
+   "label": "Parent"
+  },
+  {
+   "fieldname": "parenttype",
+   "fieldtype": "Data",
+   "label": "Parent Type"
+  },
+  {
+   "fieldname": "parentfield",
+   "fieldtype": "Data",
+   "label": "Parent Field"
+  },
+  {
+   "fieldname": "platform_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Platform Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "platform_url",
+   "fieldtype": "Data",
+   "label": "Platform URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "icon_class",
+   "fieldtype": "Data",
+   "label": "Icon Class",
+   "description": "CSS class for the icon (e.g., 'facebook', 'instagram')"
+  },
+  {
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Display Order",
+   "default": 0
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-27 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Travel Agency Website",
+ "name": "Social Media Link",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

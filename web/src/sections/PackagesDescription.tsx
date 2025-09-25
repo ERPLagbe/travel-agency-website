@@ -1,6 +1,9 @@
 import React from 'react';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const PackagesDescription: React.FC = () => {
+  const { data: cmsData } = useWebsiteCMS();
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -8,11 +11,11 @@ const PackagesDescription: React.FC = () => {
           {/* Left Side - Content */}
           <div>
             <h2 className="text-primary text-3xl md:text-4xl font-bold mb-6">
-              Umrah Packages
+              {cmsData?.umrah_title || "Umrah Packages"}
             </h2>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-8">
-              Our Umrah packages are carefully crafted to provide you with a comfortable and spiritually enriching experience. We offer a range of options from budget-friendly 3-star accommodations to luxurious 5-star hotels, all located within walking distance of the Haram. Each package includes return flights from major UK airports, visa processing, accommodation, ground transportation, and comprehensive travel insurance.
+              {cmsData?.umrah_description || "Our Umrah packages are carefully crafted to provide you with a comfortable and spiritually enriching experience. We offer a range of options from budget-friendly 3-star accommodations to luxurious 5-star hotels, all located within walking distance of the Haram. Each package includes return flights from major UK airports, visa processing, accommodation, ground transportation, and comprehensive travel insurance."}
             </p>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-8">
@@ -20,11 +23,11 @@ const PackagesDescription: React.FC = () => {
             </p>
 
             <h2 className="text-primary text-3xl md:text-4xl font-bold mb-6">
-              Hajj Packages
+              {cmsData?.hajj_title || "Hajj Packages"}
             </h2>
             
             <p className="text-gray-700 text-lg leading-relaxed">
-              For the ultimate spiritual journey, our Hajj packages are designed to provide maximum comfort and convenience during this once-in-a-lifetime pilgrimage. We offer both shifting and non-shifting packages with premium accommodations in Mina, Arafat, and Muzdalifah. All packages include experienced guides, group coordination, and ATOL protection for your peace of mind.
+              {cmsData?.hajj_description || "For the ultimate spiritual journey, our Hajj packages are designed to provide maximum comfort and convenience during this once-in-a-lifetime pilgrimage. We offer both shifting and non-shifting packages with premium accommodations in Mina, Arafat, and Muzdalifah. All packages include experienced guides, group coordination, and ATOL protection for your peace of mind."}
             </p>
           </div>
 

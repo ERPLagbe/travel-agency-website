@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Typography } from './';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 interface NavigationProps {
   // No props needed for now, can be extended later
@@ -10,6 +11,7 @@ const Navigation: React.FC<NavigationProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const { data: cmsData } = useWebsiteCMS();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -48,7 +50,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         <div className="flex-shrink-0">
           <Link to="/" className="no-underline">
             <div className="text-white">
-              <div className="text-2xl font-bold">BISMILLAH TRAVEL</div>
+              <div className="text-2xl font-bold">{cmsData?.logo_text || "BISMILLAH TRAVEL"}</div>
             </div>
           </Link>
         </div>
@@ -108,15 +110,22 @@ const Navigation: React.FC<NavigationProps> = () => {
               <span className="text-white text-sm">📞</span>
             </div>
             <div>
-              <div className="text-white font-bold text-lg">0208 145 7860</div>
-              <div className="text-gray-300 text-sm">Call Me Back</div>
+              <div className="text-white font-bold text-lg">{cmsData?.business_phone || "0208 145 7860"}</div>
+              <div className="text-gray-300 text-sm">{cmsData?.contact_display_text || "Call Me Back"}</div>
             </div>
           </div>
 
           {/* WhatsApp Icon */}
-          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center cursor-pointer">
-            <span className="text-white text-lg">💬</span>
-          </div>
+          {cmsData?.whatsapp_number && (
+            <a 
+              href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center cursor-pointer"
+            >
+              <span className="text-white text-lg">💬</span>
+            </a>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -140,12 +149,19 @@ const Navigation: React.FC<NavigationProps> = () => {
                   <span className="text-white text-sm">📞</span>
                 </div>
                 <div className="flex-1">
-                  <div className="text-white font-bold text-lg">0208 145 7860</div>
-                  <div className="text-gray-300 text-sm">Call Me Back</div>
+                  <div className="text-white font-bold text-lg">{cmsData?.business_phone || "0208 145 7860"}</div>
+                  <div className="text-gray-300 text-sm">{cmsData?.contact_display_text || "Call Me Back"}</div>
                 </div>
-                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-lg">💬</span>
-                </div>
+                {cmsData?.whatsapp_number && (
+                  <a 
+                    href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
+                  >
+                    <span className="text-white text-lg">💬</span>
+                  </a>
+                )}
               </div>
             </div>
 

@@ -1,0 +1,105 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:customer_name",
+ "creation": "2025-01-27 10:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "name": "Testimonial",
+ "editable_grid": 1,
+ "istable": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "parent",
+  "parenttype",
+  "parentfield",
+  "customer_name",
+  "customer_location",
+  "rating",
+  "testimonial_text",
+  "customer_avatar",
+  "display_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "parent",
+   "fieldtype": "Data",
+   "label": "Parent"
+  },
+  {
+   "fieldname": "parenttype",
+   "fieldtype": "Data",
+   "label": "Parent Type"
+  },
+  {
+   "fieldname": "parentfield",
+   "fieldtype": "Data",
+   "label": "Parent Field"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_location",
+   "fieldtype": "Data",
+   "label": "Customer Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rating",
+   "fieldtype": "Int",
+   "label": "Rating",
+   "default": 5,
+   "reqd": 1,
+   "description": "Rating from 1 to 5 stars"
+  },
+  {
+   "fieldname": "testimonial_text",
+   "fieldtype": "Text",
+   "label": "Testimonial Text",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_avatar",
+   "fieldtype": "Attach Image",
+   "label": "Customer Avatar",
+   "description": "Upload customer photo"
+  },
+  {
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Display Order",
+   "default": 0
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-27 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Travel Agency Website",
+ "name": "Testimonial",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

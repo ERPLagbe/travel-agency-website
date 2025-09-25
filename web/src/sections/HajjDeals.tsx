@@ -1,8 +1,13 @@
 import React from 'react';
 import PackageCard from '../components/PackageCard';
+import { useWebsiteCMS, useHajjPackages } from '../hooks/useWebsiteCMS';
 
 const HajjDeals: React.FC = () => {
-  const hajjPackages = [
+  const { data: cmsData } = useWebsiteCMS();
+  const { data: hajjPackages } = useHajjPackages();
+
+  // Fallback data if CMS data is not available
+  const fallbackPackages = [
     {
       id: 1,
       title: "11 Nights 5 Stars Shifting Hajj Package",
@@ -29,6 +34,20 @@ const HajjDeals: React.FC = () => {
     }
   ];
 
+  // Use CMS data if available, otherwise use fallback
+  const packages = (hajjPackages && hajjPackages.length > 0) 
+    ? hajjPackages.map((pkg: any) => ({
+        id: pkg.name,
+        title: pkg.package_name,
+        nights: "7 Nights", // Default, will be fetched from Item doctype later
+        rating: 5,
+        price: 0, // Will be fetched from Item doctype later
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop"
+      }))
+    : fallbackPackages;
+
+  const title = cmsData?.hajj_deals_title || "Cheap Deals for Hajj 2026";
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -42,13 +61,13 @@ const HajjDeals: React.FC = () => {
           </div>
           
           <h2 className="text-primary text-4xl md:text-5xl font-bold uppercase mb-4">
-            Cheap Deals for Hajj 2026
+            {title}
           </h2>
         </div>
 
         {/* Package Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {hajjPackages.map((pkg) => (
+          {packages.map((pkg) => (
             <PackageCard
               key={pkg.id}
               id={pkg.id}

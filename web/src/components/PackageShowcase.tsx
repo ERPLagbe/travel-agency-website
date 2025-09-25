@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PackageCard from './PackageCard';
+import { useWebsiteCMS, useFeaturedPackages } from '../hooks/useWebsiteCMS';
 
 interface Package {
   id: string;
@@ -19,27 +20,48 @@ interface Package {
 interface PackageShowcaseProps {
   title?: string;
   subtitle?: string;
-  packages: Package[];
+  packages?: Package[];
   showViewAll?: boolean;
 }
 
 const PackageShowcase: React.FC<PackageShowcaseProps> = ({ 
-  title = "Featured Packages", 
-  subtitle = "Discover our most popular travel experiences",
-  packages,
+  title,
+  subtitle,
+  packages: propPackages,
   showViewAll = true
 }) => {
+  const { data: cmsData } = useWebsiteCMS();
+  const { data: featuredPackages } = useFeaturedPackages();
+
+  // Use CMS data if available, otherwise fall back to props or defaults
+  const displayTitle = title || cmsData?.featured_packages_title || "Featured Packages";
+  const displaySubtitle = subtitle || cmsData?.featured_packages_subtitle || "Discover our most popular travel experiences";
+  
+  // Use packages from props if provided, otherwise use CMS data
+  const packages = propPackages || (featuredPackages || []).map((pkg: any) => ({
+    id: pkg.name,
+    title: pkg.package_name,
+    category: "Featured",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop",
+    price: 0, // Will be fetched from Item doctype later
+    duration: "7 Nights",
+    destination: "Makkah & Madinah",
+    description: "Premium travel package",
+    rating: 5,
+    reviews: 0,
+    features: []
+  }));
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-primary text-4xl md:text-5xl font-bold uppercase mb-4">
-            {title}
+            {displayTitle}
           </h2>
           
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
-            {subtitle}
+            {displaySubtitle}
           </p>
           
           {showViewAll && (

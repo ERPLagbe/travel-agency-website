@@ -1,11 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, MapPin, Phone, Mail, ChevronUp } from 'lucide-react';
+import { useWebsiteCMS, useFooterLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
 
 const Footer: React.FC = () => {
+  const { data: cmsData } = useWebsiteCMS();
+  const { data: footerLinks } = useFooterLinks();
+  const { data: socialMediaLinks } = useSocialMediaLinks();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Fallback data if CMS data is not available
+  const fallbackFooterLinks = [
+    { link_name: "About Us", link_url: "/about" },
+    { link_name: "Contact", link_url: "/contact" },
+    { link_name: "Privacy Policy", link_url: "/privacy" },
+    { link_name: "Terms & Conditions", link_url: "/terms" }
+  ];
+
+  const fallbackSocialLinks = [
+    { platform_name: "Facebook", platform_url: "https://facebook.com/bismillahtravel" },
+    { platform_name: "Instagram", platform_url: "https://instagram.com/bismillahtravel" }
+  ];
+
+  // Use CMS data if available, otherwise use fallback
+  const links = (footerLinks && footerLinks.length > 0) ? footerLinks : fallbackFooterLinks;
+  const socialLinks = (socialMediaLinks && socialMediaLinks.length > 0) ? socialMediaLinks : fallbackSocialLinks;
 
   return (
     <footer className="bg-primary text-white">
@@ -48,8 +70,8 @@ const Footer: React.FC = () => {
             {/* Logo */}
             <div>
               <div className="text-white mb-6">
-                <div className="text-2xl font-bold text-secondary">بسم الله</div>
-                <div className="text-2xl font-bold text-white">BISMILLAH TRAVEL</div>
+                <div className="text-2xl font-bold text-secondary">{cmsData?.logo_arabic_text || "بسم الله"}</div>
+                <div className="text-2xl font-bold text-white">{cmsData?.logo_text || "BISMILLAH TRAVEL"}</div>
               </div>
             </div>
 
@@ -71,11 +93,15 @@ const Footer: React.FC = () => {
               <div>
                 <h4 className="text-white font-bold text-lg uppercase mb-4">OUR TERMS</h4>
                 <div className="space-y-2">
-                  <Link to="/about" className="block text-white hover:text-secondary transition-colors">About us</Link>
-                  <Link to="/terms" className="block text-white hover:text-secondary transition-colors">Terms & Conditions</Link>
-                  <Link to="/privacy" className="block text-white hover:text-secondary transition-colors">Privacy Policy</Link>
-                  <Link to="/payment" className="block text-white hover:text-secondary transition-colors">Payment</Link>
-                  <Link to="/cookies" className="block text-white hover:text-secondary transition-colors">Cookies Policy</Link>
+                  {links.map((link: any, index: number) => (
+                    <Link 
+                      key={index}
+                      to={link.link_url} 
+                      className="block text-white hover:text-secondary transition-colors"
+                    >
+                      {link.link_name}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
@@ -85,12 +111,20 @@ const Footer: React.FC = () => {
               {/* Social Media */}
               <div className="mb-6">
                 <div className="flex gap-4 mb-4">
-                  <a href="#" className="text-white hover:text-secondary transition-colors">
-                    <Facebook className="w-6 h-6" />
-                  </a>
-                  <a href="#" className="text-white hover:text-secondary transition-colors">
-                    <Instagram className="w-6 h-6" />
-                  </a>
+                  {socialLinks.map((social: any, index: number) => (
+                    <a 
+                      key={index}
+                      href={social.platform_url} 
+                      className="text-white hover:text-secondary transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {social.platform_name === 'Facebook' && <Facebook className="w-6 h-6" />}
+                      {social.platform_name === 'Instagram' && <Instagram className="w-6 h-6" />}
+                      {social.platform_name === 'Twitter' && <Facebook className="w-6 h-6" />}
+                      {social.platform_name === 'YouTube' && <Instagram className="w-6 h-6" />}
+                    </a>
+                  ))}
                 </div>
               </div>
 
@@ -112,19 +146,20 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <div className="text-white text-sm">
-              All rights reserved Flight Booking @ 2010 - 2025
+              All rights reserved {cmsData?.business_name || "Bismillah Travel"} @ 2010 - 2025
             </div>
 
             {/* Legal Text */}
             <div className="text-white text-xs text-center md:text-right max-w-2xl">
-              This website is operated by Travixum Ltd. (Company Number 13555073 and ATOL 12192) T/A registered in England and Wales. 
+              This website is operated by {cmsData?.business_name || "Bismillah Travel"}. 
+              (Company Number {cmsData?.company_number || "12345678"} and ATOL {cmsData?.atol_number || "ATOL1234"}) T/A registered in England and Wales. 
               ATOL protection does not apply to all holiday and travel services listed on this website. 
               Please ask us to confirm what protection may apply to your booking. 
               If you do not receive an ATOL Certificate then the booking will not be ATOL protected. 
               If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. 
               Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: 
-              <a href="https://www.atol.org/about-atol/atol-certificates/" className="text-secondary hover:underline" target="_blank" rel="noopener noreferrer">
-                https://www.atol.org/about-atol/atol-certificates/
+              <a href={cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"} className="text-secondary hover:underline" target="_blank" rel="noopener noreferrer">
+                {cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"}
               </a>
             </div>
 
