@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:item_name",
+ "autoname": "field:item_group",
  "creation": "2025-01-27 10:00:00.000000",
  "default_view": "List",
  "doctype": "DocType",
@@ -11,9 +11,9 @@
  "engine": "InnoDB",
  "field_order": [
   "parent",
-  "parenttype",
+  "parenttype", 
   "parentfield",
-  "item_name",
+  "dropdown_name",
   "item_group",
   "display_order"
  ],
@@ -34,19 +34,22 @@
    "label": "Parent Field"
   },
   {
-   "fieldname": "item_name",
-   "fieldtype": "Data",
+   "fieldname": "dropdown_name",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Item Name",
-   "reqd": 1
+   "label": "Dropdown Name",
+   "options": "Navigation Dropdown",
+   "reqd": 1,
+   "description": "Select the dropdown this item belongs to"
   },
   {
    "fieldname": "item_group",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Item Group",
    "options": "Item Group",
    "reqd": 1,
-   "description": "Select the ERPNext Item Group to display in this dropdown item"
+   "description": "Select Item Group to show in dropdown"
   },
   {
    "fieldname": "display_order",

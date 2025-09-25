@@ -10,6 +10,7 @@ export { default as Testimonials } from './Testimonials';
 export { default as TrustBadges } from './TrustBadges';
 export { default as PackageShowcase } from './PackageShowcase';
 export { default as PackageCard } from './PackageCard';
+export { default as PackageListing } from './PackageListing';
 export { default as FlightBookingForm } from './FlightBookingForm';
 
 // New sections

@@ -7,6 +7,7 @@ interface PackageCardProps {
   rating: number;
   price: number;
   image: string;
+  itemGroup?: string; // Add item group to determine category
   primaryButtonText?: string;
   secondaryButtonText?: string;
   onPrimaryClick?: () => void;
@@ -20,6 +21,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   rating,
   price,
   image,
+  itemGroup,
   primaryButtonText = "View All Detail",
   secondaryButtonText = "Enquire Now",
   onPrimaryClick,
@@ -29,7 +31,18 @@ const PackageCard: React.FC<PackageCardProps> = ({
     if (onPrimaryClick) {
       onPrimaryClick();
     } else {
-      window.location.href = `/packages/${id}`;
+      // Determine category from item group
+      let category = 'packages'; // default
+      
+      if (itemGroup) {
+        if (itemGroup.toLowerCase().includes('hajj')) {
+          category = 'hajj';
+        } else if (itemGroup.toLowerCase().includes('umrah')) {
+          category = 'umrah';
+        }
+      }
+      
+      window.location.href = `/${category}/${id}`;
     }
   };
 

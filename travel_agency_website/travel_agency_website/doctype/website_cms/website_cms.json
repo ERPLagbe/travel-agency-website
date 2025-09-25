@@ -22,6 +22,7 @@
   "logo",
   "section_break_navigation",
   "navigation_dropdowns",
+  "navigation_dropdown_items",
   "section_break_hero",
   "hero_background_image",
   "hero_floating_image",
@@ -134,7 +135,14 @@
    "fieldtype": "Table",
    "label": "Navigation Dropdowns",
    "options": "Navigation Dropdown",
-   "description": "Create dropdown menus for navigation. Each dropdown can contain multiple item groups from ERPNext."
+   "description": "Create dropdown names. Each row represents one dropdown."
+  },
+  {
+   "fieldname": "navigation_dropdown_items",
+   "fieldtype": "Table",
+   "label": "Navigation Dropdown Items",
+   "options": "Navigation Dropdown Item",
+   "description": "Link Item Groups to dropdowns. Each row represents one dropdown item."
   },
   {
    "fieldname": "section_break_hero",

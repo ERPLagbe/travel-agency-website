@@ -4,6 +4,7 @@ import { FrappeProvider } from 'frappe-react-sdk'
 import { Navigation, Footer } from './components'
 import HomePage from './pages/HomePage'
 import PackagesPage from './pages/PackagesPage'
+import PackageListingPage from './pages/PackageListingPage'
 import ContactPage from './pages/ContactPage'
 import PackageDetails from './pages/PackageDetails'
 import VisaPage from './pages/VisaPage'
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/packages" element={<PackagesPage />} />
             <Route path="/packages/:id" element={<PackageDetails />} />
+            <Route path="/:category/:itemGroup" element={<PackageListingPage />} />
             <Route path="/hajj/:id" element={<PackageDetails />} />
             <Route path="/umrah/:id" element={<PackageDetails />} />
             <Route path="/contact" element={<ContactPage />} />

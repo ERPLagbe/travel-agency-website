@@ -1,4 +1,5 @@
-import { useFrappeGetDoc, useFrappeGetDocList } from 'frappe-react-sdk'
+import { useFrappeGetDoc, useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
+import { useState, useEffect } from 'react'
 
 // Simple hook to get Website CMS data
 export const useWebsiteCMS = () => {
@@ -63,4 +64,41 @@ export const useSocialMediaLinks = () => {
     error: null,
     isValidating: false
   }
+}
+
+// Hook to get packages by item group
+export const usePackagesByItemGroup = (itemGroup: string) => {
+  // Convert URL format to proper Item Group name
+  const properItemGroup = itemGroup
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  console.log('🔍 PackageListing Debug:', {
+    originalItemGroup: itemGroup,
+    properItemGroup: properItemGroup
+  });
+
+  // Use useFrappeGetDocList with proper configuration
+  const { data: packages, error, isValidating } = useFrappeGetDocList('Item', {
+    fields: ['name', 'item_name', 'item_group', 'description', 'image', 'standard_rate'],
+    filters: [['item_group', '=', properItemGroup]],
+    orderBy: { field: 'creation', order: 'desc' }
+  });
+
+  console.log('🔍 API Response Debug:', {
+    packages,
+    error: error ? {
+      message: error.message,
+      httpStatus: error.httpStatus,
+      exception: error.exception
+    } : null,
+    isValidating
+  });
+
+  return {
+    data: packages || [],
+    error,
+    isValidating
+  };
 }

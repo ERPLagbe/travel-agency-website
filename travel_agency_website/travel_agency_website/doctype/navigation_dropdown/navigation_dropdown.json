@@ -14,7 +14,7 @@
   "parenttype",
   "parentfield",
   "dropdown_name",
-  "dropdown_items"
+  "display_order"
  ],
  "fields": [
   {
@@ -37,13 +37,14 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Dropdown Name",
-   "reqd": 1
+   "reqd": 1,
+   "description": "Name of the dropdown (e.g., Hajj, Umrah)"
   },
   {
-   "fieldname": "dropdown_items",
-   "fieldtype": "Table",
-   "label": "Dropdown Items",
-   "options": "Navigation Dropdown Item"
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Display Order",
+   "default": 0
   }
  ],
  "index_web_pages_for_search": 1,

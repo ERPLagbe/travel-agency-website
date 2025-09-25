@@ -2,9 +2,34 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import { useFrappeGetDocList } from 'frappe-react-sdk';
 
 interface NavigationProps {
   // No props needed for now, can be extended later
+}
+
+interface NavItem {
+  path: string;
+  label: string;
+  submenu?: NavSubItem[];
+}
+
+interface NavSubItem {
+  path: string;
+  label: string;
+}
+
+interface NavigationDropdown {
+  name: string;
+  dropdown_name: string;
+  display_order: number;
+}
+
+interface NavigationDropdownItem {
+  name: string;
+  dropdown_name: string;
+  item_group: string;
+  display_order: number;
 }
 
 const Navigation: React.FC<NavigationProps> = () => {
@@ -13,35 +38,51 @@ const Navigation: React.FC<NavigationProps> = () => {
   const location = useLocation();
   const { data: cmsData } = useWebsiteCMS();
 
+  // Get navigation data from Website CMS (child tables)
+  const navigationDropdowns = cmsData?.navigation_dropdowns || [];
+  const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
+
   const isActive = (path: string) => location.pathname === path;
 
-  const navItems = [
-    { path: '/', label: 'Home' },
-    { 
-      path: '/hajj', 
-      label: 'Hajj',
-      submenu: [
-        { path: '/hajj/shifting', label: 'Shifting Hajj' },
-        { path: '/hajj/non-shifting', label: 'Non Shifting Hajj' }
-      ]
-    },
-    { 
-      path: '/umrah', 
-      label: 'Umrah',
-      submenu: [
-        { path: '/umrah/2025', label: 'Umrah 2025' },
-        { path: '/umrah/december', label: 'December Umrah' },
-        { path: '/umrah/2026', label: 'Umrah 2026' },
-        { path: '/umrah/ramadan', label: 'Ramadan Umrah' },
-        { path: '/umrah/london', label: 'London Umrah' },
-        { path: '/umrah/manchester', label: 'Manchester Umrah' },
-        { path: '/umrah/birmingham', label: 'Birmingham Umrah' },
-        { path: '/umrah/5-star', label: '5 Star Umrah' }
-      ]
-    },
-    { path: '/contact', label: 'Contact Us' },
-    { path: '/visa', label: 'Visa' }
-  ];
+  // Build navigation items from CMS data
+  const buildNavItems = (): NavItem[] => {
+    const items: NavItem[] = [
+      { path: '/', label: 'Home' }
+    ];
+
+    // Add dropdown items from CMS
+    if (navigationDropdowns && navigationDropdownItems) {
+      navigationDropdowns.forEach((dropdown: NavigationDropdown) => {
+        // Get items for this dropdown (match by dropdown_name)
+        const dropdownItems = navigationDropdownItems.filter(
+          item => item.dropdown_name === dropdown.dropdown_name
+        );
+        
+        const submenu: NavSubItem[] = dropdownItems.map((item: NavigationDropdownItem) => ({
+          path: `/${dropdown.dropdown_name.toLowerCase()}/${item.item_group.toLowerCase().replace(/\s+/g, '-')}`,
+          label: item.item_group
+        }));
+
+        const navItem: NavItem = {
+          path: `/${dropdown.dropdown_name.toLowerCase()}`,
+          label: dropdown.dropdown_name,
+          submenu: submenu.length > 0 ? submenu : undefined
+        };
+
+        items.push(navItem);
+      });
+    }
+
+    // Add static items
+    items.push(
+      { path: '/contact', label: 'Contact Us' },
+      { path: '/visa', label: 'Visa' }
+    );
+
+    return items;
+  };
+
+  const navItems = buildNavItems();
 
   return (
     <nav className="bg-primary sticky top-0 z-50">
@@ -50,7 +91,10 @@ const Navigation: React.FC<NavigationProps> = () => {
         <div className="flex-shrink-0">
           <Link to="/" className="no-underline">
             <div className="text-white">
-              <div className="text-2xl font-bold">{cmsData?.logo_text || "BISMILLAH TRAVEL"}</div>
+              <div className="text-2xl font-bold">
+                {cmsData?.logo && <img className='w-10 h-10 object-contain' src={cmsData?.logo} alt="Logo" /> }
+                {!cmsData?.logo && <div className="text-2xl font-bold">{cmsData?.logo_text }</div> }
+              </div>
             </div>
           </Link>
         </div>
@@ -84,7 +128,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                   onMouseEnter={() => setActiveDropdown(item.path)}
                   onMouseLeave={() => setActiveDropdown(null)}
                   >
-                    {item.submenu.map((subItem) => (
+                    {item.submenu.map((subItem: NavSubItem) => (
                       <Link
                         key={subItem.path}
                         to={subItem.path}
@@ -180,7 +224,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                   </Link>
                   {item.submenu && (
                     <div className="ml-4 mt-2 space-y-2">
-                      {item.submenu.map((subItem) => (
+                      {item.submenu.map((subItem: NavSubItem) => (
                         <Link
                           key={subItem.path}
                           to={subItem.path}

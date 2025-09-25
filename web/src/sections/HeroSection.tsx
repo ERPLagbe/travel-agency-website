@@ -64,9 +64,9 @@ const HeroSection: React.FC = () => {
               
               {/* Right Side - Title and Description */}
               <div className="order-1 md:order-2 text-center md:text-left">
-                <div className="text-secondary text-lg mb-2">{heroData.trustedText}</div>
-                <div className="text-white text-4xl md:text-6xl font-bold mb-2">{heroData.mainTitle}</div>
-                <div className="text-secondary text-lg mb-8">{heroData.subtitle}</div>
+                <div className="text-white text-3xl md:text-5xl font-normal mb-2">{heroData.trustedText}</div>
+                <div className="text-white text-3xl md:text-5xl font-bold mb-2">{heroData.mainTitle}</div>
+                <div className="text-white text-4xl md:text-6xl font-light mb-2">{heroData.subtitle}</div>
               </div>
               
             </div>
