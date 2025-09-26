@@ -10,11 +10,12 @@ class WebsiteCMS(Document):
 	
 	def validate(self):
 		"""Validate the document before saving"""
-		# Ensure only one active Website CMS record
-		if self.is_new():
-			existing = frappe.get_all("Website CMS", limit=1)
-			if existing:
-				frappe.throw("Only one Website CMS record is allowed. Please edit the existing record.")
+		pass
+		
+		# Prevent deletion of the main record
+		if self.name == "Main Website Settings":
+			if frappe.flags.in_delete:
+				frappe.throw("Cannot delete the main Website CMS record. Please contact system administrator.")
 	
 	def on_update(self):
 		"""Called after the document is updated"""

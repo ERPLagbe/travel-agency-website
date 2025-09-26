@@ -1,68 +1,122 @@
 import { useFrappeGetDoc, useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
 import { useState, useEffect } from 'react'
 
-// Simple hook to get Website CMS data
+// Simple hook to get Website CMS data (Single DocType)
 export const useWebsiteCMS = () => {
-  return useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
+  return {
+    data: cmsData,
+    error,
+    isValidating
+  }
 }
 
 // Simple hook to get testimonials from parent Website CMS
 export const useTestimonials = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.testimonials || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
 // Simple hook to get featured packages from parent Website CMS
 export const useFeaturedPackages = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.featured_packages || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
 // Simple hook to get Hajj packages from parent Website CMS
 export const useHajjPackages = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.hajj_packages || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
 // Simple hook to get FAQ items from parent Website CMS
 export const useFAQItems = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.faq_items || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
 // Simple hook to get footer links from parent Website CMS
 export const useFooterLinks = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.footer_links || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
 // Simple hook to get social media links from parent Website CMS
 export const useSocialMediaLinks = () => {
-  const { data: cmsData } = useFrappeGetDoc('Website CMS', 'Main Website Settings')
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
   return {
     data: cmsData?.social_media_links || [],
-    error: null,
-    isValidating: false
+    error,
+    isValidating
   }
 }
 
@@ -86,7 +140,7 @@ export const usePackagesByItemGroup = (itemGroup: string) => {
     orderBy: { field: 'creation', order: 'desc' }
   });
 
-  console.log('🔍 API Response Debug:', {
+  console.log('API Response Debug:', {
     packages,
     error: error ? {
       message: error.message,
