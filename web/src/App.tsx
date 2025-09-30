@@ -1,7 +1,7 @@
-import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FrappeProvider } from 'frappe-react-sdk'
 import { Navigation, Footer } from './components'
+import FloatingActionButtons from './components/FloatingActionButtons'
 import HomePage from './pages/HomePage'
 import PackagesPage from './pages/PackagesPage'
 import PackageListingPage from './pages/PackageListingPage'
@@ -28,6 +28,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
           </Routes>
           <Footer />
+          <FloatingActionButtons />
         </div>
       </Router>
     </FrappeProvider>

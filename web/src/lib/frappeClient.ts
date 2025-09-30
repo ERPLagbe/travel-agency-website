@@ -1,4 +1,4 @@
-import FrappeClient from 'frappe-react-sdk'
+import { FrappeClient } from 'frappe-react-sdk'
 
 // Create a custom Frappe client with proper CORS configuration
 const frappeClient = new FrappeClient({

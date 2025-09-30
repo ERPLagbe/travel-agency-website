@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { SectionContainer, Typography, Button, Card } from '../components';
 import { Clock, Shield, Star } from 'lucide-react';
+import { useCreateLead } from '../hooks/useCreateLead';
 
 const CompleteContactPage: React.FC = () => {
+  const { createLead, isLoading, error } = useCreateLead();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,16 +13,33 @@ const CompleteContactPage: React.FC = () => {
     message: '',
     packageInterest: ''
   });
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for your inquiry! We will contact you soon.');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '', packageInterest: '' });
+    setSubmitStatus('idle');
+    
+    try {
+      await createLead({
+        lead_name: formData.name,
+        email_id: formData.email,
+        phone: formData.phone,
+        company_name: formData.subject,
+        source: 'Website',
+        status: 'Open',
+        notes: `Package Interest: ${formData.packageInterest}\n\nMessage: ${formData.message}`
+      });
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '', packageInterest: '' });
+    } catch (err) {
+      setSubmitStatus('error');
+      console.error('Error creating lead:', err);
+    }
   };
 
   return (
@@ -139,8 +158,37 @@ const CompleteContactPage: React.FC = () => {
                   fontSize: 'var(--font-size-base)'
                 }}
               ></textarea>
-              <Button type="submit" variant="primary" size="lg">
-                Send Message
+              {submitStatus === 'success' && (
+                <div style={{ 
+                  padding: 'var(--spacing-3)', 
+                  backgroundColor: 'var(--color-green-100)', 
+                  color: 'var(--color-green-800)',
+                  borderRadius: 'var(--border-radius-md)',
+                  marginBottom: 'var(--spacing-4)'
+                }}>
+                  ✅ Thank you! Your message has been sent successfully. We will contact you soon.
+                </div>
+              )}
+              
+              {submitStatus === 'error' && (
+                <div style={{ 
+                  padding: 'var(--spacing-3)', 
+                  backgroundColor: 'var(--color-red-100)', 
+                  color: 'var(--color-red-800)',
+                  borderRadius: 'var(--border-radius-md)',
+                  marginBottom: 'var(--spacing-4)'
+                }}>
+                  ❌ Sorry, there was an error sending your message. Please try again.
+                </div>
+              )}
+              
+              <Button 
+                type="submit" 
+                variant="primary" 
+                size="lg"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </Card>
