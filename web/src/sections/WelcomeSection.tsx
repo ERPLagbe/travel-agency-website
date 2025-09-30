@@ -1,5 +1,6 @@
 import React from 'react';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 const WelcomeSection: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
@@ -35,7 +36,10 @@ const WelcomeSection: React.FC = () => {
           <div className="order-first lg:order-last">
             <div className="relative">
               <img 
-                src={cmsData?.welcome_image || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=500&fit=crop"} 
+                src={getFileUrlWithFallback(
+                  cmsData?.welcome_image, 
+                  "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=500&fit=crop"
+                )} 
                 alt="Pilgrims at Kaaba"
                 className="w-full h-96 object-cover rounded-xl shadow-lg"
               />

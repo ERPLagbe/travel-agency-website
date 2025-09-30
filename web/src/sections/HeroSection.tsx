@@ -36,40 +36,45 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <div>
-      {/* Hero Section with Background Image */}
-      <div className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-no-repeat">
-        <img 
-          className='absolute inset-0 object-cover hidden md:block' 
-          src={heroData.backgroundImage} 
-          alt="Hero Background" 
-        />
-        <div className="absolute w-full h-full inset-0 bg-primary md:hidden block"></div>
-        
-        {/* Content Container */}
-        <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-6 w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-[30%]">
-              
-              {/* Left Side - Floating Image Box */}
-              <div className="order-2 md:order-1">
-                <div className="">
-                  <img 
-                    src={heroData.floatingImage} 
-                    alt="Kaaba" 
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
+    <div className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-no-repeat">
+      <img 
+        className='absolute object-cover w-full h-full ' 
+        src={heroData.backgroundImage} 
+        alt="Hero Background" 
+      />
+
+      
+      {/* Overlay for better text readability */}
+      <div className="absolute w-full h-full bg-black opacity-50"></div>
+      
+      {/* Content Container */}
+      <div className="relative z-10 h-full flex items-center">
+        <div className="max-w-7xl mx-auto px-6 w-full">
+          <div className="max-w-4xl">
+            
+            {/* Hero Content */}
+            <div className="text-white text-center md:text-left">
+              <div className="text-2xl md:text-3xl font-light mb-3 opacity-90">
+                {heroData.trustedText}
+              </div>
+              <div className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                {heroData.mainTitle}
+              </div>
+              <div className="text-3xl md:text-5xl font-light mb-8 opacity-95">
+                {heroData.subtitle}
               </div>
               
-              {/* Right Side - Title and Description */}
-              <div className="order-1 md:order-2 text-center md:text-left">
-                <div className="text-white text-3xl md:text-5xl font-normal mb-2">{heroData.trustedText}</div>
-                <div className="text-white text-3xl md:text-5xl font-bold mb-2">{heroData.mainTitle}</div>
-                <div className="text-white text-4xl md:text-6xl font-light mb-2">{heroData.subtitle}</div>
+              {/* Call to Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <button className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300 shadow-lg">
+                  Explore Packages
+                </button>
+                <button className="border-2 border-white text-white hover:bg-accent hover:text-primary hover:border-accent px-8 py-3 rounded-lg font-semibold transition-colors duration-300">
+                  Contact Us
+                </button>
               </div>
-              
             </div>
+            
           </div>
         </div>
       </div>

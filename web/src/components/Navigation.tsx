@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
-import { useFrappeGetDocList } from 'frappe-react-sdk';
+import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 interface NavigationProps {
   // No props needed for now, can be extended later
@@ -50,12 +50,12 @@ const Navigation: React.FC<NavigationProps> = () => {
       { path: '/', label: 'Home' }
     ];
 
-    // Add dropdown items from CMS
+    // Add dropdown items from CMS (keep dynamic dropdown names)
     if (navigationDropdowns && navigationDropdownItems) {
       navigationDropdowns.forEach((dropdown: NavigationDropdown) => {
         // Get items for this dropdown (match by dropdown_name)
         const dropdownItems = navigationDropdownItems.filter(
-          item => item.dropdown_name === dropdown.dropdown_name
+          (item: NavigationDropdownItem) => item.dropdown_name === dropdown.dropdown_name
         );
         
         const submenu: NavSubItem[] = dropdownItems.map((item: NavigationDropdownItem) => ({
@@ -65,7 +65,7 @@ const Navigation: React.FC<NavigationProps> = () => {
 
         const navItem: NavItem = {
           path: `/${dropdown.dropdown_name.toLowerCase()}`,
-          label: dropdown.dropdown_name,
+          label: dropdown.dropdown_name, // Keep original dynamic dropdown name
           submenu: submenu.length > 0 ? submenu : undefined
         };
 
@@ -73,10 +73,11 @@ const Navigation: React.FC<NavigationProps> = () => {
       });
     }
 
-    // Add static items
+    // Add static items in the desired order: Visa > About > Contact
     items.push(
-      { path: '/contact', label: 'Contact Us' },
-      { path: '/visa', label: 'Visa' }
+      { path: '/visa', label: 'Visa' },
+      { path: '/about', label: 'About' },
+      { path: '/contact', label: 'Contact' }
     );
 
     return items;
@@ -92,7 +93,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           <Link to="/" className="no-underline">
             <div className="text-white">
               <div className="text-2xl font-bold">
-                {cmsData?.logo && <img className='w-10 h-10 object-contain' src={cmsData?.logo} alt="Logo" /> }
+                {cmsData?.logo && <img className='w-10 h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
                 {!cmsData?.logo && <div className="text-2xl font-bold">{cmsData?.logo_text }</div> }
               </div>
             </div>
@@ -146,30 +147,29 @@ const Navigation: React.FC<NavigationProps> = () => {
           </div>
         </div>
 
-        {/* Contact Info - Right */}
-        <div className="desktop-nav flex-shrink-0 flex items-center gap-4">
-          {/* Phone Number */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-              <span className="text-white text-sm">📞</span>
-            </div>
-            <div>
-              <div className="text-white font-bold text-lg">{cmsData?.business_phone || "0208 145 7860"}</div>
-              <div className="text-gray-300 text-sm">{cmsData?.contact_display_text || "Call Me Back"}</div>
-            </div>
-          </div>
+        {/* Action Buttons - Right */}
+        <div className="desktop-nav flex-shrink-0 flex items-center gap-3">
+          {/* Get Appointment Button */}
+          <button 
+            className="px-4 py-2 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300"
+            onClick={() => {
+              // Add your appointment booking logic here
+              console.log('Get Appointment clicked');
+            }}
+          >
+            Get Appointment
+          </button>
 
-          {/* WhatsApp Icon */}
-          {cmsData?.whatsapp_number && (
-            <a 
-              href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center cursor-pointer"
-            >
-              <span className="text-white text-lg">💬</span>
-            </a>
-          )}
+          {/* Login Button */}
+          <button 
+            className="px-4 py-2 bg-transparent border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
+            onClick={() => {
+              // Add your login logic here
+              console.log('Login clicked');
+            }}
+          >
+            Login
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -186,26 +186,32 @@ const Navigation: React.FC<NavigationProps> = () => {
       {isMenuOpen && (
         <div className="mobile-nav bg-primary border-t border-gray-700 p-6">
           <div className="flex flex-col gap-6">
-            {/* Contact Info Section */}
+            {/* Action Buttons Section */}
             <div className="border-b border-gray-700 pb-4">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">📞</span>
-                </div>
-                <div className="flex-1">
-                  <div className="text-white font-bold text-lg">{cmsData?.business_phone || "0208 145 7860"}</div>
-                  <div className="text-gray-300 text-sm">{cmsData?.contact_display_text || "Call Me Back"}</div>
-                </div>
-                {cmsData?.whatsapp_number && (
-                  <a 
-                    href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
-                  >
-                    <span className="text-white text-lg">💬</span>
-                  </a>
-                )}
+              <div className="flex flex-col gap-3">
+                {/* Get Appointment Button */}
+                <button 
+                  className="w-full py-3 px-4 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    // Add your appointment booking logic here
+                    console.log('Get Appointment clicked');
+                  }}
+                >
+                  Get Appointment
+                </button>
+
+                {/* Login Button */}
+                <button 
+                  className="w-full py-3 px-4 bg-transparent border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    // Add your login logic here
+                    console.log('Login clicked');
+                  }}
+                >
+                  Login
+                </button>
               </div>
             </div>
 
