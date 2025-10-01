@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 
 @frappe.whitelist(allow_guest=True)
-def create_lead_from_website(first_name, email_id, phone="", company_name="", notes=""):
+def create_lead_from_website(first_name, email_id, phone="", company_name="", notes="", package_id=""):
     """
     Create a Lead from website contact form
     This method is whitelisted for guest users
@@ -23,7 +23,8 @@ def create_lead_from_website(first_name, email_id, phone="", company_name="", no
             "phone": phone or "",
             "company_name": company_name or "",
             "status": "Lead",
-            "source": "Website"
+            "source": "Website",
+            "custom_package": package_id or ""
         })
         
         # Insert with ignore_permissions to bypass Guest restrictions

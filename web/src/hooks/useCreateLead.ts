@@ -8,6 +8,7 @@ interface LeadData {
   source?: string;
   status?: string;
   notes?: string;
+  package_id?: string;
 }
 
 export const useCreateLead = () => {
@@ -31,7 +32,8 @@ export const useCreateLead = () => {
           email_id: leadData.email_id,
           phone: leadData.phone || '',
           company_name: leadData.company_name || '',
-          notes: leadData.notes || ''
+          notes: leadData.notes || '',
+          package_id: leadData.package_id || ''
         })
       });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Phone, Mail, MapPin, Check, Star, Clock, Users, Plane, Hotel, Car, Utensils } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
@@ -49,6 +49,7 @@ interface PackageDetails {
 
 const PackageDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   
   // Get package data from ERPNext
   const { data: packageData, isValidating, error } = usePackageDetails(id || '');
@@ -304,6 +305,7 @@ const PackageDetails: React.FC = () => {
               <button 
                 className="w-full py-3 px-4 rounded-lg text-white font-semibold transition-colors mb-4"
                 style={{ backgroundColor: '#432b7c' }}
+                onClick={() => navigate(`/contact?package=${id}`)}
               >
                 Enquire Now
               </button>

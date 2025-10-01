@@ -1,19 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { SectionContainer, Typography, Button, Card } from '../components';
 import { Clock, Shield, Star } from 'lucide-react';
 import { useCreateLead } from '../hooks/useCreateLead';
+import { useFrappeGetDoc, useFrappeGetDocList } from 'frappe-react-sdk';
 
 const CompleteContactPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const packageId = searchParams.get('package');
+  
   const { createLead, isLoading, error } = useCreateLead();
+  const { data: packageData } = useFrappeGetDoc('Item', packageId || '', {
+    fields: ['name', 'item_name', 'item_group'],
+    shouldFetch: !!packageId
+  });
+  
+  // Fetch all available packages for dropdown
+  const { data: allPackages } = useFrappeGetDocList('Item', {
+    fields: ['name', 'item_name', 'item_group'],
+    filters: [['disabled', '=', 0]],
+    limit: 1000
+  });
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
-    packageInterest: ''
+    packageInterest: packageId || ''
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  
+  // Update packageInterest when packageId changes
+  useEffect(() => {
+    if (packageId) {
+      setFormData(prev => ({ ...prev, packageInterest: packageId }));
+    }
+  }, [packageId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,7 +55,8 @@ const CompleteContactPage: React.FC = () => {
         company_name: formData.subject,
         source: 'Website',
         status: 'Open',
-        notes: `Package Interest: ${formData.packageInterest}\n\nMessage: ${formData.message}`
+        notes: `Package Interest: ${formData.packageInterest}\n\nMessage: ${formData.message}`,
+        package_id: formData.packageInterest
       });
       
       setSubmitStatus('success');
@@ -68,6 +93,21 @@ const CompleteContactPage: React.FC = () => {
             <Typography variant="h2" style={{ marginBottom: 'var(--spacing-8)' }}>
               Send us a Message
             </Typography>
+            
+            {packageData && (
+              <div style={{ 
+                padding: 'var(--spacing-4)', 
+                backgroundColor: 'var(--color-primary)', 
+                color: 'white',
+                borderRadius: 'var(--radius-md)', 
+                marginBottom: 'var(--spacing-4)'
+              }}>
+                <Typography variant="body" color="white">
+                  Enquiring about: <strong>{packageData.item_name}</strong>
+                </Typography>
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
               <input
                 type="text"
@@ -123,11 +163,15 @@ const CompleteContactPage: React.FC = () => {
                 }}
               >
                 <option value="">Select Package Interest</option>
-                <option value="hajj">Hajj Packages</option>
-                <option value="umrah">Umrah Packages</option>
-                <option value="tour">Cultural Tours</option>
-                <option value="custom">Custom Package</option>
-                <option value="other">Other</option>
+                {allPackages && allPackages.length > 0 ? (
+                  allPackages.map((pkg: any) => (
+                    <option key={pkg.name} value={pkg.name}>
+                      {pkg.item_name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>Loading packages...</option>
+                )}
               </select>
               <input
                 type="text"
