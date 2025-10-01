@@ -1,4 +1,4 @@
-# Copyright (c) 2025, Bismillah Travel and contributors
+# Copyright (c) 2025, ERP Lagbe and contributors
 # For license information, please see license.txt
 
 import frappe
@@ -114,4 +114,30 @@ def get_packages_by_item_group(item_group):
 		return {
 			"error": str(e),
 			"data": None
+		}
+
+
+@frappe.whitelist(allow_guest=True)
+def get_accommodation_files(accommodation_name):
+	"""Get files attached to an Accommodation"""
+	try:
+		files = frappe.get_list("File", 
+			filters={
+				"attached_to_doctype": "Accommodation",
+				"attached_to_name": accommodation_name
+			},
+			fields=["name", "file_name", "file_url", "is_private"]
+		)
+		
+		return {
+			"success": True,
+			"files": files
+		}
+		
+	except Exception as e:
+		frappe.log_error(f"Error fetching accommodation files: {str(e)}")
+		return {
+			"success": False,
+			"message": str(e),
+			"files": []
 		}

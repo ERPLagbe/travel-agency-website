@@ -9,6 +9,10 @@ import ContactPage from './pages/ContactPage'
 import PackageDetails from './pages/PackageDetails'
 import VisaPage from './pages/VisaPage'
 import AboutPage from './pages/AboutPage'
+import BlogPage from './pages/BlogPage'
+import BlogDetailsPage from './pages/BlogDetailsPage'
+import TermsPage from './pages/TermsPage'
+import BranchPage from './pages/BranchPage'
 
 function App() {
   return (
@@ -26,6 +30,10 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/visa" element={<VisaPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/branches" element={<BranchPage />} />
           </Routes>
           <Footer />
           <FloatingActionButtons />

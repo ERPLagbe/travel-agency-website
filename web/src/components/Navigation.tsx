@@ -73,9 +73,10 @@ const Navigation: React.FC<NavigationProps> = () => {
       });
     }
 
-    // Add static items in the desired order: Visa > About > Contact
+    // Add static items in the desired order: Visa > Blog > About > Contact
     items.push(
       { path: '/visa', label: 'Visa' },
+      { path: '/blog', label: 'Blog' },
       { path: '/about', label: 'About' },
       { path: '/contact', label: 'Contact' }
     );

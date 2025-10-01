@@ -74,7 +74,10 @@
   "footer_terms_links",
   "footer_social_media",
   "footer_copyright",
-  "footer_legal_text"
+  "footer_legal_text",
+  "section_break_terms",
+  "terms_title",
+  "terms_content"
  ],
  "fields": [
   {
@@ -446,6 +449,23 @@
    "fieldname": "footer_legal_text",
    "fieldtype": "Text",
    "label": "Footer Legal Text"
+  },
+  {
+   "fieldname": "section_break_terms",
+   "fieldtype": "Section Break",
+   "label": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms_title",
+   "fieldtype": "Data",
+   "label": "Terms and Conditions Title",
+   "default": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms_content",
+   "fieldtype": "Text Editor",
+   "label": "Terms and Conditions Content",
+   "description": "Write your terms and conditions content here. Supports rich text formatting."
   }
  ],
  "index_web_pages_for_search": 1,

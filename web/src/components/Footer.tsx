@@ -16,7 +16,6 @@ const Footer: React.FC = () => {
   const fallbackFooterLinks = [
     { link_name: "About Us", link_url: "/about" },
     { link_name: "Contact", link_url: "/contact" },
-    { link_name: "Privacy Policy", link_url: "/privacy" },
     { link_name: "Terms & Conditions", link_url: "/terms" }
   ];
 
@@ -85,6 +84,7 @@ const Footer: React.FC = () => {
                   <Link to="/visa" className="block text-white hover:text-secondary transition-colors">Visa</Link>
                   <Link to="/hajj" className="block text-white hover:text-secondary transition-colors">Hajj</Link>
                   <Link to="/umrah" className="block text-white hover:text-secondary transition-colors">Umrah</Link>
+                  <Link to="/branches" className="block text-white hover:text-secondary transition-colors">Branches</Link>
                   <Link to="/contact" className="block text-white hover:text-secondary transition-colors">Contact us</Link>
                 </div>
               </div>

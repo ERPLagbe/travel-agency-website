@@ -47,3 +47,50 @@ def create_lead_from_website(first_name, email_id, phone="", company_name="", no
             "success": False,
             "message": str(e)
         }
+
+@frappe.whitelist(allow_guest=True)
+def get_accommodation_files(accommodation_name):
+    """
+    Get files attached to an Accommodation
+    This method is whitelisted for guest users
+    """
+    try:
+        # Log the accommodation name being queried
+        frappe.logger().info(f"Fetching files for accommodation: {accommodation_name}")
+        
+        # Use get_all with ignore_permissions for guest users
+        files = frappe.get_all("File", 
+            filters={
+                "attached_to_doctype": "Accommodation",
+                "attached_to_name": accommodation_name
+            },
+            fields=["name", "file_name", "file_url", "is_private"],
+            ignore_permissions=True
+        )
+        
+        # Return files as-is, including private files
+        # Private files will be served through Frappe's file serving mechanism
+        processed_files = []
+        for file in files:
+            processed_files.append({
+                "name": file["name"],
+                "file_name": file["file_name"],
+                "file_url": file.get("file_url", ""),
+                "is_private": file.get("is_private", 0)
+            })
+        
+        frappe.logger().info(f"Found {len(processed_files)} files for {accommodation_name}")
+        
+        return {
+            "success": True,
+            "files": processed_files,
+            "accommodation_name": accommodation_name
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Error fetching accommodation files: {str(e)}")
+        return {
+            "success": False,
+            "message": str(e),
+            "files": []
+        }
