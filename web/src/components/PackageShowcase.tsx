@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PackageCard from './PackageCard';
 import { useWebsiteCMS, useFeaturedPackages } from '../hooks/useWebsiteCMS';
-import { useFrappeGetDocList } from 'frappe-react-sdk';
+import { useFrappeGetCall } from 'frappe-react-sdk';
 
 interface Package {
   id: string;
@@ -16,6 +16,13 @@ interface Package {
   rating: number;
   reviews: number;
   features: string[];
+  // New design fields
+  nights?: string;
+  airInfo?: string;
+  hotelMakkah?: string;
+  hotelMadinah?: string;
+  foodInfo?: string;
+  specialServices?: string;
 }
 
 interface PackageShowcaseProps {
@@ -34,12 +41,9 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
   const { data: cmsData } = useWebsiteCMS();
   const { data: featuredPackages } = useFeaturedPackages();
   
-  // Fetch all Items (same as HajjDeals section)
-  const { data: allItems } = useFrappeGetDocList('Item', {
-    fields: ['name', 'item_name', 'item_group', 'standard_rate', 'image'],
-    filters: [['disabled', '=', 0]],
-    limit: 1000
-  });
+  // Fetch all Items with accommodation data using custom API
+  const { data: apiResponse } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
+  const allItems = apiResponse?.message?.data || [];
 
   // Use CMS data if available, otherwise fall back to props or defaults
   const displayTitle = title || cmsData?.featured_packages_title || "Featured Packages";
@@ -57,20 +61,39 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
       featuredItemNames.includes(item.name)
     );
     
-    // Convert to package format
-    return featuredItems.map((item: any) => ({
-      id: item.name,
-      title: item.item_name,
-      category: "Featured",
-      image: item.image || "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop",
-      price: item.standard_rate || 0,
-      duration: "7 Nights",
-      destination: "Makkah & Madinah",
-      description: "Premium travel package",
-      rating: 5,
-      reviews: 0,
-      features: []
-    }));
+    // Convert to package format with dynamic data from Item custom fields
+    return featuredItems.map((item: any) => {
+      // Process accommodation list to get hotel names and distances
+      const accommodationList = item.custom_accommodation_list || [];
+      const hotelInfo = accommodationList.length > 0 
+        ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
+        : item.custom_hotel_information || "1200/1500M";
+
+      return {
+        id: item.name,
+        title: item.item_name,
+        category: "Featured",
+        image: item.image || "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop",
+        price: item.standard_rate || 0,
+        nights: "7 Nights", // Keep for compatibility
+        duration: item.custom_duration || "35/42 Days", // Now dynamic from custom_duration field
+        destination: "Makkah & Madinah",
+        description: "Premium travel package",
+        rating: item.custom_package_rating || 5, // Now dynamic from custom_package_rating
+        reviews: 0,
+        features: [],
+        // Dynamic data from Item custom fields
+        airInfo: item.custom_air_information || "SA/Biman/Flynas",
+        hotelMakkah: hotelInfo, // Now from accommodation list
+        hotelMadinah: hotelInfo, // Now from accommodation list
+        foodInfo: item.custom_food_information || "Breakfast, Lunch & Dinner",
+        specialServices: item.custom_bustaxi_information || "Ziyarah Tour, Transportation & Guide",
+        // Pass accommodation list for dynamic rendering
+        accommodationList: accommodationList,
+        // Pass special services list for dynamic rendering
+        specialServicesList: item.custom_special_services || []
+      };
+    });
   })();
   return (
     <section className="py-16 bg-gray-50">
@@ -95,16 +118,24 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
         </div>
 
         {/* Package Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
           {packages.map((pkg) => (
             <PackageCard
               key={pkg.id}
               id={pkg.id}
               title={pkg.title}
-              nights={pkg.duration}
+              nights={pkg.nights || "7 Nights"}
               rating={pkg.rating}
               price={pkg.price}
               image={pkg.image}
+              duration={pkg.duration || "35/42 Days"}
+              airInfo={pkg.airInfo || "SA/Biman/Flynas"}
+              hotelMakkah={pkg.hotelMakkah || "1200/1500M"}
+              hotelMadinah={pkg.hotelMadinah || "1200/1500M"}
+              foodInfo={pkg.foodInfo || "Breakfast, Lunch & Dinner"}
+              specialServices={pkg.specialServices || "Ziyarah Tour, Transportation & Guide"}
+              accommodationList={pkg.accommodationList}
+              specialServicesList={pkg.specialServicesList}
               primaryButtonText="View All Detail"
               secondaryButtonText="Enquire Now"
             />

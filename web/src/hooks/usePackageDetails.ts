@@ -1,4 +1,4 @@
-import { useFrappeGetDoc, useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
+import { useFrappeGetDoc } from 'frappe-react-sdk'
 import { useEffect, useState } from 'react'
 
 // Hook to get package details from ERPNext Item doctype
@@ -17,6 +17,8 @@ export const usePackageDetails = (itemName: string) => {
       'custom_service_id',
       'custom_commission_rate',
       'custom_processing_time',
+      'custom_duration',
+      'custom_package_rating',
       'custom_air',
       'custom_air_information',
       'custom_air_destination',
@@ -29,6 +31,7 @@ export const usePackageDetails = (itemName: string) => {
       'custom_bustaxi_information',
       'custom_food_child_food_except',
       'custom_food_information',
+      'custom_special_services',
       'custom_education_qualification',
       'custom_experience',
       'custom_work_types',

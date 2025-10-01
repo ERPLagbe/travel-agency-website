@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PackageCard from './PackageCard';
-import { usePackagesByItemGroup } from '../hooks/useWebsiteCMS';
+import { useFrappeGetCall } from 'frappe-react-sdk';
 
 interface PackageListingProps {
   itemGroup?: string;
@@ -11,7 +11,18 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const { itemGroup: paramItemGroup } = useParams<{ itemGroup: string }>();
   const itemGroup = propItemGroup || paramItemGroup || '';
   
-  const { data: packages, error, isValidating } = usePackagesByItemGroup(itemGroup);
+  // Fetch all packages with accommodation data using custom API
+  const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
+  const allPackages = apiResponse?.message?.data || [];
+  
+  // Filter packages by item group
+  const packages = allPackages.filter((pkg: any) => {
+    const properItemGroup = itemGroup
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    return pkg.item_group === properItemGroup;
+  });
   
   // Debug logging
   console.log('🔍 PackageListing Component Debug:', {
@@ -138,21 +149,39 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
         {/* Packages Grid */}
         {sortedPackages.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedPackages.map((pkg) => (
-              <PackageCard
-                key={pkg.name}
-                id={pkg.name}
-                title={pkg.item_name || 'Package'}
-                nights="7 Nights" // Default value, you might want to add this field to Item
-                rating={5} // Default value, you might want to add this field to Item
-                price={pkg.standard_rate || 0}
-                image={pkg.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop'}
-                itemGroup={pkg.item_group} // Pass the item group for proper routing
-                primaryButtonText="View Details"
-                secondaryButtonText="Enquire Now"
-              />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            {sortedPackages.map((pkg) => {
+              // Process accommodation list to get hotel names and distances
+              const accommodationList = pkg.custom_accommodation_list || [];
+              const hotelInfo = accommodationList.length > 0 
+                ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
+                : pkg.custom_hotel_information || "1200/1500M";
+
+              return (
+                <PackageCard
+                  key={pkg.name}
+                  id={pkg.name}
+                  title={pkg.item_name || 'Package'}
+                  nights="7 Nights" // Keep for compatibility
+                  duration={pkg.custom_duration || "35/42 Days"} // Dynamic duration
+                  rating={pkg.custom_package_rating || 5} // Dynamic rating
+                  price={pkg.standard_rate || 0}
+                  image={pkg.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop'}
+                  itemGroup={pkg.item_group} // Pass the item group for proper routing
+                  // Dynamic data from Item custom fields
+                  airInfo={pkg.custom_air_information || "SA/Biman/Flynas"}
+                  hotelMakkah={hotelInfo} // From accommodation list
+                  hotelMadinah={hotelInfo} // From accommodation list
+                  foodInfo={pkg.custom_food_information || "Breakfast, Lunch & Dinner"}
+                  specialServices={pkg.custom_bustaxi_information || "Ziyarah Tour, Transportation & Guide"}
+                  // Pass dynamic lists for rendering
+                  accommodationList={accommodationList}
+                  specialServicesList={pkg.custom_special_services || []}
+                  primaryButtonText="View Details"
+                  secondaryButtonText="Enquire Now"
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-16">

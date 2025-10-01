@@ -95,3 +95,79 @@ def get_accommodation_files(accommodation_name):
             "message": str(e),
             "files": []
         }
+
+@frappe.whitelist(allow_guest=True)
+def get_items_with_accommodation():
+    """Get all items with their accommodation list and custom fields"""
+    try:
+        # Get all items with basic fields
+        items = frappe.get_all("Item",
+            filters={"disabled": 0},
+            fields=[
+                "name", 
+                "item_name", 
+                "item_group", 
+                "standard_rate", 
+                "image",
+                "custom_duration",
+                "custom_package_rating",
+                "custom_air_information",
+                "custom_hotel_information", 
+                "custom_food_information",
+                "custom_bustaxi_information"
+            ],
+            ignore_permissions=True
+        )
+        
+        # For each item, get the accommodation list
+        for item in items:
+            # Get accommodation list for this item
+            accommodation_list = frappe.get_all("Accommodation List",
+                filters={"parent": item.name},
+                fields=["hotel", "distance"],
+                ignore_permissions=True
+            )
+            item["custom_accommodation_list"] = accommodation_list
+            
+            # Get features for this item
+            features = frappe.get_all("Package Feature",
+                filters={"parent": item.name},
+                fields=["title"],
+                ignore_permissions=True
+            )
+            item["custom_features"] = features
+            
+            # Get inclusions for this item
+            inclusions = frappe.get_all("Title With Description",
+                filters={"parent": item.name, "parentfield": "custom_inclusions"},
+                fields=["title", "description"],
+                ignore_permissions=True
+            )
+            item["custom_inclusions"] = inclusions
+            
+            # Get itinerary for this item
+            itinerary = frappe.get_all("Title With Description",
+                filters={"parent": item.name, "parentfield": "custom_itinerary"},
+                fields=["title", "description"],
+                ignore_permissions=True
+            )
+            item["custom_itinerary"] = itinerary
+            
+            # Get special services for this item
+            special_services = frappe.get_all("Title With Description",
+                filters={"parent": item.name, "parentfield": "custom_special_services"},
+                fields=["title", "description"],
+                ignore_permissions=True
+            )
+            item["custom_special_services"] = special_services
+        
+        return {
+            "error": None,
+            "data": items
+        }
+    except Exception as e:
+        frappe.log_error(f"Error in get_items_with_accommodation: {str(e)}")
+        return {
+            "error": str(e),
+            "data": None
+        }
