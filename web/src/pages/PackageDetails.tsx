@@ -54,6 +54,19 @@ const PackageDetails: React.FC = () => {
   // Get package data from ERPNext
   const { data: packageData, isValidating, error } = usePackageDetails(id || '');
   
+  // Debug logging
+  console.log('🔍 PackageDetails Debug:', {
+    id,
+    packageData: packageData ? {
+      item_name: packageData.item_name,
+      image: packageData.image,
+      custom_duration: packageData.custom_duration,
+      description: packageData.description
+    } : null,
+    error,
+    isValidating
+  });
+  
   if (isValidating) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -77,13 +90,18 @@ const PackageDetails: React.FC = () => {
     );
   }
 
+  const imageUrl = packageData.image ? getFileUrlWithFallback(packageData.image) : 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop';
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-96 bg-cover bg-center" style={{ 
-        backgroundImage: `url(${packageData.image ? getFileUrlWithFallback(packageData.image) : 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop'})` 
-      }}>
-        <div className="absolute inset-0 bg-primary bg-opacity-60"></div>
+      <div className="relative h-96 overflow-hidden">
+        <img 
+          src={`http://localhost:8000/${packageData.image}`}
+          alt={packageData.item_name}
+          className="absolute w-full h-full object-cover"
+        />
+        <div className="absolute bg-black bg-opacity-60"></div>
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-6 w-full">
             <div className="text-white">
@@ -94,10 +112,13 @@ const PackageDetails: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5" />
+                  <span className="text-lg">{packageData.custom_duration || '35/42 Days'}</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <span className="text-lg">£{packageData.standard_rate?.toLocaleString() || '0'}</span>
                 </div>
               </div>
-              <p className="text-xl max-w-3xl">{packageData.description || 'Premium travel package with comprehensive services.'}</p>
+              <p className="text-xl max-w-3xl" dangerouslySetInnerHTML={{ __html: packageData.description || 'Premium travel package with comprehensive services.' }}></p>
             </div>
           </div>
         </div>
@@ -290,16 +311,16 @@ const PackageDetails: React.FC = () => {
               <div className="mb-6">
                 <div className="text-3xl font-bold text-primary mb-2">£{packageData.standard_rate?.toLocaleString() || '0'}</div>
                 <div className="text-gray-600 mb-4">{packageData.item_group}</div>
-                {packageData.custom_processing_time && (
+                {/* {packageData.custom_processing_time && (
                   <div className="text-sm text-gray-500 mb-4">
                     Processing Time: {packageData.custom_processing_time}
                   </div>
-                )}
-                {packageData.custom_commission_rate && packageData.custom_commission_rate > 0 && (
+                )} */}
+                {/* {packageData.custom_commission_rate && packageData.custom_commission_rate > 0 && (
                   <div className="text-sm text-gray-500 mb-4">
                     Commission Rate: {packageData.custom_commission_rate}%
                   </div>
-                )}
+                )} */}
               </div>
               
               <button 
