@@ -37,8 +37,6 @@
   "featured_packages_title",
   "featured_packages_subtitle",
   "featured_packages",
-  "hajj_deals_title",
-  "hajj_packages",
   "section_break_testimonials",
   "testimonials_title",
   "testimonials_subtitle",
@@ -237,19 +235,6 @@
    "label": "Featured Packages",
    "options": "Featured Package",
    "description": "Select packages from ERPNext Items to display as featured"
-  },
-  {
-   "fieldname": "hajj_deals_title",
-   "fieldtype": "Data",
-   "label": "Hajj Deals Title",
-   "default": "Cheap Deals for Hajj 2026"
-  },
-  {
-   "fieldname": "hajj_packages",
-   "fieldtype": "Table",
-   "label": "Hajj Packages",
-   "options": "Hajj Package",
-   "description": "Select Hajj packages from ERPNext Items"
   },
   {
    "fieldname": "section_break_testimonials",

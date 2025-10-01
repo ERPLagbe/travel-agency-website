@@ -1,10 +1,17 @@
 import React from 'react';
 import PackageCard from '../components/PackageCard';
-import { useWebsiteCMS, useHajjPackages } from '../hooks/useWebsiteCMS';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import { useFrappeGetDocList } from 'frappe-react-sdk';
 
 const HajjDeals: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
-  const { data: hajjPackages } = useHajjPackages();
+  
+  // Fetch all packages from ERPNext
+  const { data: allPackages } = useFrappeGetDocList('Item', {
+    fields: ['name', 'item_name', 'item_group', 'standard_rate', 'image'],
+    filters: [['disabled', '=', 0]],
+    limit: 1000
+  });
 
   // Fallback data if CMS data is not available
   const fallbackPackages = [
@@ -34,19 +41,19 @@ const HajjDeals: React.FC = () => {
     }
   ];
 
-  // Use CMS data if available, otherwise use fallback
-  const packages = (hajjPackages && hajjPackages.length > 0) 
-    ? hajjPackages.map((pkg: any) => ({
+  // Use all packages from ERPNext, otherwise use fallback
+  const packages = allPackages && allPackages.length > 0 
+    ? allPackages.map((pkg: any) => ({
         id: pkg.name,
-        title: pkg.package_name,
+        title: pkg.item_name,
         nights: "7 Nights", // Default, will be fetched from Item doctype later
         rating: 5,
-        price: 0, // Will be fetched from Item doctype later
-        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop"
+        price: pkg.standard_rate || 0,
+        image: pkg.image || "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop"
       }))
     : fallbackPackages;
 
-  const title = cmsData?.hajj_deals_title || "Cheap Deals for Hajj 2026";
+  const title = "All Travel Packages";
 
   return (
     <section className="py-16 bg-gray-50">
@@ -78,7 +85,18 @@ const HajjDeals: React.FC = () => {
               image={pkg.image}
               primaryButtonText="View All Deal"
               secondaryButtonText="Enquire Now"
-              onPrimaryClick={() => window.location.href = `/hajj/${pkg.id}`}
+              onPrimaryClick={() => {
+                // Determine category from item group
+                let category = 'packages'; // default
+                if (pkg.item_group) {
+                  if (pkg.item_group.toLowerCase().includes('hajj')) {
+                    category = 'hajj';
+                  } else if (pkg.item_group.toLowerCase().includes('umrah')) {
+                    category = 'umrah';
+                  }
+                }
+                window.location.href = `/${category}/${pkg.id}`;
+              }}
               onSecondaryClick={() => window.location.href = `/contact?package=${pkg.id}`}
             />
           ))}
