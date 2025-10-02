@@ -163,10 +163,9 @@ const Navigation: React.FC<NavigationProps> = () => {
 
           {/* Login Button */}
           <button 
-            className="px-4 py-2 bg-transparent border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
+            className="px-4 py-2 bg-transparent border-2 border-white text-white font-semibold rounded-md "
             onClick={() => {
-              // Add your login logic here
-              console.log('Login clicked');
+              window.location.href = '/login';
             }}
           >
             Login
@@ -235,7 +234,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                         <Link
                           key={subItem.path}
                           to={subItem.path}
-                          className="no-underline text-gray-300 py-2 block text-base"
+                          className="no-underline text-white py-2 block text-base"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {subItem.label}

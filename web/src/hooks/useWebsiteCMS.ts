@@ -86,8 +86,8 @@ export const useFAQItems = () => {
   }
 }
 
-// Simple hook to get footer links from parent Website CMS
-export const useFooterLinks = () => {
+// Simple hook to get footer quick links from parent Website CMS
+export const useFooterQuickLinks = () => {
   const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
     doctype: 'Website CMS',
     name: 'Website CMS'
@@ -97,7 +97,24 @@ export const useFooterLinks = () => {
   const cmsData = data?.docs?.[0] || null
   
   return {
-    data: cmsData?.footer_links || [],
+    data: cmsData?.footer_quick_links || [],
+    error,
+    isValidating
+  }
+}
+
+// Simple hook to get footer terms links from parent Website CMS
+export const useFooterTermsLinks = () => {
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
+  return {
+    data: cmsData?.footer_terms_links || [],
     error,
     isValidating
   }
@@ -114,7 +131,7 @@ export const useSocialMediaLinks = () => {
   const cmsData = data?.docs?.[0] || null
   
   return {
-    data: cmsData?.social_media_links || [],
+    data: cmsData?.footer_social_media || [],
     error,
     isValidating
   }

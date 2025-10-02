@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, MapPin, Phone, Mail, ChevronUp } from 'lucide-react';
-import { useWebsiteCMS, useFooterLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
+import { useWebsiteCMS, useFooterQuickLinks, useFooterTermsLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
+import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 const Footer: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
-  const { data: footerLinks } = useFooterLinks();
+  const { data: footerQuickLinks } = useFooterQuickLinks();
+  const { data: footerTermsLinks } = useFooterTermsLinks();
   const { data: socialMediaLinks } = useSocialMediaLinks();
 
   const scrollToTop = () => {
@@ -13,10 +15,16 @@ const Footer: React.FC = () => {
   };
 
   // Fallback data if CMS data is not available
-  const fallbackFooterLinks = [
-    { link_name: "About Us", link_url: "/about" },
-    { link_name: "Contact", link_url: "/contact" },
-    { link_name: "Terms & Conditions", link_url: "/terms" }
+  const fallbackQuickLinks = [
+    { link_text: "About Us", link_url: "/about" },
+    { link_text: "Contact", link_url: "/contact" },
+    { link_text: "Branches", link_url: "/branches" }
+  ];
+
+  const fallbackTermsLinks = [
+    { link_text: "Terms & Conditions", link_url: "/terms" },
+    { link_text: "Privacy Policy", link_url: "/privacy" },
+    { link_text: "Refund Policy", link_url: "/refund" }
   ];
 
   const fallbackSocialLinks = [
@@ -25,7 +33,8 @@ const Footer: React.FC = () => {
   ];
 
   // Use CMS data if available, otherwise use fallback
-  const links = (footerLinks && footerLinks.length > 0) ? footerLinks : fallbackFooterLinks;
+  const quickLinks = (footerQuickLinks && footerQuickLinks.length > 0) ? footerQuickLinks : fallbackQuickLinks;
+  const termsLinks = (footerTermsLinks && footerTermsLinks.length > 0) ? footerTermsLinks : fallbackTermsLinks;
   const socialLinks = (socialMediaLinks && socialMediaLinks.length > 0) ? socialMediaLinks : fallbackSocialLinks;
 
   return (
@@ -69,7 +78,8 @@ const Footer: React.FC = () => {
             {/* Logo */}
             <div>
               <div className="text-white mb-6">
-                <div className="text-2xl font-bold text-secondary">{cmsData?.logo_arabic_text || "بسم الله"}</div>
+                <div className="text-2xl font-bold text-secondary">{cmsData?.logo && <img className='w-10 h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
+              </div>
                 <div className="text-2xl font-bold text-white">{cmsData?.logo_text || "BISMILLAH TRAVEL"}</div>
               </div>
             </div>
@@ -80,12 +90,15 @@ const Footer: React.FC = () => {
               <div>
                 <h4 className="text-white font-bold text-lg uppercase mb-4">QUICK LINKS</h4>
                 <div className="space-y-2">
-                  <Link to="/" className="block text-white hover:text-secondary transition-colors">Home</Link>
-                  <Link to="/visa" className="block text-white hover:text-secondary transition-colors">Visa</Link>
-                  <Link to="/hajj" className="block text-white hover:text-secondary transition-colors">Hajj</Link>
-                  <Link to="/umrah" className="block text-white hover:text-secondary transition-colors">Umrah</Link>
-                  <Link to="/branches" className="block text-white hover:text-secondary transition-colors">Branches</Link>
-                  <Link to="/contact" className="block text-white hover:text-secondary transition-colors">Contact us</Link>
+                  {quickLinks.map((link: any, index: number) => (
+                    <Link 
+                      key={index}
+                      to={link.link_url} 
+                      className="block text-white"
+                    >
+                      {link.link_text}
+                    </Link>
+                  ))}
                 </div>
               </div>
 
@@ -93,13 +106,13 @@ const Footer: React.FC = () => {
               <div>
                 <h4 className="text-white font-bold text-lg uppercase mb-4">OUR TERMS</h4>
                 <div className="space-y-2">
-                  {links.map((link: any, index: number) => (
+                  {termsLinks.map((link: any, index: number) => (
                     <Link 
                       key={index}
                       to={link.link_url} 
-                      className="block text-white hover:text-secondary transition-colors"
+                      className="block text-white"
                     >
-                      {link.link_name}
+                      {link.link_text}
                     </Link>
                   ))}
                 </div>
@@ -115,7 +128,7 @@ const Footer: React.FC = () => {
                     <a 
                       key={index}
                       href={social.platform_url} 
-                      className="text-white hover:text-secondary transition-colors"
+                      className="text-white"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -146,27 +159,31 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <div className="text-white text-sm">
-              All rights reserved {cmsData?.business_name || "Bismillah Travel"} @ 2010 - 2025
+              {cmsData?.footer_copyright || `All rights reserved ${cmsData?.business_name || "Bismillah Travel"} @ 2010 - 2025`}
             </div>
 
             {/* Legal Text */}
             <div className="text-white text-xs text-center md:text-right max-w-2xl">
-              This website is operated by {cmsData?.business_name || "Bismillah Travel"}. 
-              (Company Number {cmsData?.company_number || "12345678"} and ATOL {cmsData?.atol_number || "ATOL1234"}) T/A registered in England and Wales. 
-              ATOL protection does not apply to all holiday and travel services listed on this website. 
-              Please ask us to confirm what protection may apply to your booking. 
-              If you do not receive an ATOL Certificate then the booking will not be ATOL protected. 
-              If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. 
-              Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: 
-              <a href={cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"} className="text-secondary hover:underline" target="_blank" rel="noopener noreferrer">
-                {cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"}
-              </a>
+              {cmsData?.footer_legal_text || (
+                <>
+                  This website is operated by {cmsData?.business_name || "Bismillah Travel"}. 
+                  (Company Number {cmsData?.company_number || "12345678"} and ATOL {cmsData?.atol_number || "ATOL1234"}) T/A registered in England and Wales. 
+                  ATOL protection does not apply to all holiday and travel services listed on this website. 
+                  Please ask us to confirm what protection may apply to your booking. 
+                  If you do not receive an ATOL Certificate then the booking will not be ATOL protected. 
+                  If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. 
+                  Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: 
+                  <a href={cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"} className="text-secondary" target="_blank" rel="noopener noreferrer">
+                    {cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"}
+                  </a>
+                </>
+              )}
             </div>
 
             {/* Scroll to Top */}
             <button 
               onClick={scrollToTop}
-              className="bg-secondary hover:bg-yellow-500 text-primary p-2 rounded transition-colors"
+              className="bg-secondary text-primary p-2 rounded"
             >
               <ChevronUp className="w-5 h-5" />
             </button>
