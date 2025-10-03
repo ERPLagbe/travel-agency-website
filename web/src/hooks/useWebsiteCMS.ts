@@ -1,5 +1,4 @@
-import { useFrappeGetDoc, useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
-import { useState, useEffect } from 'react'
+import { useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
 
 // Simple hook to get Website CMS data (Single DocType)
 export const useWebsiteCMS = () => {

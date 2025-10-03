@@ -41,11 +41,13 @@ const HeroSection: React.FC = () => {
         className='absolute object-cover w-full h-full ' 
         src={heroData.backgroundImage} 
         alt="Hero Background" 
+        loading="eager"
+        decoding="async"
       />
 
       
       {/* Overlay for better text readability */}
-      <div className="absolute w-full h-full bg-black opacity-50"></div>
+      <div className="absolute w-full h-full bg-black opacity-30"></div>
       
       {/* Content Container */}
       <div className="relative z-10 h-full flex items-center">

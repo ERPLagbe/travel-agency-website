@@ -5,10 +5,10 @@
 /**
  * Converts a Frappe file path to a full URL
  * @param filePath - The file path from Frappe (e.g., "/private/files/image.jpg")
- * @param baseUrl - The base URL of the Frappe server (default: "http://localhost:8000")
+ * @param baseUrl - The base URL of the Frappe server (default: from environment variables)
  * @returns Full URL to the file
  */
-export const getFrappeFileUrl = (filePath: string, baseUrl: string = 'http://localhost:8000'): string | null => {
+export const getFrappeFileUrl = (filePath: string, baseUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:8000'): string | null => {
   if (!filePath) return null;
   
   // If it's already a full URL, return as is
@@ -39,7 +39,7 @@ export const getFrappeFileUrl = (filePath: string, baseUrl: string = 'http://loc
 export const getFileUrlWithFallback = (
   filePath: string, 
   fallbackUrl: string = 'https://via.placeholder.com/1200x600/4F46E5/FFFFFF?text=No+Image',
-  baseUrl: string = 'http://localhost:8000'
+  baseUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 ): string => {
   const fileUrl = getFrappeFileUrl(filePath, baseUrl);
   return fileUrl || fallbackUrl;

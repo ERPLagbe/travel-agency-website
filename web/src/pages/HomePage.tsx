@@ -1,12 +1,9 @@
 import React from 'react';
-import { SectionContainer, Typography, Button, FAQ, PackageShowcase, Testimonials, CustomizePackage, HajjDeals, WelcomeSection, PackagesDescription } from '../components';
+import { FAQ, PackageShowcase, Testimonials, CustomizePackage, HajjDeals, WelcomeSection, PackagesDescription } from '../components';
 import HeroSection from '../sections/HeroSection';
-import { getFeaturedPackages } from '../data/dummyData';
-import { useWebsiteCMS, useFAQItems } from '../hooks/useWebsiteCMS';
-import { Shield, Award, Users, Clock, Phone, Mail, MapPin } from 'lucide-react';
+import { useFAQItems } from '../hooks/useWebsiteCMS';
 
 const HomePage: React.FC = () => {
-  const { data: cmsData } = useWebsiteCMS();
   const { data: faqItems } = useFAQItems();
 
   // Fallback FAQ data if CMS data is not available

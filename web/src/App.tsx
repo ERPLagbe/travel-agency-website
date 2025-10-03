@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FrappeProvider } from 'frappe-react-sdk'
-import { Navigation, Footer } from './components'
+import { Navigation, Footer, ErrorBoundary } from './components'
 import FloatingActionButtons from './components/FloatingActionButtons'
 import HomePage from './pages/HomePage'
 import PackagesPage from './pages/PackagesPage'
@@ -16,30 +16,32 @@ import BranchPage from './pages/BranchPage'
 
 function App() {
   return (
-    <FrappeProvider url='http://localhost:8000'>
-      <Router>
-        <div className="App">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/packages" element={<PackagesPage />} />
-            <Route path="/packages/:id" element={<PackageDetails />} />
-            <Route path="/:category/:itemGroup" element={<PackageListingPage />} />
-            <Route path="/hajj/:id" element={<PackageDetails />} />
-            <Route path="/umrah/:id" element={<PackageDetails />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/visa" element={<VisaPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogDetailsPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/branches" element={<BranchPage />} />
-          </Routes>
-          <Footer />
-          <FloatingActionButtons />
-        </div>
-      </Router>
-    </FrappeProvider>
+    <ErrorBoundary>
+      <FrappeProvider url={import.meta.env.VITE_API_URL || 'http://localhost:8000'}>
+        <Router>
+          <div className="App">
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/packages" element={<PackagesPage />} />
+              <Route path="/packages/:id" element={<PackageDetails />} />
+              <Route path="/:category/:itemGroup" element={<PackageListingPage />} />
+              <Route path="/hajj/:id" element={<PackageDetails />} />
+              <Route path="/umrah/:id" element={<PackageDetails />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/visa" element={<VisaPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/branches" element={<BranchPage />} />
+            </Routes>
+            <Footer />
+            <FloatingActionButtons />
+          </div>
+        </Router>
+      </FrappeProvider>
+    </ErrorBoundary>
   )
 }
 

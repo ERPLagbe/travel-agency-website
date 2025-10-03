@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, MapPin, Phone, Mail, ChevronUp } from 'lucide-react';
+import { Facebook, Instagram, ChevronUp } from 'lucide-react';
 import { useWebsiteCMS, useFooterQuickLinks, useFooterTermsLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
   const socialLinks = (socialMediaLinks && socialMediaLinks.length > 0) ? socialMediaLinks : fallbackSocialLinks;
 
   return (
-    <footer className="bg-primary text-white">
+    <footer className="bg-primary text-white" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6">
         {/* Contact Info Blocks */}
         {/* <div className="py-12">
@@ -95,6 +95,7 @@ const Footer: React.FC = () => {
                       key={index}
                       to={link.link_url} 
                       className="block text-white"
+                      aria-label={`Navigate to ${link.link_text}`}
                     >
                       {link.link_text}
                     </Link>
@@ -111,6 +112,7 @@ const Footer: React.FC = () => {
                       key={index}
                       to={link.link_url} 
                       className="block text-white"
+                      aria-label={`Navigate to ${link.link_text}`}
                     >
                       {link.link_text}
                     </Link>
@@ -131,6 +133,7 @@ const Footer: React.FC = () => {
                       className="text-white"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Follow us on ${social.platform_name}`}
                     >
                       {social.platform_name === 'Facebook' && <Facebook className="w-6 h-6" />}
                       {social.platform_name === 'Instagram' && <Instagram className="w-6 h-6" />}
@@ -184,6 +187,7 @@ const Footer: React.FC = () => {
             <button 
               onClick={scrollToTop}
               className="bg-secondary text-primary p-2 rounded"
+              aria-label="Scroll to top of page"
             >
               <ChevronUp className="w-5 h-5" />
             </button>

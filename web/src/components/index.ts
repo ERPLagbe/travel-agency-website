@@ -12,6 +12,7 @@ export { default as PackageShowcase } from './PackageShowcase';
 export { default as PackageCard } from './PackageCard';
 export { default as PackageListing } from './PackageListing';
 export { default as FlightBookingForm } from './FlightBookingForm';
+export { default as ErrorBoundary } from './ErrorBoundary';
 
 // New sections
 export { default as CustomizePackage } from '../sections/CustomizePackage';

@@ -113,6 +113,15 @@ const Navigation: React.FC<NavigationProps> = () => {
                   }`}
                   onMouseEnter={() => setActiveDropdown(item.path)}
                   onMouseLeave={() => setActiveDropdown(null)}
+                  onFocus={() => setActiveDropdown(item.path)}
+                  onBlur={(e) => {
+                    // Only close if focus is moving outside the dropdown
+                    if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
+                      setActiveDropdown(null);
+                    }
+                  }}
+                  aria-haspopup={item.submenu ? 'true' : 'false'}
+                  aria-expanded={item.submenu && activeDropdown === item.path ? 'true' : 'false'}
                 >
                   <span className="text-white">
                     {item.label}
@@ -126,15 +135,20 @@ const Navigation: React.FC<NavigationProps> = () => {
                 
                 {/* Dropdown Menu */}
                 {item.submenu && activeDropdown === item.path && (
-                  <div className="absolute top-full left-0 bg-white shadow-lg rounded-md p-2 min-w-[200px] z-50 border border-gray-200"
-                  onMouseEnter={() => setActiveDropdown(item.path)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  <div 
+                    className="absolute top-full left-0 bg-white shadow-lg rounded-md p-2 min-w-[200px] z-50 border border-gray-200"
+                    onMouseEnter={() => setActiveDropdown(item.path)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                    role="menu"
+                    aria-label={`${item.label} submenu`}
                   >
                     {item.submenu.map((subItem: NavSubItem) => (
                       <Link
                         key={subItem.path}
                         to={subItem.path}
                         className="block px-3 py-2 no-underline text-gray-700 rounded-sm transition-colors duration-300 hover:bg-gray-100"
+                        role="menuitem"
+                        aria-label={`Navigate to ${subItem.label}`}
                       >
                         <Typography variant="body-small" className="m-0">
                           {subItem.label}
@@ -157,6 +171,7 @@ const Navigation: React.FC<NavigationProps> = () => {
               // Add your appointment booking logic here
               console.log('Get Appointment clicked');
             }}
+            aria-label="Book an appointment"
           >
             Get Appointment
           </button>
@@ -167,6 +182,7 @@ const Navigation: React.FC<NavigationProps> = () => {
             onClick={() => {
               window.location.href = '/login';
             }}
+            aria-label="Login to your account"
           >
             Login
           </button>
@@ -176,15 +192,22 @@ const Navigation: React.FC<NavigationProps> = () => {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="mobile-menu-btn bg-transparent border-0 text-white cursor-pointer p-2 flex items-center gap-2"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
         >
-          <span className="text-2xl">☰</span>
-          {/* <span className="text-sm font-medium uppercase">MENU</span> */}
+          <span className="text-2xl" aria-hidden="true">☰</span>
         </button>
       </div>
 
       {/* Mobile Navigation Drawer */}
       {isMenuOpen && (
-        <div className="mobile-nav bg-primary border-t border-gray-700 p-6">
+        <div 
+          id="mobile-navigation"
+          className="mobile-nav bg-primary border-t border-gray-700 p-6"
+          role="navigation"
+          aria-label="Mobile navigation menu"
+        >
           <div className="flex flex-col gap-6">
             {/* Action Buttons Section */}
             <div className="border-b border-gray-700 pb-4">
@@ -197,6 +220,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                     // Add your appointment booking logic here
                     console.log('Get Appointment clicked');
                   }}
+                  aria-label="Book an appointment"
                 >
                   Get Appointment
                 </button>
@@ -209,6 +233,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                     // Add your login logic here
                     console.log('Login clicked');
                   }}
+                  aria-label="Login to your account"
                 >
                   Login
                 </button>

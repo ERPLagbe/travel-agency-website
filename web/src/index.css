@@ -163,7 +163,7 @@ a:hover {
 
 .btn-secondary {
   @apply text-black;
-  background-color: #d4af37;
+  background-color: var(--color-secondary);
 }
 
 .btn-secondary:hover {
@@ -327,18 +327,15 @@ img[src=""], img:not([src]) {
 /* Hero Section - Clean Design with Background Images */
 .hero-section {
   @apply relative min-h-[60vh] flex items-center text-white;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
-              url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&h=1080&fit=crop') center/cover;
+  background: var(--color-black) center/cover;
 }
 
 .hero-section.packages-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
-              url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop') center/cover;
+  background: var(--color-black) center/cover;
 }
 
 .hero-section.contact-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), 
-              url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1920&h=1080&fit=crop') center/cover;
+  background: var(--color-black) center/cover;
 }
 
 .hero-section > * {
@@ -374,17 +371,17 @@ img[src=""], img:not([src]) {
 
 /* Custom color classes to ensure proper color application */
 .bg-primary {
-  background-color: #432b7c !important;
+  background-color: var(--color-primary) !important;
 }
 
 .bg-secondary {
-  background-color: #d4af37 !important;
+  background-color: var(--color-secondary) !important;
 }
 
 .text-primary {
-  color: #432b7c !important;
+  color: var(--color-primary) !important;
 }
 
 .text-secondary {
-  color: #d4af37 !important;
+  color: var(--color-secondary) !important;
 }
