@@ -10,9 +10,6 @@
  "istable": 1,
  "engine": "InnoDB",
  "field_order": [
-  "parent",
-  "parenttype",
-  "parentfield",
   "customer_name",
   "customer_location",
   "rating",
@@ -21,21 +18,6 @@
   "display_order"
  ],
  "fields": [
-  {
-   "fieldname": "parent",
-   "fieldtype": "Data",
-   "label": "Parent"
-  },
-  {
-   "fieldname": "parenttype",
-   "fieldtype": "Data",
-   "label": "Parent Type"
-  },
-  {
-   "fieldname": "parentfield",
-   "fieldtype": "Data",
-   "label": "Parent Field"
-  },
   {
    "fieldname": "customer_name",
    "fieldtype": "Data",

@@ -10,29 +10,11 @@
  "istable": 1,
  "engine": "InnoDB",
  "field_order": [
-  "parent",
-  "parenttype",
-  "parentfield",
   "link_text",
   "link_url",
   "display_order"
  ],
  "fields": [
-  {
-   "fieldname": "parent",
-   "fieldtype": "Data",
-   "label": "Parent"
-  },
-  {
-   "fieldname": "parenttype",
-   "fieldtype": "Data",
-   "label": "Parent Type"
-  },
-  {
-   "fieldname": "parentfield",
-   "fieldtype": "Data",
-   "label": "Parent Field"
-  },
   {
    "fieldname": "link_text",
    "fieldtype": "Data",
