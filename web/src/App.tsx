@@ -23,11 +23,10 @@ function App() {
             <Navigation />
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/web" element={<HomePage />} />
               <Route path="/packages" element={<PackagesPage />} />
               <Route path="/packages/:id" element={<PackageDetails />} />
               <Route path="/:category/:itemGroup" element={<PackageListingPage />} />
-              <Route path="/hajj/:id" element={<PackageDetails />} />
-              <Route path="/umrah/:id" element={<PackageDetails />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/visa" element={<VisaPage />} />
               <Route path="/about" element={<AboutPage />} />

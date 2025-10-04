@@ -246,4 +246,18 @@ app_license = "mit"
 # }
 
 
-website_route_rules = [{'from_route': '/web/<path:app_path>', 'to_route': 'web'}, {'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},]
+website_route_rules = [
+    {'from_route': '/web/<path:app_path>', 'to_route': 'web'},
+    {'from_route': '/web', 'to_route': 'web'},
+    {'from_route': '/', 'to_route': 'web'},
+    {'from_route': '/packages/<path:app_path>', 'to_route': 'web'},
+    {'from_route': '/packages', 'to_route': 'web'},
+    {'from_route': '/contact', 'to_route': 'web'},
+    {'from_route': '/visa', 'to_route': 'web'},
+    {'from_route': '/about', 'to_route': 'web'},
+    {'from_route': '/blog/<path:app_path>', 'to_route': 'web'},
+    {'from_route': '/blog', 'to_route': 'web'},
+    {'from_route': '/terms', 'to_route': 'web'},
+    {'from_route': '/branches', 'to_route': 'web'},
+    {'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},
+]
