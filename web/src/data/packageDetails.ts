@@ -2,7 +2,7 @@
 export interface PackageDetails {
   id: string;
   title: string;
-  category: 'hajj' | 'umrah';
+  category: 'packages';
   image: string;
   price: number;
   duration: string;
@@ -59,7 +59,7 @@ export const getPackageDetails = (id: string): PackageDetails | null => {
     {
       id: '1',
       title: '11 Nights 5 Stars Shifting Hajj Package',
-      category: 'hajj',
+      category: 'packages',
       image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop',
       price: 6318,
       duration: '11 Nights',
@@ -150,7 +150,7 @@ export const getPackageDetails = (id: string): PackageDetails | null => {
     {
       id: '2',
       title: '14 Nights 5 Stars Non Shifting Hajj Package',
-      category: 'hajj',
+      category: 'packages',
       image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop',
       price: 9086,
       duration: '14 Nights',

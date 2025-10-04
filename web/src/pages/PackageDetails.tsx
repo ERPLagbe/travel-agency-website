@@ -7,7 +7,7 @@ import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 interface PackageDetails {
   id: string;
   title: string;
-  category: 'hajj' | 'umrah';
+  category: 'packages';
   image: string;
   price: number;
   duration: string;

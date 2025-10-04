@@ -16,7 +16,7 @@ export interface TravelPackage {
     title: string;
     description: string;
   }[];
-  category: 'hajj' | 'umrah' | 'tour' | 'package';
+  category: 'packages';
   isFeatured: boolean;
   rating: number;
   reviews: number;

@@ -17,7 +17,7 @@ export interface TravelPackage {
     title: string;
     description: string;
   }[];
-  category: 'hajj' | 'umrah' | 'tour' | 'package';
+  category: 'packages';
   isFeatured: boolean;
   rating: number;
   reviews: number;
@@ -48,7 +48,7 @@ export const dummyPackages: TravelPackage[] = [
       { day: 4, title: 'Travel to Madinah', description: 'Transfer to Madinah and check into hotel.' },
       { day: 5, title: 'Madinah Tour', description: 'Visit Masjid an-Nabawi and historical sites.' }
     ],
-    category: 'umrah',
+    category: 'packages',
     isFeatured: true,
     rating: 3,
     reviews: 156
@@ -77,7 +77,7 @@ export const dummyPackages: TravelPackage[] = [
       { day: 4, title: 'Travel to Madinah', description: 'Transfer to Madinah and check into hotel.' },
       { day: 5, title: 'Madinah Tour', description: 'Visit Masjid an-Nabawi and historical sites.' }
     ],
-    category: 'umrah',
+    category: 'packages',
     isFeatured: true,
     rating: 3,
     reviews: 89
@@ -106,7 +106,7 @@ export const dummyPackages: TravelPackage[] = [
       { day: 4, title: 'Travel to Madinah', description: 'Luxury transfer to Madinah and check into 4-star hotel.' },
       { day: 5, title: 'Madinah Premium Tour', description: 'Visit Masjid an-Nabawi with VIP access and guidance.' }
     ],
-    category: 'umrah',
+    category: 'packages',
     isFeatured: true,
     rating: 4,
     reviews: 73

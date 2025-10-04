@@ -132,16 +132,8 @@ const HajjDeals: React.FC = () => {
               primaryButtonText="View All Deal"
               secondaryButtonText="Enquire Now"
               onPrimaryClick={() => {
-                // Determine category from item group
-                let category = 'packages'; // default
-                if (pkg.itemGroup) {
-                  if (pkg.itemGroup.toLowerCase().includes('hajj')) {
-                    category = 'hajj';
-                  } else if (pkg.itemGroup.toLowerCase().includes('umrah')) {
-                    category = 'umrah';
-                  }
-                }
-                window.location.href = `/${category}/${pkg.id}`;
+                // Always use packages route
+                window.location.href = `/packages/${pkg.id}`;
               }}
               onSecondaryClick={() => window.location.href = `/contact?package=${pkg.id}`}
             />

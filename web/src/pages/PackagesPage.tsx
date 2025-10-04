@@ -10,7 +10,7 @@ const CompletePackagesPage: React.FC = () => {
     {
       id: '1',
       title: 'Premium Umrah Package',
-      category: 'umrah',
+      category: 'packages',
       image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop',
       price: 2500,
       duration: '7 Days',
@@ -20,7 +20,7 @@ const CompletePackagesPage: React.FC = () => {
     {
       id: '2',
       title: 'Complete Hajj Package',
-      category: 'hajj',
+      category: 'packages',
       image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
       price: 4500,
       duration: '14 Days',
@@ -49,7 +49,7 @@ const CompletePackagesPage: React.FC = () => {
     }
   ];
 
-  const categories = ['all', 'hajj', 'umrah', 'tour', 'package'];
+  const categories = ['all', 'packages'];
   
   const filteredPackages = selectedCategory === 'all' 
     ? packages 

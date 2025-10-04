@@ -19,9 +19,9 @@ const WelcomeSection: React.FC = () => {
               {cmsData?.welcome_description || "At Bismillah Travel, we understand that embarking on a spiritual journey to the holy cities of Mecca and Medina is one of the most profound experiences in a Muslim's life. Our mission is to make this sacred pilgrimage as seamless and meaningful as possible for British Muslims."}
             </p>
             
-            <p className="text-gray-700 text-lg leading-relaxed mb-8">
+            {/* <p className="text-gray-700 text-lg leading-relaxed mb-8">
               With years of experience in Islamic travel, we have built strong relationships with trusted partners in Saudi Arabia, ensuring that every aspect of your journey - from flights and accommodation to ground transportation and spiritual guidance - is handled with the utmost care and attention to detail.
-            </p>
+            </p> */}
 
             <h3 className="text-primary text-2xl font-bold mb-4">
               {cmsData?.welcome_services_title || "Our Services - Tailored Islamic Travel Solutions"}

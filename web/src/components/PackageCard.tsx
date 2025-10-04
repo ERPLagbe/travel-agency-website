@@ -52,18 +52,8 @@ const PackageCard: React.FC<PackageCardProps> = ({
     if (onPrimaryClick) {
       onPrimaryClick();
     } else {
-      // Determine category from item group
-      let category = 'packages'; // default
-      
-      if (itemGroup) {
-        if (itemGroup.toLowerCase().includes('hajj')) {
-          category = 'hajj';
-        } else if (itemGroup.toLowerCase().includes('umrah')) {
-          category = 'umrah';
-        }
-      }
-      
-      window.location.href = `/${category}/${id}`;
+      // Always use packages route
+      window.location.href = `/packages/${id}`;
     }
   };
 

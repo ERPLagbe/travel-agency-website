@@ -4,7 +4,6 @@ import { Navigation, Footer, ErrorBoundary } from './components'
 import FloatingActionButtons from './components/FloatingActionButtons'
 import HomePage from './pages/HomePage'
 import PackagesPage from './pages/PackagesPage'
-import PackageListingPage from './pages/PackageListingPage'
 import ContactPage from './pages/ContactPage'
 import PackageDetails from './pages/PackageDetails'
 import VisaPage from './pages/VisaPage'
@@ -26,7 +25,6 @@ function App() {
               <Route path="/web" element={<HomePage />} />
               <Route path="/packages" element={<PackagesPage />} />
               <Route path="/packages/:id" element={<PackageDetails />} />
-              <Route path="/:category/:itemGroup" element={<PackageListingPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/visa" element={<VisaPage />} />
               <Route path="/about" element={<AboutPage />} />

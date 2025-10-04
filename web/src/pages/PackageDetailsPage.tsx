@@ -11,7 +11,7 @@ const CompletePackageDetailsPage: React.FC = () => {
     '1': {
       id: '1',
       title: 'Premium Umrah Package',
-      category: 'umrah',
+      category: 'packages',
       image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop',
       price: 2500,
       duration: '7 Days',
