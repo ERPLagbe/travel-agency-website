@@ -165,16 +165,13 @@ const Navigation: React.FC<NavigationProps> = () => {
         {/* Action Buttons - Right */}
         <div className="desktop-nav flex-shrink-0 flex items-center gap-3">
           {/* Get Appointment Button */}
-          <button 
-            className="px-4 py-2 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300"
-            onClick={() => {
-              // Add your appointment booking logic here
-              console.log('Get Appointment clicked');
-            }}
+          <Link 
+            to="/contact"
+            className="px-4 py-2 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300 no-underline inline-block text-center"
             aria-label="Book an appointment"
           >
             Get Appointment
-          </button>
+          </Link>
 
           {/* Login Button */}
           <button 
@@ -213,17 +210,14 @@ const Navigation: React.FC<NavigationProps> = () => {
             <div className="border-b border-gray-700 pb-4">
               <div className="flex flex-col gap-3">
                 {/* Get Appointment Button */}
-                <button 
-                  className="w-full py-3 px-4 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    // Add your appointment booking logic here
-                    console.log('Get Appointment clicked');
-                  }}
+                <Link 
+                  to="/contact"
+                  className="w-full py-3 px-4 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300 no-underline inline-block text-center"
+                  onClick={() => setIsMenuOpen(false)}
                   aria-label="Book an appointment"
                 >
                   Get Appointment
-                </button>
+                </Link>
 
                 {/* Login Button */}
                 <button 

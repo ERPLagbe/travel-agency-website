@@ -17,6 +17,16 @@ import frappe
 from frappe.utils import nowdate, add_days
 
 
+def clear_child_table(doc, child_table_name):
+    """Helper function to safely clear child table data"""
+    if hasattr(doc, child_table_name):
+        child_table = getattr(doc, child_table_name)
+        if child_table:
+            child_table.clear()
+        else:
+            setattr(doc, child_table_name, [])
+
+
 def insert_dummy_data():
     """Main function to insert all dummy data"""
     
@@ -35,6 +45,9 @@ def insert_dummy_data():
     
     # Step 4: Create Blog posts
     insert_blog_posts()
+    
+    # Step 5: Create Branch data
+    insert_branches()
     
     print("\n" + "="*60)
     print("✅ All dummy data inserted successfully!")
@@ -304,21 +317,25 @@ def insert_items():
     ]
     
     for item_data in items:
-        if not frappe.db.exists("Item", item_data["item_code"]):
-            item = frappe.get_doc({
-                "doctype": "Item",
-                **item_data
-            })
-            item.insert(ignore_permissions=True)
-            print(f"  ✓ Created Item: {item_data['item_name']}")
-        else:
-            # Update existing item
-            item = frappe.get_doc("Item", item_data["item_code"])
-            for key, value in item_data.items():
-                if key != "item_code":
-                    setattr(item, key, value)
-            item.save(ignore_permissions=True)
-            print(f"  ↻ Updated Item: {item_data['item_name']}")
+        try:
+            if not frappe.db.exists("Item", item_data["item_code"]):
+                item = frappe.get_doc({
+                    "doctype": "Item",
+                    **item_data
+                })
+                item.insert(ignore_permissions=True)
+                print(f"  ✓ Created Item: {item_data['item_name']}")
+            else:
+                # Update existing item
+                item = frappe.get_doc("Item", item_data["item_code"])
+                for key, value in item_data.items():
+                    if key != "item_code":
+                        setattr(item, key, value)
+                item.save(ignore_permissions=True)
+                print(f"  ↻ Updated Item: {item_data['item_name']}")
+        except Exception as e:
+            print(f"  ❌ Error creating/updating item {item_data['item_name']}: {str(e)}")
+            continue
     
     frappe.db.commit()
     print("✅ Items (Packages) created!\n")
@@ -328,21 +345,6 @@ def insert_items():
 
 
 def insert_website_cms():
-    """Insert or update Website CMS single doctype"""
-    print("🌐 Creating/Updating Website CMS...")
-    
-    # Navigation dropdowns skipped to avoid issues
-    
-    # Check if Website CMS already exists
-    if frappe.db.exists("Website CMS", "Website CMS"):
-        print("  ↻ Website CMS exists, updating...")
-        doc = frappe.get_doc("Website CMS", "Website CMS")
-    else:
-        print("  ✓ Creating new Website CMS...")
-        doc = frappe.get_doc({
-            "doctype": "Website CMS",
-            "title": "Main Website Settings"
-        })
     """Insert or update Website CMS single doctype"""
     print("🌐 Creating/Updating Website CMS...")
     
@@ -378,12 +380,19 @@ def insert_website_cms():
     doc.hero_primary_button_text = "Explore Packages"
     doc.hero_secondary_button_text = "Contact Us"
     
+    # CTA Section
+    doc.cta_title = "Customise Your Package"
+    doc.cta_description = "We are specialists in Customised packages according to your needs."
+    doc.cta_subtitle = "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice."
+    doc.cta_button_text = "Customise Your Package"
+    doc.cta_button_link = "/contact"
+    
     # Featured Packages Section
     doc.featured_packages_title = "Featured Packages"
     doc.featured_packages_subtitle = "Discover our most popular travel experiences"
     
     # Clear existing featured packages
-    doc.featured_packages = []
+    clear_child_table(doc, 'featured_packages')
     
     # Add featured packages (child table)
     featured_packages = [
@@ -400,7 +409,7 @@ def insert_website_cms():
     doc.testimonials_subtitle = "Real experiences from our satisfied pilgrims"
     
     # Clear existing testimonials
-    doc.testimonials = []
+    clear_child_table(doc, 'testimonials')
     
     # Add testimonials (child table)
     testimonials = [
@@ -460,7 +469,7 @@ def insert_website_cms():
     doc.faq_subtitle = "Find answers to common questions about our travel services"
     
     # Clear existing FAQs
-    doc.faq_items = []
+    clear_child_table(doc, 'faq_items')
     
     # Add FAQ items (child table)
     faqs = [
@@ -505,7 +514,7 @@ def insert_website_cms():
     doc.visa_background_image = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&h=600&fit=crop"
     
     # Clear existing visa sections
-    doc.visa_sections = []
+    clear_child_table(doc, 'visa_sections')
     
     # Add visa sections (child table)
     visa_sections = [
@@ -532,7 +541,7 @@ def insert_website_cms():
     doc.about_background_image = "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1920&h=600&fit=crop"
     
     # Clear existing about sections
-    doc.about_sections = []
+    clear_child_table(doc, 'about_sections')
     
     # Add about sections (child table)
     about_sections = [
@@ -564,8 +573,8 @@ def insert_website_cms():
     doc.footer_legal_text = "ATOL Protected | Company Number: 12345678 | Registered in England and Wales"
     
     # Clear existing footer links
-    doc.footer_quick_links = []
-    doc.footer_terms_links = []
+    clear_child_table(doc, 'footer_quick_links')
+    clear_child_table(doc, 'footer_terms_links')
     
     # Add footer quick links (child table)
     quick_links = [
@@ -589,7 +598,7 @@ def insert_website_cms():
         doc.append("footer_terms_links", link)
     
     # Clear existing social media links
-    doc.footer_social_media = []
+    clear_child_table(doc, 'footer_social_media')
     
     # Add social media links (child table)
     social_links = [
@@ -627,9 +636,16 @@ Less than 30 days: 100% of total cost</p>
     
     # Navigation dropdowns skipped to avoid issues - can be configured manually later
     
-    # Save the document
-    doc.save(ignore_permissions=True)
-    frappe.db.commit()
+    # Save the document with proper error handling
+    try:
+        doc.save(ignore_permissions=True)
+        frappe.db.commit()
+        print("✅ Website CMS data inserted/updated successfully!")
+    except Exception as e:
+        print(f"❌ Error saving Website CMS: {str(e)}")
+        frappe.db.rollback()
+        raise e
+    
     print("✅ Website CMS data inserted/updated!\n")
 
 
@@ -1017,6 +1033,74 @@ def insert_blog_posts():
     
     frappe.db.commit()
     print("✅ Blog posts created!\n")
+
+
+def insert_branches():
+    """Create Branch data for contact information"""
+    print("🏢 Creating Branch data...")
+    
+    branches = [
+        {
+            "branch": "Head Office - London",
+            "custom_address_line_1": "Suite No.5, The Old Dispensary",
+            "custom_address_line_2": "30 Romford Road, Stratford",
+            "custom_city": "London",
+            "custom_postal_code": "E15 4BZ",
+            "custom_country": "United Kingdom",
+            "custom_branch_code": "HO-LDN",
+            "custom_head_office": 1,
+            "custom_disabled": 0,
+            "custom_map_location": "https://maps.google.com/?q=30+Romford+Road+Stratford+London+E15+4BZ"
+        },
+        {
+            "branch": "Birmingham Branch",
+            "custom_address_line_1": "123 High Street",
+            "custom_address_line_2": "Birmingham City Centre",
+            "custom_city": "Birmingham",
+            "custom_postal_code": "B1 1AA",
+            "custom_country": "United Kingdom",
+            "custom_branch_code": "BRM",
+            "custom_head_office": 0,
+            "custom_disabled": 0,
+            "custom_map_location": "https://maps.google.com/?q=123+High+Street+Birmingham"
+        },
+        {
+            "branch": "Manchester Branch",
+            "custom_address_line_1": "456 Oxford Road",
+            "custom_address_line_2": "Manchester City Centre",
+            "custom_city": "Manchester",
+            "custom_postal_code": "M1 7ED",
+            "custom_country": "United Kingdom",
+            "custom_branch_code": "MCR",
+            "custom_head_office": 0,
+            "custom_disabled": 0,
+            "custom_map_location": "https://maps.google.com/?q=456+Oxford+Road+Manchester"
+        }
+    ]
+    
+    for branch_data in branches:
+        try:
+            if not frappe.db.exists("Branch", branch_data["branch"]):
+                branch = frappe.get_doc({
+                    "doctype": "Branch",
+                    **branch_data
+                })
+                branch.insert(ignore_permissions=True)
+                print(f"  ✓ Created Branch: {branch_data['branch']}")
+            else:
+                # Update existing branch
+                branch = frappe.get_doc("Branch", branch_data["branch"])
+                for key, value in branch_data.items():
+                    if key != "branch":
+                        setattr(branch, key, value)
+                branch.save(ignore_permissions=True)
+                print(f"  ↻ Updated Branch: {branch_data['branch']}")
+        except Exception as e:
+            print(f"  ❌ Error creating/updating branch {branch_data['branch']}: {str(e)}")
+            continue
+    
+    frappe.db.commit()
+    print("✅ Branch data created!\n")
 
 
 if __name__ == "__main__":
