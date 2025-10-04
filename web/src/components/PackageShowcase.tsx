@@ -108,13 +108,6 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
             {displaySubtitle}
           </p>
           
-          {showViewAll && (
-            <Link to="/packages">
-              <button className="bg-secondary hover:bg-yellow-500 text-primary font-bold py-3 px-8 rounded-lg text-lg transition-colors">
-                View All Packages
-              </button>
-            </Link>
-          )}
         </div>
 
         {/* Package Cards */}

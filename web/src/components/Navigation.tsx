@@ -59,7 +59,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         );
         
         const submenu: NavSubItem[] = dropdownItems.map((item: NavigationDropdownItem) => ({
-          path: `/${dropdown.dropdown_name.toLowerCase()}/${item.item_group.toLowerCase().replace(/\s+/g, '-')}`,
+          path: `/category/${item.item_group.toLowerCase().replace(/\s+/g, '-')}`,
           label: item.item_group
         }));
 

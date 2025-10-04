@@ -1,8 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
-const CustomizePackage: React.FC = () => {
+const CTASection: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
+
+  // Get CTA data from CMS with fallbacks
+  const ctaData = {
+    title: cmsData?.cta_title || "Customise Your Package",
+    description: cmsData?.cta_description || "We are specialists in Customised packages according to your needs.",
+    subtitle: cmsData?.cta_subtitle || "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice.",
+    buttonText: cmsData?.cta_button_text || "Customise Your Package",
+    buttonLink: cmsData?.cta_button_link || "/contact"
+  };
 
   return (
     <section className="py-16 bg-primary">
@@ -16,27 +26,30 @@ const CustomizePackage: React.FC = () => {
           </div>
           
           <h2 className="text-white text-4xl md:text-5xl font-bold uppercase mb-4">
-            {cmsData?.customize_title || "Customise Your Package"}
+            {ctaData.title}
           </h2>
           
           <p className="text-white text-lg md:text-xl max-w-3xl mx-auto mb-8">
-            {cmsData?.customize_description || "We are specialists in Customised packages according to your needs."}
+            {ctaData.description}
           </p>
           
           <p className="text-secondary text-lg max-w-2xl mx-auto mb-12">
-            {cmsData?.customize_subtitle || "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice."}
+            {ctaData.subtitle}
           </p>
         </div>
 
         {/* CTA Button */}
         <div className="text-center">
-          <button className="bg-secondary hover:bg-yellow-500 text-primary font-bold py-4 px-8 rounded-lg text-lg transition-colors">
-            {cmsData?.customize_button_text || "Customise Your Package"}
-          </button>
+          <Link 
+            to={ctaData.buttonLink} 
+            className="hero-button bg-secondary hover:bg-yellow-500 text-primary font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-300 no-underline inline-block"
+          >
+            {ctaData.buttonText}
+          </Link>
         </div>
       </div>
     </section>
   );
 };
 
-export default CustomizePackage;
+export default CTASection;

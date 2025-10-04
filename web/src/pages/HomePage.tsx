@@ -1,6 +1,7 @@
 import React from 'react';
-import { FAQ, PackageShowcase, Testimonials, CustomizePackage, HajjDeals, WelcomeSection, PackagesDescription } from '../components';
+import { FAQ, PackageShowcase, Testimonials, HajjDeals, WelcomeSection, PackagesDescription } from '../components';
 import HeroSection from '../sections/HeroSection';
+import CTASection from '../sections/CTASection';
 import { useFAQItems } from '../hooks/useWebsiteCMS';
 
 const HomePage: React.FC = () => {
@@ -50,8 +51,8 @@ const HomePage: React.FC = () => {
       {/* Featured Packages Showcase */}
       <PackageShowcase />
 
-      {/* Customise Your Package Section */}
-      <CustomizePackage />
+      {/* CTA Section */}
+      <CTASection />
 
       {/* Cheap Deals for Hajj 2026 Section */}
       <HajjDeals />

@@ -385,3 +385,12 @@ img[src=""], img:not([src]) {
 .text-secondary {
   color: var(--color-secondary) !important;
 }
+
+/* Hero button styles to override global a:hover opacity */
+.hero-button {
+  opacity: 1 !important;
+}
+
+.hero-button:hover {
+  opacity: 1 !important;
+}

@@ -15,8 +15,14 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
   const allPackages = apiResponse?.message?.data || [];
   
-  // Filter packages by item group
+  // Filter packages by item group - show all if no specific group or "all"
   const packages = allPackages.filter((pkg: any) => {
+    // If no itemGroup or "all", show all packages
+    if (!itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups') {
+      return true;
+    }
+    
+    // Otherwise filter by the specific item group
     const properItemGroup = itemGroup
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -94,10 +100,14 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">
-            {itemGroup} Packages
+            {!itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups' 
+              ? 'All Packages' 
+              : `${itemGroup} Packages`}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover our carefully curated {itemGroup.toLowerCase()} packages designed to provide you with the best travel experience.
+            {!itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups'
+              ? 'Discover our comprehensive range of spiritual and cultural journey packages designed to provide you with the best travel experience.'
+              : `Discover our carefully curated ${itemGroup.toLowerCase()} packages designed to provide you with the best travel experience.`}
           </p>
         </div>
 

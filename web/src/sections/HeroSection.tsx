@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const HeroSection: React.FC = () => {
@@ -68,12 +69,12 @@ const HeroSection: React.FC = () => {
               
               {/* Call to Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <button className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300 shadow-lg">
+                <Link to="/category/all" className="hero-button bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300 shadow-lg text-center no-underline">
                   Explore Packages
-                </button>
-                <button className="border-2 border-white text-white hover:bg-accent hover:text-primary hover:border-accent px-8 py-3 rounded-lg font-semibold transition-colors duration-300">
+                </Link>
+                <Link to="/contact" className="hero-button border-2 border-white text-white  px-8 py-3 rounded-lg font-semibold transition-colors duration-300 text-center no-underline">
                   Contact Us
-                </button>
+                </Link>
               </div>
             </div>
             

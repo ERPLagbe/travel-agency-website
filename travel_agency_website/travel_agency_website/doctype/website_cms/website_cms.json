@@ -37,6 +37,12 @@
   "featured_packages_title",
   "featured_packages_subtitle",
   "featured_packages",
+  "section_break_cta",
+  "cta_title",
+  "cta_description",
+  "cta_subtitle",
+  "cta_button_text",
+  "cta_button_link",
   "section_break_testimonials",
   "testimonials_title",
   "testimonials_subtitle",
@@ -235,6 +241,41 @@
    "label": "Featured Packages",
    "options": "Featured Package",
    "description": "Select packages from ERPNext Items to display as featured"
+  },
+  {
+   "fieldname": "section_break_cta",
+   "fieldtype": "Section Break",
+   "label": "CTA Section"
+  },
+  {
+   "fieldname": "cta_title",
+   "fieldtype": "Data",
+   "label": "CTA Title",
+   "default": "Customise Your Package"
+  },
+  {
+   "fieldname": "cta_description",
+   "fieldtype": "Text",
+   "label": "CTA Description",
+   "default": "We are specialists in Customised packages according to your needs."
+  },
+  {
+   "fieldname": "cta_subtitle",
+   "fieldtype": "Text",
+   "label": "CTA Subtitle",
+   "default": "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice."
+  },
+  {
+   "fieldname": "cta_button_text",
+   "fieldtype": "Data",
+   "label": "CTA Button Text",
+   "default": "Customise Your Package"
+  },
+  {
+   "fieldname": "cta_button_link",
+   "fieldtype": "Data",
+   "label": "CTA Button Link",
+   "default": "/contact"
   },
   {
    "fieldname": "section_break_testimonials",
