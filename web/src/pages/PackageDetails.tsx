@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Phone, Mail, MapPin, Check, Star, Clock, Users, Plane, Hotel, Car, Utensils } from 'lucide-react';
+import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 interface PackageDetails {
@@ -54,6 +55,9 @@ const PackageDetails: React.FC = () => {
   // Get package data from ERPNext
   const { data: packageData, isValidating, error } = usePackageDetails(id || '');
   
+  // Get CMS data for contact information
+  const { data: cmsData } = useWebsiteCMS();
+  
   // Debug logging
   console.log('🔍 PackageDetails Debug:', {
     id,
@@ -90,18 +94,17 @@ const PackageDetails: React.FC = () => {
     );
   }
 
-  const imageUrl = packageData.image ? getFileUrlWithFallback(packageData.image) : 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop';
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden">
+      <div className="relative h-[50vh] overflow-hidden">
         <img 
-          src={`http://localhost:8000/${packageData.image}`}
+          src={`${packageData.image}`}
           alt={packageData.item_name}
           className="absolute w-full h-full object-cover"
         />
-        <div className="absolute bg-black bg-opacity-60"></div>
+        <div className="absolute  w-full h-full bg-black opacity-60"></div>
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-6 w-full">
             <div className="text-white">
@@ -331,35 +334,47 @@ const PackageDetails: React.FC = () => {
                 Enquire Now
               </button>
               
-              <button 
-                className="w-full py-3 px-4 rounded-lg font-semibold transition-colors"
-                style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
-              >
-                Call Now
-              </button>
+              {cmsData?.business_phone && (
+                <a 
+                  href={`tel:${cmsData.business_phone}`}
+                  className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
+                  style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
+                >
+                  Call Now
+                </a>
+              )}
             </div>
 
             {/* Contact Information */}
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Contact Us</h3>
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-primary" />
-                  <span>0208 145 7860</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-primary" />
-                  <span>info@bismillahtravel.co.uk</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-primary mt-1" />
-                  <div className="text-sm">
-                    Suite No.5, The Old Dispensary,<br />
-                    30 Romford Road, Stratford<br />
-                    London, England, E15 4BZ,<br />
-                    United Kingdom
+                {cmsData?.business_phone && (
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-5 h-5 text-primary" />
+                    <span>{cmsData.business_phone}</span>
                   </div>
-                </div>
+                )}
+                {cmsData?.business_email && (
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-5 h-5 text-primary" />
+                    <span>{cmsData.business_email}</span>
+                  </div>
+                )}
+                {cmsData?.business_address && (
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-primary mt-1" />
+                    <div className="text-sm whitespace-pre-line">
+                      {cmsData.business_address}
+                    </div>
+                  </div>
+                )}
+                {cmsData?.company_number && (
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-5 h-5 text-primary" />
+                    <span>Company: {cmsData.company_number}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -367,24 +382,35 @@ const PackageDetails: React.FC = () => {
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Quick Actions</h3>
               <div className="space-y-3">
-                <button 
-                  className="w-full py-3 px-4 rounded-lg text-white font-semibold transition-colors"
-                  style={{ backgroundColor: '#432b7c' }}
-                >
-                  Call Now
-                </button>
-                <button 
-                  className="w-full py-3 px-4 rounded-lg font-semibold transition-colors"
-                  style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
-                >
-                  WhatsApp
-                </button>
-                <button 
-                  className="w-full py-3 px-4 rounded-lg font-semibold transition-colors"
-                  style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
-                >
-                  Send Email
-                </button>
+                {cmsData?.business_phone && (
+                  <a 
+                    href={`tel:${cmsData.business_phone}`}
+                    className="w-full py-3 px-4 rounded-lg text-white font-semibold transition-colors block text-center no-underline"
+                    style={{ backgroundColor: '#432b7c' }}
+                  >
+                    Call Now
+                  </a>
+                )}
+                {cmsData?.whatsapp_number && (
+                  <a 
+                    href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
+                    style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
+                  >
+                    WhatsApp
+                  </a>
+                )}
+                {cmsData?.business_email && (
+                  <a 
+                    href={`mailto:${cmsData.business_email}?subject=Package Inquiry - ${packageData?.item_name || 'Travel Package'}`}
+                    className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
+                    style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
+                  >
+                    Send Email
+                  </a>
+                )}
               </div>
             </div>
           </div>

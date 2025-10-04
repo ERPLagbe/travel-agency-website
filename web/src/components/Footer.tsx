@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
               <div className="text-white mb-6">
                 <div className="text-2xl font-bold text-secondary">{cmsData?.logo && <img className='w-10 h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
               </div>
-                <div className="text-2xl font-bold text-white">{cmsData?.logo_text || "BISMILLAH TRAVEL"}</div>
+                {cmsData?.business_name && <div className="text-2xl font-bold text-white">{cmsData?.business_name}</div> }
               </div>
             </div>
 
