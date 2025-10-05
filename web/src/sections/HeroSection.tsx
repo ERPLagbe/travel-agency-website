@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Phone, Award } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { data: cmsData } = useWebsiteCMS();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -71,7 +73,10 @@ const HeroSection = () => {
 
               {/* CTA Buttons - Enhanced Hover with Custom Colors */}
               <div className="flex flex-wrap gap-4 mb-12">
-                <button className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl overflow-hidden bg-primary">
+                <button 
+                  onClick={() => navigate('/category/all')}
+                  className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer"
+                >
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <span className="relative flex items-center gap-2">
                     <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
@@ -81,7 +86,8 @@ const HeroSection = () => {
                 </button>
                 
                 <button 
-                  className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary transition-all duration-300 transform hover:scale-110 overflow-hidden"
+                  onClick={() => navigate('/contact')}
+                  className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary transition-all duration-300 transform hover:scale-110 overflow-hidden cursor-pointer"
                   style={{ 
                     backgroundColor: 'transparent',
                     color: 'white !important'
