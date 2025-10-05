@@ -3,7 +3,7 @@ import { FrappeProvider } from 'frappe-react-sdk'
 import { Navigation, Footer, ErrorBoundary } from './components'
 import FloatingActionButtons from './components/FloatingActionButtons'
 import HomePage from './pages/HomePage'
-import PackagesPage from './pages/PackagesPage'
+// import PackagesPage from './pages/PackagesPage' // Commented out as it's not used
 import PackageListingPage from './pages/PackageListingPage'
 import ContactPage from './pages/ContactPage'
 import PackageDetails from './pages/PackageDetails'

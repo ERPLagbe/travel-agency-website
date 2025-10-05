@@ -106,32 +106,59 @@ const Navigation: React.FC<NavigationProps> = () => {
           <div className="flex items-center gap-8">
             {navItems.map((item) => (
               <div key={item.path} className="relative">
-                <Link
-                  to={item.path}
-                  className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
-                    isActive(item.path) ? 'text-accent' : 'text-white'
-                  }`}
-                  onMouseEnter={() => setActiveDropdown(item.path)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                  onFocus={() => setActiveDropdown(item.path)}
-                  onBlur={(e) => {
-                    // Only close if focus is moving outside the dropdown
-                    if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
-                      setActiveDropdown(null);
-                    }
-                  }}
-                  aria-haspopup={item.submenu ? 'true' : 'false'}
-                  aria-expanded={item.submenu && activeDropdown === item.path ? 'true' : 'false'}
-                >
-                  <span className="text-white">
-                    {item.label}
-                  </span>
-                  {item.submenu && (
+                {item.submenu ? (
+                  // For dropdown items, use a button instead of Link to prevent navigation
+                  <button
+                    className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md bg-transparent border-0 cursor-pointer ${
+                      isActive(item.path) ? 'text-accent' : 'text-white'
+                    }`}
+                    onMouseEnter={() => setActiveDropdown(item.path)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                    onFocus={() => setActiveDropdown(item.path)}
+                    onBlur={(e) => {
+                      // Only close if focus is moving outside the dropdown
+                      if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
+                        setActiveDropdown(null);
+                      }
+                    }}
+                    aria-haspopup="true"
+                    aria-expanded={activeDropdown === item.path ? 'true' : 'false'}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveDropdown(activeDropdown === item.path ? null : item.path);
+                    }}
+                  >
+                    <span className="text-white">
+                      {item.label}
+                    </span>
                     <span className="text-white text-xs ml-1">
                       ▼
                     </span>
-                  )}
-                </Link>
+                  </button>
+                ) : (
+                  // For regular navigation items, use Link
+                  <Link
+                    to={item.path}
+                    className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
+                      isActive(item.path) ? 'text-accent' : 'text-white'
+                    }`}
+                    onMouseEnter={() => setActiveDropdown(item.path)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                    onFocus={() => setActiveDropdown(item.path)}
+                    onBlur={(e) => {
+                      // Only close if focus is moving outside the dropdown
+                      if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
+                        setActiveDropdown(null);
+                      }
+                    }}
+                    aria-haspopup="false"
+                    aria-expanded="false"
+                  >
+                    <span className="text-white">
+                      {item.label}
+                    </span>
+                  </Link>
+                )}
                 
                 {/* Dropdown Menu */}
                 {item.submenu && activeDropdown === item.path && (
@@ -163,11 +190,25 @@ const Navigation: React.FC<NavigationProps> = () => {
         </div>
 
         {/* Action Buttons - Right */}
-        <div className="desktop-nav flex-shrink-0 flex items-center gap-3">
+        <div className="desktop-nav flex-shrink-0 flex items-center gap-4">
           {/* Get Appointment Button */}
           <Link 
             to="/contact"
-            className="px-4 py-2 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300 no-underline inline-block text-center"
+            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold no-underline rounded-md transition-all duration-200"
+            style={{ 
+              backgroundColor: 'var(--color-secondary)',
+              color: 'white !important'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.85';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.color = 'white';
+            }}
             aria-label="Book an appointment"
           >
             Get Appointment
@@ -175,7 +216,15 @@ const Navigation: React.FC<NavigationProps> = () => {
 
           {/* Login Button */}
           <button 
-            className="px-4 py-2 bg-transparent border-2 border-white text-white font-semibold rounded-md "
+            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white rounded-md border-2 border-white bg-transparent transition-all duration-200"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'white';
+              e.currentTarget.style.color = '#432b7c';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = 'white';
+            }}
             onClick={() => {
               window.location.href = '/login';
             }}
@@ -208,11 +257,23 @@ const Navigation: React.FC<NavigationProps> = () => {
           <div className="flex flex-col gap-6">
             {/* Action Buttons Section */}
             <div className="border-b border-gray-700 pb-4">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4">
                 {/* Get Appointment Button */}
                 <Link 
                   to="/contact"
-                  className="w-full py-3 px-4 bg-secondary text-primary font-semibold rounded-md hover:bg-yellow-400 transition-colors duration-300 no-underline inline-block text-center"
+                  className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-semibold no-underline rounded-md transition-all duration-200"
+                  style={{ 
+                    backgroundColor: 'var(--color-secondary)',
+                    color: 'white !important'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.85';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.color = 'white';
+                  }}
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Book an appointment"
                 >
@@ -221,11 +282,18 @@ const Navigation: React.FC<NavigationProps> = () => {
 
                 {/* Login Button */}
                 <button 
-                  className="w-full py-3 px-4 bg-transparent border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
+                  className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-semibold text-white rounded-md border-2 border-white bg-transparent transition-all duration-200"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                    e.currentTarget.style.color = '#432b7c';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = 'white';
+                  }}
                   onClick={() => {
                     setIsMenuOpen(false);
-                    // Add your login logic here
-                    console.log('Login clicked');
+                    window.location.href = '/login';
                   }}
                   aria-label="Login to your account"
                 >
@@ -238,15 +306,23 @@ const Navigation: React.FC<NavigationProps> = () => {
             <div className="space-y-4">
               {navItems.map((item) => (
                 <div key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`no-underline font-medium py-3 block text-lg ${
-                      isActive(item.path) ? 'text-accent' : 'text-white'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
+                  {item.submenu ? (
+                    // For dropdown items in mobile, show as non-clickable header
+                    <div className="font-medium py-3 block text-lg text-white">
+                      {item.label}
+                    </div>
+                  ) : (
+                    // For regular navigation items, use Link
+                    <Link
+                      to={item.path}
+                      className={`no-underline font-medium py-3 block text-lg ${
+                        isActive(item.path) ? 'text-accent' : 'text-white'
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                   {item.submenu && (
                     <div className="ml-4 mt-2 space-y-2">
                       {item.submenu.map((subItem: NavSubItem) => (

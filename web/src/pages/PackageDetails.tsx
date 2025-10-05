@@ -65,7 +65,11 @@ const PackageDetails: React.FC = () => {
       item_name: packageData.item_name,
       image: packageData.image,
       custom_duration: packageData.custom_duration,
-      description: packageData.description
+      description: packageData.description,
+      standard_rate: packageData.standard_rate,
+      standard_rate_type: typeof packageData.standard_rate,
+      standard_rate_value: packageData.standard_rate,
+      item_group: packageData.item_group
     } : null,
     error,
     isValidating
@@ -128,7 +132,7 @@ const PackageDetails: React.FC = () => {
                 </span>
                 <span className="bg-amber-400 px-3 py-1 rounded-md text-purple-900 text-sm font-bold flex items-center gap-1">
                   <Tag className="w-4 h-4" />
-                  £{packageData.standard_rate?.toLocaleString() || '0'}
+                  {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
                 </span>
               </div>
             </div>
@@ -163,7 +167,8 @@ const PackageDetails: React.FC = () => {
             <div className="bg-white rounded-xl p-8 shadow-lg">
               <h2 className="text-2xl font-bold text-primary mb-6">Package Inclusions</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {packageData.custom_air && packageData.custom_air_information && (
+                {/* Flight Information - Only show if custom_air is 1 and has information */}
+                {packageData.custom_air === 1 && packageData.custom_air_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Plane className="w-6 h-6 text-primary" />
@@ -173,7 +178,8 @@ const PackageDetails: React.FC = () => {
                   </div>
                 )}
                 
-                {packageData.custom_hotel && packageData.custom_hotel_information && (
+                {/* Hotel Information - Only show if custom_hotel is 1 and has information */}
+                {packageData.custom_hotel === 1 && packageData.custom_hotel_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Hotel className="w-6 h-6 text-primary" />
@@ -183,7 +189,8 @@ const PackageDetails: React.FC = () => {
                   </div>
                 )}
                 
-                {packageData.custom_bustaxi && packageData.custom_bustaxi_information && (
+                {/* Transportation - Only show if custom_bustaxi is 1 and has information */}
+                {packageData.custom_bustaxi === 1 && packageData.custom_bustaxi_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Car className="w-6 h-6 text-primary" />
@@ -193,7 +200,8 @@ const PackageDetails: React.FC = () => {
                   </div>
                 )}
                 
-                {packageData.custom_food_child_food_except && packageData.custom_food_information && (
+                {/* Meal Information - Only show if custom_food_child_food_except is 1 and has information */}
+                {packageData.custom_food_child_food_except === 1 && packageData.custom_food_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Utensils className="w-6 h-6 text-primary" />
@@ -321,7 +329,9 @@ const PackageDetails: React.FC = () => {
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Package Details</h3>
               <div className="mb-6">
-                <div className="text-3xl font-bold text-primary mb-2">£{packageData.standard_rate?.toLocaleString() || '0'}</div>
+                <div className="text-3xl font-bold text-primary mb-2">
+                  {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                </div>
                 <div className="text-gray-600 mb-4">{packageData.item_group}</div>
               </div>
               
@@ -333,7 +343,7 @@ const PackageDetails: React.FC = () => {
                 Enquire Now
               </button>
               
-              {cmsData?.business_phone && (
+              {/* {cmsData?.business_phone && (
                 <a 
                   href={`tel:${cmsData.business_phone}`}
                   className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
@@ -341,11 +351,11 @@ const PackageDetails: React.FC = () => {
                 >
                   Call Now
                 </a>
-              )}
+              )} */}
             </div>
 
             {/* Contact Information */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
+            {/* <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Contact Us</h3>
               <div className="space-y-4">
                 {cmsData?.business_phone && (
@@ -375,7 +385,7 @@ const PackageDetails: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Quick Actions */}
             <div className="bg-white rounded-xl p-6 shadow-lg">

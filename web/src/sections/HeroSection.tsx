@@ -16,6 +16,7 @@ const HeroSection = () => {
   };
 
   return (
+    // <div className="min-h-screen dynamic-hero-gradient">
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900">
       {/* Hero Section */}
       <div className="relative min-h-screen overflow-hidden">
@@ -27,8 +28,8 @@ const HeroSection = () => {
           }}></div>
         </div>
 
-        {/* Simple Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-transparent"></div>
+        {/* Simple Overlay */}
+        <div className="absolute inset-0 bg-black/30"></div>
 
         {/* Content - Full Width Left Aligned */}
         <div className="relative z-10 container mx-auto px-4 py-12">
@@ -38,7 +39,7 @@ const HeroSection = () => {
               isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}>
               {/* Badge - Highlighted with Gold */}
-              <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-6 shadow-lg" style={{ backgroundColor: '#d4af37' }}>
+              <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-6 shadow-lg bg-secondary">
                 <Award className="w-4 h-4 text-white" />
                 <span className="text-sm font-bold text-white">{heroData.trustedText}</span>
               </div>
@@ -49,10 +50,10 @@ const HeroSection = () => {
                   {heroData.mainTitle}
                 </span>
                 <br />
-                <span style={{ color: '#432b7c' }} className="drop-shadow-lg">Agency</span>
+                <span className="text-primary drop-shadow-lg">Agency</span>
               </h1>
 
-              <p className="text-xl md:text-2xl mb-4 font-semibold" style={{ color: '#d4af37' }}>
+              <p className="text-xl md:text-2xl mb-4 font-semibold text-secondary">
                 {heroData.subtitle}
               </p>
 
@@ -63,7 +64,7 @@ const HeroSection = () => {
 
               {/* CTA Buttons - Enhanced Hover with Custom Colors */}
               <div className="flex flex-wrap gap-4 mb-12">
-                <button className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl overflow-hidden" style={{ backgroundColor: '#432b7c' }}>
+                <button className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl overflow-hidden bg-primary">
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <span className="relative flex items-center gap-2">
                     <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
@@ -72,10 +73,23 @@ const HeroSection = () => {
                   </span>
                 </button>
                 
-                <button className="group relative bg-transparent hover:bg-white text-white hover:text-slate-900 px-8 py-4 rounded-full font-semibold border-2 transition-all duration-300 transform hover:scale-110 overflow-hidden" style={{ borderColor: '#d4af37' }}>
-                  <div className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                <button 
+                  className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary transition-all duration-300 transform hover:scale-110 overflow-hidden"
+                  style={{ 
+                    backgroundColor: 'transparent',
+                    color: 'white !important'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                    e.currentTarget.style.color = '#111827';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                >
                   <span className="relative flex items-center gap-2">
-                    <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                    <Phone className="w-5 h-5 transition-transform duration-300" />
                     Contact Us
                   </span>
                 </button>
@@ -83,16 +97,16 @@ const HeroSection = () => {
 
               {/* Stats - Color Highlighted with Purple and Gold */}
               <div className="grid grid-cols-3 gap-6 max-w-2xl">
-                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-purple-900/30 transition-all duration-300" style={{ backgroundColor: 'rgba(67, 43, 124, 0.2)', borderColor: 'rgba(67, 43, 124, 0.4)' }}>
-                  <div className="text-3xl font-bold mb-1" style={{ color: '#d4af37' }}>17+</div>
+                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-primary/30 transition-all duration-300 bg-primary/20 border-primary/40">
+                  <div className="text-3xl font-bold mb-1 text-secondary">17+</div>
                   <div className="text-sm text-gray-300">Years Experience</div>
                 </div>
-                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-purple-900/30 transition-all duration-300" style={{ backgroundColor: 'rgba(67, 43, 124, 0.2)', borderColor: 'rgba(67, 43, 124, 0.4)' }}>
-                  <div className="text-3xl font-bold mb-1" style={{ color: '#d4af37' }}>50K+</div>
+                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-primary/30 transition-all duration-300 bg-primary/20 border-primary/40">
+                  <div className="text-3xl font-bold mb-1 text-secondary">50K+</div>
                   <div className="text-sm text-gray-300">Happy Pilgrims</div>
                 </div>
-                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-purple-900/30 transition-all duration-300" style={{ backgroundColor: 'rgba(67, 43, 124, 0.2)', borderColor: 'rgba(67, 43, 124, 0.4)' }}>
-                  <div className="text-3xl font-bold mb-1" style={{ color: '#d4af37' }}>4.9★</div>
+                <div className="backdrop-blur-sm rounded-xl p-4 border hover:bg-primary/30 transition-all duration-300 bg-primary/20 border-primary/40">
+                  <div className="text-3xl font-bold mb-1 text-secondary">4.9★</div>
                   <div className="text-sm text-gray-300">Customer Rating</div>
                 </div>
               </div>
@@ -104,12 +118,9 @@ const HeroSection = () => {
             }`}>
               <div className="max-w-md ml-auto">
                 {/* Main Contact Card */}
-                <div className="backdrop-blur-md rounded-2xl p-8 border shadow-2xl" style={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                  borderColor: 'rgba(212, 175, 55, 0.3)' 
-                }}>
+                <div className="backdrop-blur-md rounded-2xl p-8 border shadow-2xl bg-white/10 border-secondary/30">
                   <div className="text-center mb-6">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: '#d4af37' }}>
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 bg-secondary">
                       <Phone className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-2">Ready to Book?</h3>
@@ -118,7 +129,7 @@ const HeroSection = () => {
 
                   {/* Phone Number */}
                   <a href="tel:02081234567" className="block text-center mb-6 group">
-                    <div className="text-3xl font-bold mb-1 group-hover:scale-105 transition-transform" style={{ color: '#d4af37' }}>
+                    <div className="text-3xl font-bold mb-1 group-hover:scale-105 transition-transform text-secondary">
                       020 8123 4567
                     </div>
                     <div className="text-sm text-gray-400">Available 7 Days a Week</div>
@@ -133,15 +144,15 @@ const HeroSection = () => {
                   </button>
 
                   {/* Trust Badges */}
-                  <div className="border-t pt-6" style={{ borderColor: 'rgba(212, 175, 55, 0.2)' }}>
+                  <div className="border-t border-secondary/20 pt-6">
                     <div className="flex items-center justify-center gap-4 text-sm text-gray-300">
                       <div className="flex items-center gap-1">
-                        <Award className="w-4 h-4" style={{ color: '#d4af37' }} />
+                        <Award className="w-4 h-4 text-secondary" />
                         <span>ATOL Protected</span>
                       </div>
                       <div className="w-px h-4 bg-gray-600"></div>
                       <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4" style={{ color: '#d4af37' }} fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                         </svg>
                         <span>4.9/5 Rating</span>
@@ -154,9 +165,9 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Floating Elements - Purple and Gold */}
-        <div className="absolute top-20 right-20 w-20 h-20 rounded-full blur-xl animate-pulse" style={{ backgroundColor: 'rgba(67, 43, 124, 0.2)' }}></div>
-        <div className="absolute bottom-20 left-20 w-32 h-32 rounded-full blur-2xl animate-pulse" style={{ backgroundColor: 'rgba(212, 175, 55, 0.2)' }}></div>
+        {/* Floating Elements */}
+        <div className="absolute top-20 right-20 w-20 h-20 rounded-full blur-xl animate-pulse bg-primary/20"></div>
+        <div className="absolute bottom-20 left-20 w-32 h-32 rounded-full blur-2xl animate-pulse bg-secondary/20"></div>
       </div>
     </div>
   );

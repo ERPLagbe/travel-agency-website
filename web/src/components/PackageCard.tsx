@@ -44,7 +44,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   accommodationList = [],
   specialServicesList = []
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  // const [isHovered, setIsHovered] = useState(false); // Commented out as it's not used
 
   const handlePrimaryClick = () => {
     if (onPrimaryClick) {
@@ -57,8 +57,8 @@ const PackageCard: React.FC<PackageCardProps> = ({
   return (
     <div 
       className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header Image */}
       <div className="relative h-48 overflow-hidden">
@@ -78,9 +78,9 @@ const PackageCard: React.FC<PackageCardProps> = ({
       </div>
 
       {/* Price Section */}
-      <div className="px-4 sm:px-6 py-4 sm:py-5 text-center bg-gradient-to-br from-purple-50 to-white group cursor-default">
+      <div className="px-4 sm:px-6 py-4 sm:py-5 text-center bg-white group cursor-default">
         <div className="inline-block">
-          <span className="text-3xl sm:text-5xl font-bold text-purple-700 animate-countUp transition-all duration-300 group-hover:text-purple-800 group-hover:scale-110 inline-block">
+          <span className="text-3xl sm:text-5xl font-bold text-primary animate-countUp transition-all duration-300 group-hover:text-primary group-hover:scale-110 inline-block">
             £{price.toLocaleString()}
           </span>
           <span className="ml-2 sm:ml-3 text-gray-500 text-xs sm:text-sm font-medium animate-fadeIn transition-colors duration-300 group-hover:text-gray-700" style={{ animationDelay: '0.3s' }}>
@@ -93,87 +93,87 @@ const PackageCard: React.FC<PackageCardProps> = ({
       <div className="px-4 sm:px-6 py-4 flex-grow">
         {/* Basic Info Grid */}
         <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50" style={{ animationDelay: '0.1s' }}>
+          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
               <span className="text-xs text-gray-500 font-medium">Duration</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{duration}</p>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{duration}</p>
           </div>
 
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50" style={{ animationDelay: '0.2s' }}>
+          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.2s' }}>
             <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+              <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
               <span className="text-xs text-gray-500 font-medium">Direct Flight</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{airInfo}</p>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
           </div>
 
           {/* Dynamic Accommodations or Fallback */}
           {accommodationList && accommodationList.length > 0 ? (
             accommodationList.map((accommodation, index) => (
-              <div key={index} className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50" style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
+              <div key={index} className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
                 <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
                   <span className="text-xs text-gray-500 font-medium">{accommodation.hotel}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{accommodation.distance}</p>
+                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{accommodation.distance}</p>
               </div>
             ))
           ) : (
             <>
-              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50" style={{ animationDelay: '0.3s' }}>
+              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.3s' }}>
                 <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
                   <span className="text-xs text-gray-500 font-medium">Hotel Makkah</span>
                 </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{hotelMakkah}</p>
+                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
               </div>
 
-              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50" style={{ animationDelay: '0.4s' }}>
+              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.4s' }}>
                 <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
                   <span className="text-xs text-gray-500 font-medium">Hotel Madinah</span>
                 </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{hotelMadinah}</p>
+                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMadinah}</p>
               </div>
             </>
           )}
         </div>
 
         {/* Food */}
-        <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-purple-50 cursor-pointer group border-l-4 border-transparent hover:border-purple-600 bg-gray-50 mb-2 sm:mb-3" style={{ animationDelay: '0.5s' }}>
+        <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50 mb-2 sm:mb-3" style={{ animationDelay: '0.5s' }}>
           <div className="flex items-center gap-1 sm:gap-2 mb-1">
-            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 transition-all duration-300 group-hover:scale-110" />
+            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
             <span className="text-xs text-gray-500 font-medium">Food Included</span>
           </div>
-          <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-purple-700">{foodInfo}</p>
+          <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
         </div>
 
         {/* Special Services - Highlighted */}
         {specialServicesList && specialServicesList.length > 0 ? (
           specialServicesList.map((service, index) => (
-            <div key={index} className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gradient-to-r from-amber-50 to-purple-50 border-2 border-amber-300 hover:border-purple-500 mb-2" style={{ animationDelay: `${0.6 + index * 0.1}s` }}>
-              <div className="absolute top-0 right-0 bg-amber-400 text-amber-900 text-xs font-bold px-2 py-0.5 rounded-bl-lg">
+            <div key={index} className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gray-50 border-2 border-secondary hover:border-primary mb-2" style={{ animationDelay: `${0.6 + index * 0.1}s` }}>
+              <div className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
                 ⭐ PREMIUM
               </div>
               <div className="flex items-center gap-1 sm:gap-2 mb-1 mt-1">
-                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 animate-pulse" />
-                <span className="text-xs text-purple-700 font-semibold">Special Services</span>
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary animate-pulse" />
+                <span className="text-xs text-primary font-semibold">Special Services</span>
               </div>
-              <p className="text-xs sm:text-sm font-bold text-purple-900 transition-colors duration-300 group-hover:text-purple-700">{service.title}</p>
+              <p className="text-xs sm:text-sm font-bold text-primary transition-colors duration-300 group-hover:text-primary">{service.title}</p>
             </div>
           ))
         ) : (
-          <div className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gradient-to-r from-amber-50 to-purple-50 border-2 border-amber-300 hover:border-purple-500" style={{ animationDelay: '0.6s' }}>
-            <div className="absolute top-0 right-0 bg-amber-400 text-amber-900 text-xs font-bold px-2 py-0.5 rounded-bl-lg">
+          <div className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gray-50 border-2 border-secondary hover:border-primary" style={{ animationDelay: '0.6s' }}>
+            <div className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
               ⭐ PREMIUM
             </div>
             <div className="flex items-center gap-1 sm:gap-2 mb-1 mt-1">
-              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-700 animate-pulse" />
-              <span className="text-xs text-purple-700 font-semibold">Special Services</span>
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary animate-pulse" />
+              <span className="text-xs text-primary font-semibold">Special Services</span>
             </div>
-            <p className="text-xs sm:text-sm font-bold text-purple-900 transition-colors duration-300 group-hover:text-purple-700">{specialServices}</p>
+            <p className="text-xs sm:text-sm font-bold text-primary transition-colors duration-300 group-hover:text-primary">{specialServices}</p>
           </div>
         )}
       </div>
@@ -182,7 +182,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2">
         <button 
           onClick={handlePrimaryClick}
-          className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base"
+          className="w-full bg-primary hover:bg-primary text-white font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base"
         >
           SELECT PACKAGE
         </button>

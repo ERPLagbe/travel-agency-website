@@ -101,6 +101,17 @@ body {
   background-color: var(--bg-primary);
   font-size: var(--font-size-base);
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Dynamic gradient using CSS variables */
+.dynamic-hero-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    color-mix(in srgb, var(--color-primary) 70%, black 30%) 40%,
+    var(--color-secondary) 100%
+  );
 }
 
 /* Typography Classes - Use Tailwind utilities instead */

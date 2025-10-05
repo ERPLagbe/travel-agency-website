@@ -64,7 +64,20 @@ const FAQ: React.FC<FAQProps> = ({
             <div key={index} className="mb-4">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full bg-white border border-gray-200 rounded-lg p-6 text-left hover:shadow-md transition-shadow flex justify-between items-center"
+                className="w-full bg-white border border-gray-200 rounded-lg p-6 text-left hover:shadow-md transition-all duration-300 flex justify-between items-center hover:border-primary/30 hover:bg-gray-50"
+                style={{
+                  transform: 'scale(1)',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.transform = 'scale(0.98)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               >
                 <h3 className="text-primary text-lg font-semibold pr-4">
                   {faq.question}
@@ -81,12 +94,17 @@ const FAQ: React.FC<FAQProps> = ({
                   maxHeight: openIndex === index ? `${heights[index]}px` : '0px',
                   opacity: openIndex === index ? 1 : 0,
                   overflow: 'hidden',
-                  transition: 'max-height 0.4s ease-in-out, opacity 0.3s ease-in-out'
+                  transition: 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: openIndex === index ? 'translateY(0)' : 'translateY(-10px)'
                 }}
               >
                 <div
                   ref={(el) => (contentRefs.current[index] = el)}
-                  className="bg-gray-50 border-l-4 border-secondary p-6 mt-2 rounded-r-lg"
+                  className="bg-gray-50 border-l-4 border-secondary p-6 mt-2 rounded-r-lg transition-all duration-300 hover:bg-gray-100"
+                  style={{
+                    transform: openIndex === index ? 'scale(1)' : 'scale(0.98)',
+                    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease-in-out'
+                  }}
                 >
                   <p className="text-gray-700 leading-relaxed">
                     {faq.answer}

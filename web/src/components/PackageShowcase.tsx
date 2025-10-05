@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom'; // Commented out as it's not used
 import PackageCard from './PackageCard';
 import { useWebsiteCMS, useFeaturedPackages } from '../hooks/useWebsiteCMS';
 import { useFrappeGetCall } from 'frappe-react-sdk';
@@ -36,7 +36,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
   title,
   subtitle,
   packages: propPackages,
-  showViewAll = true
+  showViewAll = true // eslint-disable-line @typescript-eslint/no-unused-vars
 }) => {
   const { data: cmsData } = useWebsiteCMS();
   const { data: featuredPackages } = useFeaturedPackages();
