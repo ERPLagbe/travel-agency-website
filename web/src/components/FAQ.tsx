@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FAQItem {
@@ -18,6 +18,20 @@ const FAQ: React.FC<FAQProps> = ({
   faqs 
 }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [heights, setHeights] = useState<{ [key: number]: number }>({});
+  const contentRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    // Calculate heights for all content divs
+    const newHeights: { [key: number]: number } = {};
+    Object.keys(contentRefs.current).forEach((key) => {
+      const index = parseInt(key);
+      if (contentRefs.current[index]) {
+        newHeights[index] = contentRefs.current[index]!.scrollHeight;
+      }
+    });
+    setHeights(newHeights);
+  }, [faqs]);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -62,13 +76,23 @@ const FAQ: React.FC<FAQProps> = ({
                 )}
               </button>
               
-              {openIndex === index && (
-                <div className="bg-gray-50 border-l-4 border-secondary p-6 mt-2 rounded-r-lg">
+              <div
+                style={{
+                  maxHeight: openIndex === index ? `${heights[index]}px` : '0px',
+                  opacity: openIndex === index ? 1 : 0,
+                  overflow: 'hidden',
+                  transition: 'max-height 0.4s ease-in-out, opacity 0.3s ease-in-out'
+                }}
+              >
+                <div
+                  ref={(el) => (contentRefs.current[index] = el)}
+                  className="bg-gray-50 border-l-4 border-secondary p-6 mt-2 rounded-r-lg"
+                >
                   <p className="text-gray-700 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils } from 'lucide-react';
+import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
@@ -97,31 +97,40 @@ const PackageDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] overflow-hidden">
-        <img 
-          src={`${packageData.image}`}
-          alt={packageData.item_name}
-          className="absolute w-full h-full object-cover"
-        />
-        <div className="absolute  w-full h-full bg-black opacity-60"></div>
-        <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-6 w-full">
-            <div className="text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">{packageData.item_name}</h1>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">{packageData.item_group}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  <span className="text-lg">{packageData.custom_duration || '35/42 Days'}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">£{packageData.standard_rate?.toLocaleString() || '0'}</span>
-                </div>
+      {/* Hero Banner Section */}
+      <div className="w-full max-w-7xl mx-auto px-6 py-8">
+        <div className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url('${packageData.image}')`,
+            }}
+          ></div>
+          
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-purple-800/70"></div>
+          
+          {/* Content */}
+          <div className="relative h-full flex items-center justify-between px-8">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                {packageData.item_name}
+              </h1>
+              
+              <div className="flex items-center gap-3">
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium">
+                  {packageData.item_group}
+                </span>
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium flex items-center gap-1">
+                  <Clock className="w-4 h-4" />
+                  {packageData.custom_duration || '35/42 Days'}
+                </span>
+                <span className="bg-amber-400 px-3 py-1 rounded-md text-purple-900 text-sm font-bold flex items-center gap-1">
+                  <Tag className="w-4 h-4" />
+                  £{packageData.standard_rate?.toLocaleString() || '0'}
+                </span>
               </div>
-              <p className="text-xl max-w-3xl" dangerouslySetInnerHTML={{ __html: packageData.description || 'Premium travel package with comprehensive services.' }}></p>
             </div>
           </div>
         </div>
@@ -314,16 +323,6 @@ const PackageDetails: React.FC = () => {
               <div className="mb-6">
                 <div className="text-3xl font-bold text-primary mb-2">£{packageData.standard_rate?.toLocaleString() || '0'}</div>
                 <div className="text-gray-600 mb-4">{packageData.item_group}</div>
-                {/* {packageData.custom_processing_time && (
-                  <div className="text-sm text-gray-500 mb-4">
-                    Processing Time: {packageData.custom_processing_time}
-                  </div>
-                )} */}
-                {/* {packageData.custom_commission_rate && packageData.custom_commission_rate > 0 && (
-                  <div className="text-sm text-gray-500 mb-4">
-                    Commission Rate: {packageData.custom_commission_rate}%
-                  </div>
-                )} */}
               </div>
               
               <button 
