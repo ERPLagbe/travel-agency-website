@@ -27,6 +27,36 @@ def clear_child_table(doc, child_table_name):
             setattr(doc, child_table_name, [])
 
 
+def clear_existing_child_data():
+    """Clear all existing child table data to prevent duplicate entry errors"""
+    print("🧹 Clearing existing child table data...")
+    
+    try:
+        # Clear Title With Description records (used for inclusions, itinerary, special services)
+        frappe.db.sql("DELETE FROM `tabTitle With Description` WHERE parenttype = 'Item'")
+        print("  ✓ Cleared Title With Description records")
+        
+        # Clear Package Feature records
+        frappe.db.sql("DELETE FROM `tabPackage Feature` WHERE parenttype = 'Item'")
+        print("  ✓ Cleared Package Feature records")
+        
+        # Clear Air Travel records
+        frappe.db.sql("DELETE FROM `tabAir Travel` WHERE parenttype = 'Item'")
+        print("  ✓ Cleared Air Travel records")
+        
+        # Clear Accommodation List records
+        frappe.db.sql("DELETE FROM `tabAccommodation List` WHERE parenttype = 'Item'")
+        print("  ✓ Cleared Accommodation List records")
+        
+        frappe.db.commit()
+        print("✅ Existing child table data cleared!\n")
+        
+    except Exception as e:
+        print(f"❌ Error clearing child table data: {str(e)}")
+        frappe.db.rollback()
+        print("⚠️  Continuing with existing data...\n")
+
+
 def insert_dummy_data():
     """Main function to insert all dummy data"""
     
@@ -34,10 +64,16 @@ def insert_dummy_data():
     print("🚀 Starting Travel Agency Website Data Insertion")
     print("="*60 + "\n")
     
-    # Step 1: Create Item Groups (ERPNext structure)
+    # Step 1: Clear existing child table data
+    clear_existing_child_data()
+    
+    # Step 2: Create Item Groups (ERPNext structure)
     insert_item_groups()
     
-    # Step 2: Create Items (actual packages in ERPNext)
+    # Step 3: Create Accommodations (hotels)
+    insert_accommodations()
+    
+    # Step 4: Create Items (actual packages in ERPNext)
     insert_items()
     
     # Step 3: Create or update Website CMS
@@ -109,6 +145,77 @@ def insert_item_groups():
     
     frappe.db.commit()
     print("✅ Item Groups created!\n")
+
+
+def insert_accommodations():
+    """Create Accommodation records (hotels) with attachments"""
+    print("🏨 Creating Accommodations...")
+    
+    accommodations = [
+        {
+            "hotel_name": "Test Hotel 1",
+            "location": "dhaka bangladesh",
+            "description": "dhaka bangladesh",
+            "images": [
+                "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop"
+            ]
+        },
+        {
+            "hotel_name": "Test Hotel 2",
+            "location": "Makkah, Saudi Arabia",
+            "description": "Comfortable 4-star accommodation near Masjid al-Haram",
+            "images": [
+                "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop"
+            ]
+        }
+    ]
+    
+    for acc_data in accommodations:
+        try:
+            images = acc_data.pop("images", [])
+            
+            if not frappe.db.exists("Accommodation", acc_data["hotel_name"]):
+                acc = frappe.get_doc({
+                    "doctype": "Accommodation",
+                    **acc_data
+                })
+                acc.insert(ignore_permissions=True)
+                print(f"  ✓ Created Accommodation: {acc_data['hotel_name']}")
+            else:
+                # Update existing accommodation
+                acc = frappe.get_doc("Accommodation", acc_data["hotel_name"])
+                for key, value in acc_data.items():
+                    if key != "hotel_name":
+                        setattr(acc, key, value)
+                acc.save(ignore_permissions=True)
+                print(f"  ↻ Updated Accommodation: {acc_data['hotel_name']}")
+            
+            # Add image attachments
+            for i, image_url in enumerate(images):
+                try:
+                    # Create file attachment
+                    file_doc = frappe.get_doc({
+                        "doctype": "File",
+                        "file_name": f"{acc_data['hotel_name']}_image_{i+1}.jpg",
+                        "file_url": image_url,
+                        "attached_to_doctype": "Accommodation",
+                        "attached_to_name": acc_data["hotel_name"],
+                        "is_private": 0
+                    })
+                    file_doc.insert(ignore_permissions=True)
+                    print(f"    ✓ Added image {i+1} for {acc_data['hotel_name']}")
+                except Exception as e:
+                    print(f"    ❌ Error adding image {i+1} for {acc_data['hotel_name']}: {str(e)}")
+                    continue
+                    
+        except Exception as e:
+            print(f"  ❌ Error creating/updating accommodation {acc_data['hotel_name']}: {str(e)}")
+            continue
+    
+    frappe.db.commit()
+    print("✅ Accommodations created with images!\n")
 
 
 def insert_items():
@@ -333,12 +440,197 @@ def insert_items():
                         setattr(item, key, value)
                 item.save(ignore_permissions=True)
                 print(f"  ↻ Updated Item: {item_data['item_name']}")
+            
+            # Now add custom fields to the item
+            item = frappe.get_doc("Item", item_data["item_code"])
+            
+            # Set custom fields based on item type
+            if "Hajj" in item_data["item_name"]:
+                # Hajj package custom fields
+                item.custom_duration = "21" if "5-Star" in item_data["item_name"] else "18" if "4-Star" in item_data["item_name"] else "16"
+                item.custom_package_rating = 0.9 if "5-Star" in item_data["item_name"] else 0.8 if "4-Star" in item_data["item_name"] else 0.7
+                item.custom_air = 1
+                item.custom_air_information = "Direct flights from UK to Saudi Arabia with premium airlines"
+                item.custom_hotel = 1
+                item.custom_hotel_information = f"{'5-star' if '5-Star' in item_data['item_name'] else '4-star' if '4-Star' in item_data['item_name'] else '3-star'} accommodation in Makkah and Madinah"
+                item.custom_bustaxi = 1
+                item.custom_bustaxi_information = "Air-conditioned transportation throughout the journey"
+                item.custom_food_child_food_except = 1
+                item.custom_food_information = "Full board meals (breakfast, lunch, dinner)" if "5-Star" in item_data["item_name"] else "Daily meals provided"
+            else:
+                # Umrah package custom fields
+                item.custom_duration = "10" if "5-Star" in item_data["item_name"] else "8" if "4-Star" in item_data["item_name"] else "7"
+                item.custom_package_rating = 0.9 if "5-Star" in item_data["item_name"] else 0.8 if "4-Star" in item_data["item_name"] else 0.7
+                item.custom_air = 1
+                item.custom_air_information = "Direct flights from UK to Saudi Arabia"
+                item.custom_hotel = 1
+                item.custom_hotel_information = f"{'5-star' if '5-Star' in item_data['item_name'] else '4-star' if '4-Star' in item_data['item_name'] else '3-star'} accommodation in Makkah and Madinah"
+                item.custom_bustaxi = 1
+                item.custom_bustaxi_information = "Air-conditioned transportation"
+                item.custom_food_child_food_except = 1
+                item.custom_food_information = "All meals included" if "5-Star" in item_data["item_name"] else "Breakfast and dinner included"
+            
+            # Common custom fields
+            item.custom_category = "Travel Package"
+            item.custom_country = "Saudi Arabia"
+            item.custom_commission_rate = 5.0
+            item.custom_processing_time = "7-14 days"
+            item.published_in_website = 1
+            
+            # Save the item with custom fields
+            item.save(ignore_permissions=True)
+            
+            # Now populate child tables
+            populate_child_tables(item, item_data)
+            
+            print(f"  ✓ Updated custom fields and child tables for: {item_data['item_name']}")
+            
         except Exception as e:
             print(f"  ❌ Error creating/updating item {item_data['item_name']}: {str(e)}")
             continue
     
     frappe.db.commit()
     print("✅ Items (Packages) created!\n")
+
+
+def populate_child_tables(item, item_data):
+    """Populate child tables for an item"""
+    try:
+        # Clear existing child table entries using helper function
+        clear_child_table(item, 'custom_features')
+        clear_child_table(item, 'custom_inclusions')
+        clear_child_table(item, 'custom_itinerary')
+        clear_child_table(item, 'custom_special_services')
+        clear_child_table(item, 'custom_accommodation_list')
+        clear_child_table(item, 'custom_air_destination')
+        
+        # Define features based on package type
+        if "Hajj" in item_data["item_name"]:
+            features = [
+                "Direct Flights",
+                "Premium Accommodation", 
+                "Experienced Guides",
+                "Hajj Training",
+                "Visa Processing",
+                "24/7 Support"
+            ]
+            inclusions = [
+                {"title": "Flight Information", "description": "Direct flights from UK to Saudi Arabia with premium airlines"},
+                {"title": "Accommodation", "description": f"{'5-star' if '5-Star' in item_data['item_name'] else '4-star' if '4-Star' in item_data['item_name'] else '3-star'} hotels in Makkah and Madinah"},
+                {"title": "Transportation", "description": "Air-conditioned transportation throughout the journey"},
+                {"title": "Meals", "description": "Full board meals (breakfast, lunch, dinner)" if "5-Star" in item_data['item_name'] else "Daily meals provided"}
+            ]
+            itinerary = [
+                {"title": "Arrival in Jeddah", "description": "Arrive at King Abdulaziz International Airport and transfer to Makkah. Check into hotel and rest."},
+                {"title": "Makkah Orientation", "description": "Get familiar with the holy city, visit Masjid al-Haram, and prepare for Hajj rituals."},
+                {"title": "Hajj Performance", "description": "Perform the sacred rituals of Hajj with guidance from experienced scholars."},
+                {"title": "Madinah Visit", "description": "Visit the Prophet's Mosque and other sacred sites in Madinah."},
+                {"title": "Departure", "description": "Check out and transfer to airport for departure."}
+            ]
+            special_services = [
+                {"title": "Hajj Training", "description": "Comprehensive training sessions on Hajj rituals and procedures"},
+                {"title": "Religious Guidance", "description": "Expert religious scholars to guide you through the journey"}
+            ]
+        else:
+            features = [
+                "Direct Flights",
+                "Quality Accommodation",
+                "Religious Guides", 
+                "Ziyarat Tours",
+                "Visa Processing",
+                "Support Team"
+            ]
+            inclusions = [
+                {"title": "Flight Information", "description": "Direct flights from UK to Saudi Arabia"},
+                {"title": "Accommodation", "description": f"{'5-star' if '5-Star' in item_data['item_name'] else '4-star' if '4-Star' in item_data['item_name'] else '3-star'} hotels in Makkah and Madinah"},
+                {"title": "Transportation", "description": "Air-conditioned transportation"},
+                {"title": "Meals", "description": "All meals included" if "5-Star" in item_data['item_name'] else "Breakfast and dinner included"}
+            ]
+            itinerary = [
+                {"title": "Arrival in Jeddah", "description": "Arrive at King Abdulaziz International Airport and transfer to Makkah. Check into hotel and rest."},
+                {"title": "Makkah Orientation", "description": "Get familiar with the holy city, visit Masjid al-Haram, and prepare for Umrah."},
+                {"title": "Umrah Performance", "description": "Perform the sacred rituals of Umrah with guidance from experienced guides."},
+                {"title": "Madinah Visit", "description": "Visit the Prophet's Mosque and other sacred sites in Madinah."},
+                {"title": "Departure", "description": "Check out and transfer to airport for departure."}
+            ]
+            special_services = [
+                {"title": "Ziyarat Tours", "description": "Guided tours to historical and religious sites"},
+                {"title": "Religious Guidance", "description": "Expert religious guides to assist with Umrah rituals"}
+            ]
+        
+        # Add features using append
+        for feature in features:
+            # Make title unique by adding item name prefix
+            unique_title = f"{item_data['item_name']} - {feature}"
+            item.append("custom_features", {
+                "title": unique_title
+            })
+            print(f"      ✓ Added feature: {unique_title}")
+        
+        # Add inclusions using append
+        for inclusion in inclusions:
+            # Make title unique by adding item name prefix
+            unique_title = f"{item_data['item_name']} - {inclusion['title']}"
+            item.append("custom_inclusions", {
+                "title": unique_title,
+                "description": inclusion["description"]
+            })
+            print(f"      ✓ Added inclusion: {unique_title}")
+        
+        # Add itinerary using append
+        for day in itinerary:
+            # Make title unique by adding item name prefix
+            unique_title = f"{item_data['item_name']} - {day['title']}"
+            item.append("custom_itinerary", {
+                "title": unique_title,
+                "description": day["description"]
+            })
+            print(f"      ✓ Added itinerary: {unique_title}")
+        
+        # Add special services using append
+        for service in special_services:
+            # Make title unique by adding item name prefix
+            unique_title = f"{item_data['item_name']} - {service['title']}"
+            item.append("custom_special_services", {
+                "title": unique_title,
+                "description": service["description"]
+            })
+            print(f"      ✓ Added special service: {unique_title}")
+        
+        # Add accommodation list using append (reference existing Accommodation records)
+        accommodations = [
+            {"hotel": "Test Hotel 1", "distance": "1500"},
+            {"hotel": "Test Hotel 2", "distance": "2000"}
+        ]
+        
+        for acc in accommodations:
+            item.append("custom_accommodation_list", {
+                "hotel": acc["hotel"],
+                "distance": acc["distance"]
+            })
+            print(f"      ✓ Added accommodation: {acc['hotel']}")
+        
+        # Add air destinations using append
+        air_destinations = [
+            {"from": "dhaka", "to": "jeddah"},
+            {"from": "london", "to": "jeddah"}
+        ]
+        
+        for air in air_destinations:
+            item.append("custom_air_destination", {
+                "from": air["from"],
+                "to": air["to"]
+            })
+            print(f"      ✓ Added air destination: {air['from']} to {air['to']}")
+        
+        # Save the item with child tables
+        item.save(ignore_permissions=True)
+        frappe.db.commit()
+        print(f"    ✓ Populated child tables for: {item_data['item_name']}")
+        
+    except Exception as e:
+        print(f"    ❌ Error populating child tables for {item_data['item_name']}: {str(e)}")
+        frappe.db.rollback()
 
 
 # Navigation dropdowns removed to avoid issues - can be created manually later
@@ -368,6 +660,8 @@ def insert_website_cms():
     doc.company_number = "12345678"
     doc.atol_number = "ATOL1234"
     doc.atol_certificate_url = "https://example.com/atol-certificate.pdf"
+    doc.contact_card_rating = "4.9/5"
+    doc.contact_card_rating_text = "Rating"
     doc.logo = "/files/logo.png"
     
     # Hero Section
@@ -379,6 +673,9 @@ def insert_website_cms():
     doc.hero_description = "Experience the journey of a lifetime with our expertly crafted Hajj and Umrah packages"
     doc.hero_primary_button_text = "Explore Packages"
     doc.hero_secondary_button_text = "Contact Us"
+    doc.hero_years_experience = "17+"
+    doc.hero_happy_pilgrims = "50K+"
+    doc.hero_customer_rating = "4.9★"
     
     # CTA Section
     doc.cta_title = "Customise Your Package"
@@ -1042,6 +1339,7 @@ def insert_branches():
     branches = [
         {
             "branch": "Head Office - London",
+            "custom_address": "Suite No.5, The Old Dispensary, 30 Romford Road, Stratford, London E15 4BZ, United Kingdom",
             "custom_address_line_1": "Suite No.5, The Old Dispensary",
             "custom_address_line_2": "30 Romford Road, Stratford",
             "custom_city": "London",
@@ -1054,6 +1352,7 @@ def insert_branches():
         },
         {
             "branch": "Birmingham Branch",
+            "custom_address": "123 High Street, Birmingham City Centre, Birmingham B1 1AA, United Kingdom",
             "custom_address_line_1": "123 High Street",
             "custom_address_line_2": "Birmingham City Centre",
             "custom_city": "Birmingham",
@@ -1066,6 +1365,7 @@ def insert_branches():
         },
         {
             "branch": "Manchester Branch",
+            "custom_address": "456 Oxford Road, Manchester City Centre, Manchester M1 7ED, United Kingdom",
             "custom_address_line_1": "456 Oxford Road",
             "custom_address_line_2": "Manchester City Centre",
             "custom_city": "Manchester",

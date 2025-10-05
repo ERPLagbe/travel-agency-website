@@ -20,6 +20,8 @@
   "company_number",
   "atol_number",
   "atol_certificate_url",
+  "contact_card_rating",
+  "contact_card_rating_text",
   "logo",
   "section_break_navigation",
   "navigation_dropdowns",
@@ -33,6 +35,9 @@
   "hero_description",
   "hero_primary_button_text",
   "hero_secondary_button_text",
+  "hero_years_experience",
+  "hero_happy_pilgrims",
+  "hero_customer_rating",
   "section_break_packages",
   "featured_packages_title",
   "featured_packages_subtitle",
@@ -141,6 +146,20 @@
    "label": "ATOL Certificate URL"
   },
   {
+   "fieldname": "contact_card_rating",
+   "fieldtype": "Data",
+   "label": "Contact Card Rating",
+   "default": "4.9/5",
+   "description": "Rating displayed in contact card (e.g., 4.9/5)"
+  },
+  {
+   "fieldname": "contact_card_rating_text",
+   "fieldtype": "Data",
+   "label": "Contact Card Rating Text",
+   "default": "Rating",
+   "description": "Text displayed next to rating (e.g., Rating)"
+  },
+  {
    "fieldname": "logo",
    "fieldtype": "Attach Image",
    "label": "Logo",
@@ -217,6 +236,27 @@
    "fieldtype": "Data",
    "label": "Hero Secondary Button Text",
    "default": "Contact Us"
+  },
+  {
+   "fieldname": "hero_years_experience",
+   "fieldtype": "Data",
+   "label": "Hero Years Experience",
+   "default": "17+",
+   "description": "Years of experience (e.g., 17+)"
+  },
+  {
+   "fieldname": "hero_happy_pilgrims",
+   "fieldtype": "Data",
+   "label": "Hero Happy Pilgrims",
+   "default": "50K+",
+   "description": "Number of happy pilgrims (e.g., 50K+)"
+  },
+  {
+   "fieldname": "hero_customer_rating",
+   "fieldtype": "Data",
+   "label": "Hero Customer Rating",
+   "default": "4.9★",
+   "description": "Customer rating (e.g., 4.9★)"
   },
   {
    "fieldname": "section_break_packages",

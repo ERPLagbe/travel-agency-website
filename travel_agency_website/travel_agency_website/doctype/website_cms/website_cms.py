@@ -35,6 +35,8 @@ class WebsiteCMS(Document):
 				"company_number": self.company_number,
 				"atol_number": self.atol_number,
 				"atol_certificate_url": self.atol_certificate_url,
+				"contact_card_rating": self.contact_card_rating,
+				"contact_card_rating_text": self.contact_card_rating_text,
 				"logo": self.logo
 			},
 			"navigation": {
@@ -45,7 +47,13 @@ class WebsiteCMS(Document):
 				"floating_image": self.hero_floating_image,
 				"trusted_text": self.hero_trusted_text,
 				"main_title": self.hero_main_title,
-				"subtitle": self.hero_subtitle
+				"subtitle": self.hero_subtitle,
+				"description": self.hero_description,
+				"primary_button_text": self.hero_primary_button_text,
+				"secondary_button_text": self.hero_secondary_button_text,
+				"years_experience": self.hero_years_experience,
+				"happy_pilgrims": self.hero_happy_pilgrims,
+				"customer_rating": self.hero_customer_rating
 			},
 			"packages": {
 				"featured": {
