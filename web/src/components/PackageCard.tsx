@@ -38,7 +38,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   duration = "35/42 Days",
   airInfo = "SA/Biman/Flynas",
   hotelMakkah = "1200/1500M",
-  hotelMadinah = "1200/1500M", 
+  hotelMadinah = "1200/1500M",
   foodInfo = "Breakfast, Lunch & Dinner",
   specialServices = "Ziyarah Tour, Transportation & Guide",
   accommodationList = [],
@@ -55,25 +55,93 @@ const PackageCard: React.FC<PackageCardProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
-      // onMouseEnter={() => setIsHovered(true)}
-      // onMouseLeave={() => setIsHovered(false)}
+    // onMouseEnter={() => setIsHovered(true)}
+    // onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header Image */}
-      <div className="relative h-48 overflow-hidden">
-        <img 
-          src={image} 
+      <div className="relative h-[250px] overflow-hidden">
+        <img
+          src={image}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        
+
         {/* Title overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
           <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn">
             {title}
           </h1>
+        </div>
+      </div>
+
+      {/* Features - Compact Grid Layout - This grows to fill space */}
+      <div className="px-4 sm:px-6 py-4 flex-grow">
+        <div className="grid grid-cols-1 gap-1 mb-3 sm:mb-4">
+          <div className="animate-slideIn py-1 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center gap-1 sm:gap-2 mb-1">
+              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
+              <span className="text-xs text-gray-500 font-medium">Duration</span>
+            </div>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{duration}</p>
+          </div>
+
+          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.2s' }}>
+            <div className="flex items-center gap-1 sm:gap-2 mb-1">
+              <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
+              <span className="text-xs text-gray-500 font-medium">Direct Flight</span>
+            </div>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
+          </div>
+
+          {/* Hotel / Accommodation blocks */}
+          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.3s' }}>
+            <div className="flex items-center gap-1 sm:gap-2 mb-1">
+              <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
+              <span className="text-xs text-gray-500 font-medium">Hotel Makkah</span>
+            </div>
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
+          </div>
+        </div>
+
+        {/* Food */}
+        <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.5s' }}>
+          <div className="flex items-center gap-1 sm:gap-2 mb-1">
+            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
+            <span className="text-xs text-gray-500 font-medium">Food Included</span>
+          </div>
+          <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
+        </div>
+
+        {/* Special Services - Badge Tags */}
+        <div className="animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg border-b border-gray-200" style={{ animationDelay: '0.6s' }}>
+          <div className="flex items-center gap-1 sm:gap-2 mb-2">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+            <span className="text-xs text-gray-500 font-medium">Special Services</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {specialServicesList && specialServicesList.length > 0 ? (
+              specialServicesList.map((service, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
+                >
+                  {service.title}
+                </span>
+              ))
+            ) : (
+              specialServices.split(',').map((service, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
+                >
+                  {service.trim()}
+                </span>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -89,98 +157,9 @@ const PackageCard: React.FC<PackageCardProps> = ({
         </div>
       </div>
 
-      {/* Features - Compact Grid Layout - This grows to fill space */}
-      <div className="px-4 sm:px-6 py-4 flex-grow">
-        {/* Basic Info Grid */}
-        <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-500 font-medium">Duration</span>
-            </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{duration}</p>
-          </div>
-
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.2s' }}>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-500 font-medium">Direct Flight</span>
-            </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
-          </div>
-
-          {/* Dynamic Accommodations or Fallback */}
-          {accommodationList && accommodationList.length > 0 ? (
-            accommodationList.map((accommodation, index) => (
-              <div key={index} className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
-                <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-                  <span className="text-xs text-gray-500 font-medium">{accommodation.hotel}</span>
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{accommodation.distance}</p>
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.3s' }}>
-                <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-                  <span className="text-xs text-gray-500 font-medium">Hotel Makkah</span>
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
-              </div>
-
-              <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50" style={{ animationDelay: '0.4s' }}>
-                <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                  <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-                  <span className="text-xs text-gray-500 font-medium">Hotel Madinah</span>
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMadinah}</p>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Food */}
-        <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group border-l-4 border-transparent hover:border-primary bg-gray-50 mb-2 sm:mb-3" style={{ animationDelay: '0.5s' }}>
-          <div className="flex items-center gap-1 sm:gap-2 mb-1">
-            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-            <span className="text-xs text-gray-500 font-medium">Food Included</span>
-          </div>
-          <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
-        </div>
-
-        {/* Special Services - Highlighted */}
-        {specialServicesList && specialServicesList.length > 0 ? (
-          specialServicesList.map((service, index) => (
-            <div key={index} className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gray-50 border-2 border-secondary hover:border-primary mb-2" style={{ animationDelay: `${0.6 + index * 0.1}s` }}>
-              <div className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
-                ⭐ PREMIUM
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2 mb-1 mt-1">
-                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary animate-pulse" />
-                <span className="text-xs text-primary font-semibold">Special Services</span>
-              </div>
-              <p className="text-xs sm:text-sm font-bold text-primary transition-colors duration-300 group-hover:text-primary">{service.title}</p>
-            </div>
-          ))
-        ) : (
-          <div className="relative animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer group overflow-hidden bg-gray-50 border-2 border-secondary hover:border-primary" style={{ animationDelay: '0.6s' }}>
-            <div className="absolute top-0 right-0 bg-secondary text-white text-xs font-bold px-2 py-0.5 rounded-bl-lg">
-              ⭐ PREMIUM
-            </div>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1 mt-1">
-              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary animate-pulse" />
-              <span className="text-xs text-primary font-semibold">Special Services</span>
-            </div>
-            <p className="text-xs sm:text-sm font-bold text-primary transition-colors duration-300 group-hover:text-primary">{specialServices}</p>
-          </div>
-        )}
-      </div>
-
       {/* Button */}
       <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2">
-        <button 
+        <button
           onClick={handlePrimaryClick}
           className="w-full bg-primary hover:bg-primary text-white font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base"
         >
