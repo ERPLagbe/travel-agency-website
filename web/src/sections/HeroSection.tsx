@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Phone, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
+  const { data: cmsData } = useWebsiteCMS();
 
-  // Slider data - you can replace with CMS data
-  const slides = [
-    {
-      image: 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1920&q=80',
-      title: 'Experience Sacred Hajj',
-      subtitle: 'Journey to the Holy Cities with Expert Guidance'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1920&q=80',
-      title: 'Blessed Umrah Packages',
-      subtitle: 'Comfortable & Affordable Pilgrimage Solutions'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&q=80',
-      title: 'Trusted Since 2008',
-      subtitle: 'Serving British Muslims with Excellence'
-    }
-  ];
+  // Get slides from CMS or use fallback
+  const slides = cmsData?.sliders && cmsData.sliders.length > 0
+    ? cmsData.sliders
+        .filter((slide: any) => slide.is_active === 1)
+        .sort((a: any, b: any) => (a.slide_order || 0) - (b.slide_order || 0))
+        .map((slide: any) => ({
+          image: slide.slide_image || 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1920&q=80',
+          title: slide.slide_title || 'Experience Sacred Journey',
+          subtitle: slide.slide_subtitle || 'Journey to the Holy Cities'
+        }))
+    : [
+        {
+          image: 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1920&q=80',
+          title: 'Experience Sacred Hajj',
+          subtitle: 'Journey to the Holy Cities with Expert Guidance'
+        },
+        {
+          image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1920&q=80',
+          title: 'Blessed Umrah Packages',
+          subtitle: 'Comfortable & Affordable Pilgrimage Solutions'
+        },
+        {
+          image: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&q=80',
+          title: 'Trusted Since 2008',
+          subtitle: 'Serving British Muslims with Excellence'
+        }
+      ];
 
+  // Get hero data from first slider or fallbacks
+  const firstSlider = cmsData?.sliders && cmsData.sliders.length > 0 ? cmsData.sliders[0] : null;
+  
   const heroData = {
-    trustedText: "Trusted Since 2008",
-    primaryButtonText: "Explore Packages",
-    secondaryButtonText: "Contact Us",
-    yearsExperience: "17+",
-    happyPilgrims: "50K+",
-    customerRating: "4.9★",
-    businessPhone: "020 8123 4567"
+    trustedText: firstSlider?.top_badge_text || cmsData?.hero_trusted_text || "Trusted Since 2008",
+    primaryButtonText: firstSlider?.primary_button_text || cmsData?.hero_primary_button_text || "Explore Packages",
+    secondaryButtonText: firstSlider?.secondary_button_text || cmsData?.hero_secondary_button_text || "Contact Us",
+    yearsExperience: firstSlider?.years_experience || cmsData?.hero_years_experience || "17+",
+    happyPilgrims: firstSlider?.happy_pilgrims || cmsData?.hero_happy_pilgrims || "50K+",
+    customerRating: firstSlider?.customer_rating || cmsData?.hero_customer_rating || "4.9★",
+    businessPhone: cmsData?.business_phone || "020 8123 4567"
   };
 
   useEffect(() => {
@@ -43,7 +59,7 @@ const HeroSection = () => {
     }, 5000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -53,7 +69,7 @@ const HeroSection = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const goToSlide = (index) => {
+  const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
@@ -77,7 +93,7 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Overlay */}
+      {/* Overlay - Keep gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
 
       {/* Content */}
@@ -88,7 +104,7 @@ const HeroSection = () => {
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
           }`}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary animate-fadeIn">
+            <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary">
               <Award className="w-4 h-4 text-white" />
               <span className="text-sm font-bold text-white">{heroData.trustedText}</span>
             </div>
@@ -124,7 +140,8 @@ const HeroSection = () => {
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 mb-8">
               <button 
-                className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary"
+                onClick={() => navigate('/category/all')}
+                className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer"
               >
                 <span className="relative flex items-center gap-2">
                   <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
@@ -134,7 +151,8 @@ const HeroSection = () => {
               </button>
               
               <button 
-                className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white"
+                onClick={() => navigate('/contact')}
+                className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer"
               >
                 <span className="relative flex items-center gap-2">
                   <Phone className="w-5 h-5" />
@@ -153,6 +171,10 @@ const HeroSection = () => {
                 <div className="text-3xl md:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
                 <div className="text-sm text-gray-300">Happy Pilgrims</div>
               </div>
+              <div className="backdrop-blur-md rounded-xl p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                <div className="text-3xl md:text-4xl font-bold mb-1 text-secondary">{heroData.customerRating}</div>
+                <div className="text-sm text-gray-300">Customer Rating</div>
+              </div>
             </div>
           </div>
         </div>
@@ -164,6 +186,7 @@ const HeroSection = () => {
         <button
           onClick={prevSlide}
           className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300"
+          aria-label="Previous slide"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -179,6 +202,7 @@ const HeroSection = () => {
                   ? 'w-12 h-3 bg-secondary'
                   : 'w-3 h-3 bg-white/40 hover:bg-white/60'
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
@@ -187,27 +211,11 @@ const HeroSection = () => {
         <button
           onClick={nextSlide}
           className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300"
+          aria-label="Next slide"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.6s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };

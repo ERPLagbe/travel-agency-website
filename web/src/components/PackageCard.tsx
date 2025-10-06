@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Plane, Hotel, Utensils, Sparkles, Calendar } from 'lucide-react';
 
 interface PackageCardProps {
@@ -44,8 +44,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
   accommodationList = [],
   specialServicesList = []
 }) => {
-  // const [isHovered, setIsHovered] = useState(false); // Commented out as it's not used
-
   const handlePrimaryClick = () => {
     if (onPrimaryClick) {
       onPrimaryClick();
@@ -54,12 +52,16 @@ const PackageCard: React.FC<PackageCardProps> = ({
     }
   };
 
+  // Format price with validation
+  const formatPrice = () => {
+    if (!price || price === 0) {
+      return 'Price on request';
+    }
+    return `£${price.toLocaleString()}`;
+  };
+
   return (
-    <div
-      className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
-    // onMouseEnter={() => setIsHovered(true)}
-    // onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full">
       {/* Header Image */}
       <div className="relative h-[250px] overflow-hidden">
         <img
@@ -148,12 +150,20 @@ const PackageCard: React.FC<PackageCardProps> = ({
       {/* Price Section */}
       <div className="px-4 sm:px-6 py-4 sm:py-5 text-center bg-white group cursor-default">
         <div className="inline-block">
-          <span className="text-3xl sm:text-5xl font-bold text-primary animate-countUp transition-all duration-300 group-hover:text-primary group-hover:scale-110 inline-block">
-            £{price.toLocaleString()}
-          </span>
-          <span className="ml-2 sm:ml-3 text-gray-500 text-xs sm:text-sm font-medium animate-fadeIn transition-colors duration-300 group-hover:text-gray-700" style={{ animationDelay: '0.3s' }}>
-            STARTS FROM
-          </span>
+          {price && price > 0 ? (
+            <>
+              <span className="text-3xl sm:text-5xl font-bold text-primary animate-countUp transition-all duration-300 group-hover:text-primary group-hover:scale-110 inline-block">
+                £{price.toLocaleString()}
+              </span>
+              <span className="ml-2 sm:ml-3 text-gray-500 text-xs sm:text-sm font-medium animate-fadeIn transition-colors duration-300 group-hover:text-gray-700" style={{ animationDelay: '0.3s' }}>
+                STARTS FROM
+              </span>
+            </>
+          ) : (
+            <span className="text-2xl sm:text-3xl font-bold text-primary">
+              Price on request
+            </span>
+          )}
         </div>
       </div>
 
@@ -166,56 +176,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
           SELECT PACKAGE
         </button>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes countUp {
-          from {
-            opacity: 0;
-            transform: scale(0.5);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slideIn {
-          animation: slideIn 0.5s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-countUp {
-          animation: countUp 0.8s ease-out forwards;
-          display: inline-block;
-        }
-      `}</style>
     </div>
   );
 };
