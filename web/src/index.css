@@ -258,6 +258,11 @@ img {
   height: auto;
 }
 
+/* Override for background/cover images */
+.object-cover {
+  height: 100% !important;
+}
+
 img[src=""], img:not([src]) {
   opacity: 0;
 }

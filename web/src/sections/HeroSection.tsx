@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, Phone, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
@@ -74,30 +74,30 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="relative overflow-hidden" style={{ minHeight: 'calc(100vh - 200px)' }}>
+    <div className="relative w-full overflow-hidden h-[70vh] lg:h-[80vh] flex items-center">
       {/* Background Image Slider */}
-      <div className="absolute inset-0">
-        {slides.map((slide, index) => (
+      <div className="absolute inset-0 w-full h-full">
+        {slides.map((slide: any, index: number) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover"
+              className="block w-full h-full object-cover"
             />
           </div>
         ))}
       </div>
 
       {/* Overlay - Keep gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-8 flex items-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
+      <div className="container mx-auto px-4 py-8 z-10">
         <div className="w-full">
           {/* Left Aligned Content */}
           <div className={`text-white max-w-3xl transition-all duration-1000 transform ${
@@ -109,23 +109,23 @@ const HeroSection = () => {
               <span className="text-sm font-bold text-white">{heroData.trustedText}</span>
             </div>
 
-            {/* Animated Title & Subtitle - Fixed height container to prevent overlap */}
-            <div className="mb-6 relative" style={{ minHeight: '220px' }}>
-              {slides.map((slide, index) => (
+            {/* Animated Title & Subtitle */}
+            <div className="mb-6">
+              {slides.map((slide: any, index: number) => (
                 <div
                   key={index}
-                  className={`absolute top-0 left-0 w-full transition-all duration-700 ${
+                  className={`transition-all duration-700 ${
                     index === currentSlide 
                       ? 'opacity-100 translate-x-0' 
-                      : 'opacity-0 -translate-x-12 pointer-events-none'
+                      : 'opacity-0 translate-x-12 absolute pointer-events-none'
                   }`}
                 >
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
                     <span className="text-white drop-shadow-2xl">
                       {slide.title}
                     </span>
                   </h1>
-                  <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
                     {slide.subtitle}
                   </p>
                 </div>
@@ -138,13 +138,13 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
               <button 
                 onClick={() => navigate('/category/all')}
-                className="group relative text-white px-8 py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer"
+                className="group relative text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-sm sm:text-base"
               >
                 <span className="relative flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
                   {heroData.primaryButtonText}
                   <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
                 </span>
@@ -152,28 +152,28 @@ const HeroSection = () => {
               
               <button 
                 onClick={() => navigate('/contact')}
-                className="relative px-8 py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer"
+                className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-sm sm:text-base"
               >
                 <span className="relative flex items-center gap-2">
-                  <Phone className="w-5 h-5" />
+                  <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                   {heroData.secondaryButtonText}
                 </span>
               </button>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl">
-              <div className="backdrop-blur-md rounded-xl p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
-                <div className="text-sm text-gray-300">Years Experience</div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-2xl">
+              <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
+                <div className="text-xs sm:text-sm text-gray-300">Years Experience</div>
               </div>
-              <div className="backdrop-blur-md rounded-xl p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
-                <div className="text-sm text-gray-300">Happy Pilgrims</div>
+              <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
+                <div className="text-xs sm:text-sm text-gray-300">Happy Pilgrims</div>
               </div>
-              <div className="backdrop-blur-md rounded-xl p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-1 text-secondary">{heroData.customerRating}</div>
-                <div className="text-sm text-gray-300">Customer Rating</div>
+              <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.customerRating}</div>
+                <div className="text-xs sm:text-sm text-gray-300">Customer Rating</div>
               </div>
             </div>
           </div>
@@ -193,7 +193,7 @@ const HeroSection = () => {
 
         {/* Dots */}
         <div className="flex gap-2">
-          {slides.map((_, index) => (
+          {slides.map((_: any, index: number) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
