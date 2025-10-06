@@ -30,6 +30,7 @@ const CompleteContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    countryCode: '+1',
     phone: '',
     subject: '',
     message: '',
@@ -78,19 +79,20 @@ const CompleteContactPage: React.FC = () => {
     setSubmitStatus('idle');
     
     try {
+      const fullPhone = `${formData.countryCode}${formData.phone}`;
       await createLead({
         lead_name: formData.name,
         email_id: formData.email,
-        phone: formData.phone,
-        company_name: formData.subject,
+        phone: fullPhone,
+        subject: formData.subject,
+        description: formData.message,
         source: 'Website',
         status: 'Open',
-        notes: `Package Interest: ${formData.packageInterest}\n\nMessage: ${formData.message}`,
         package_id: formData.packageInterest
       });
       
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '', packageInterest: '' });
+      setFormData({ name: '', email: '', countryCode: '+1', phone: '', subject: '', message: '', packageInterest: '' });
     } catch (err) {
       setSubmitStatus('error');
       console.error('Error creating lead:', err);
@@ -139,99 +141,183 @@ const CompleteContactPage: React.FC = () => {
             )}
             
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)',
-                  fontSize: 'var(--font-size-base)'
-                }}
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email Address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)',
-                  fontSize: 'var(--font-size-base)'
-                }}
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Your Phone Number"
-                value={formData.phone}
-                onChange={handleChange}
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)',
-                  fontSize: 'var(--font-size-base)'
-                }}
-              />
-              <select
-                name="packageInterest"
-                value={formData.packageInterest}
-                onChange={handleChange}
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)',
-                  fontSize: 'var(--font-size-base)',
-                  backgroundColor: 'var(--color-white)'
-                }}
-              >
-                <option value="">Select Package Interest</option>
-                {allPackages && allPackages.length > 0 ? (
-                  allPackages.map((pkg: any) => (
-                    <option key={pkg.name} value={pkg.name}>
-                      {pkg.item_name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="" disabled>Loading packages...</option>
-                )}
-              </select>
-              <input
-                type="text"
-                name="subject"
-                placeholder="Subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)',
-                  fontSize: 'var(--font-size-base)'
-                }}
-              />
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                style={{ 
-                  padding: 'var(--spacing-3)', 
-                  borderRadius: 'var(--radius-md)', 
-                  border: '1px solid var(--color-gray-300)', 
-                  resize: 'vertical',
-                  fontSize: 'var(--font-size-base)'
-                }}
-              ></textarea>
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Full Name <span style={{ color: 'red' }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  style={{ 
+                    width: '100%',
+                    padding: 'var(--spacing-3)', 
+                    borderRadius: 'var(--radius-md)', 
+                    border: '1px solid var(--color-gray-300)',
+                    fontSize: 'var(--font-size-base)'
+                  }}
+                />
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  style={{ 
+                    width: '100%',
+                    padding: 'var(--spacing-3)', 
+                    borderRadius: 'var(--radius-md)', 
+                    border: '1px solid var(--color-gray-300)',
+                    fontSize: 'var(--font-size-base)'
+                  }}
+                />
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Phone Number <span style={{ color: 'red' }}>*</span>
+                </label>
+                <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                  <select
+                    name="countryCode"
+                    value={formData.countryCode}
+                    onChange={handleChange}
+                    required
+                    style={{ 
+                      width: '120px',
+                      padding: 'var(--spacing-3)', 
+                      borderRadius: 'var(--radius-md)', 
+                      border: '1px solid var(--color-gray-300)',
+                      fontSize: 'var(--font-size-base)',
+                      backgroundColor: 'var(--color-white)'
+                    }}
+                  >
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+966">🇸🇦 +966</option>
+                    <option value="+92">🇵🇰 +92</option>
+                    <option value="+880">🇧🇩 +880</option>
+                    <option value="+20">🇪🇬 +20</option>
+                    <option value="+90">🇹🇷 +90</option>
+                    <option value="+60">🇲🇾 +60</option>
+                    <option value="+62">🇮🇩 +62</option>
+                    <option value="+234">🇳🇬 +234</option>
+                    <option value="+27">🇿🇦 +27</option>
+                    <option value="+86">🇨🇳 +86</option>
+                    <option value="+81">🇯🇵 +81</option>
+                    <option value="+82">🇰🇷 +82</option>
+                    <option value="+61">🇦🇺 +61</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+34">🇪🇸 +34</option>
+                    <option value="+7">🇷🇺 +7</option>
+                  </select>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Your Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    style={{ 
+                      flex: 1,
+                      padding: 'var(--spacing-3)', 
+                      borderRadius: 'var(--radius-md)', 
+                      border: '1px solid var(--color-gray-300)',
+                      fontSize: 'var(--font-size-base)'
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Subject
+                </label>
+                <select
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  style={{ 
+                    width: '100%',
+                    padding: 'var(--spacing-3)', 
+                    borderRadius: 'var(--radius-md)', 
+                    border: '1px solid var(--color-gray-300)',
+                    fontSize: 'var(--font-size-base)',
+                    backgroundColor: 'var(--color-white)'
+                  }}
+                >
+                  <option value="">Select Subject</option>
+                  <option value="Package Inquiry">Package Inquiry</option>
+                  <option value="Service Inquiry">Service Inquiry</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Visa Information">Visa Information</option>
+                  <option value="Booking Support">Booking Support</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Package Interest
+                </label>
+                <select
+                  name="packageInterest"
+                  value={formData.packageInterest}
+                  onChange={handleChange}
+                  style={{ 
+                    width: '100%',
+                    padding: 'var(--spacing-3)', 
+                    borderRadius: 'var(--radius-md)', 
+                    border: '1px solid var(--color-gray-300)',
+                    fontSize: 'var(--font-size-base)',
+                    backgroundColor: 'var(--color-white)'
+                  }}
+                >
+                  <option value="">Select Package (Optional)</option>
+                  {allPackages && allPackages.length > 0 ? (
+                    allPackages.map((pkg: any) => (
+                      <option key={pkg.name} value={pkg.name}>
+                        {pkg.item_name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>Loading packages...</option>
+                  )}
+                </select>
+              </div>
+              
+              <div>
+                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  placeholder="Your Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={5}
+                  style={{ 
+                    width: '100%',
+                    padding: 'var(--spacing-3)', 
+                    borderRadius: 'var(--radius-md)', 
+                    border: '1px solid var(--color-gray-300)', 
+                    resize: 'vertical',
+                    fontSize: 'var(--font-size-base)'
+                  }}
+                ></textarea>
+              </div>
               {submitStatus === 'success' && (
                 <div style={{ 
                   padding: 'var(--spacing-3)', 

@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 interface LeadData {
   lead_name: string;
-  email_id: string;
-  phone?: string;
+  email_id?: string;
+  phone: string;
+  subject?: string;
+  description?: string;
   company_name?: string;
   source?: string;
   status?: string;
@@ -29,8 +31,10 @@ export const useCreateLead = () => {
         },
         body: JSON.stringify({
           first_name: leadData.lead_name,
-          email_id: leadData.email_id,
-          phone: leadData.phone || '',
+          email_id: leadData.email_id || '',
+          phone: leadData.phone,
+          subject: leadData.subject || '',
+          description: leadData.description || '',
           company_name: leadData.company_name || '',
           notes: leadData.notes || '',
           package_id: leadData.package_id || ''

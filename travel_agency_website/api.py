@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 
 @frappe.whitelist(allow_guest=True)
-def create_lead_from_website(first_name, email_id, phone="", company_name="", notes="", package_id=""):
+def create_lead_from_website(first_name, email_id="", phone="", company_name="", notes="", package_id="", subject="", description=""):
     """
     Create a Lead from website contact form
     This method is whitelisted for guest users
@@ -12,25 +12,27 @@ def create_lead_from_website(first_name, email_id, phone="", company_name="", no
         if not first_name:
             frappe.throw(_("Name is required"))
         
-        if not email_id:
-            frappe.throw(_("Email is required"))
+        if not phone:
+            frappe.throw(_("Phone is required"))
         
         # Create Lead document
         lead = frappe.get_doc({
             "doctype": "Lead",
             "first_name": first_name,
-            "email_id": email_id,
-            "phone": phone or "",
+            "email_id": email_id or "",
+            "phone": phone,
             "company_name": company_name or "",
             "status": "Lead",
             "source": "Website",
-            "custom_package": package_id or ""
+            "custom_package": package_id or "",
+            "custom_subject": subject or "",
+            "custom_description": description or ""
         })
         
         # Insert with ignore_permissions to bypass Guest restrictions
         lead.insert(ignore_permissions=True)
         
-        # Add notes as a comment if provided
+        # Add notes as a comment if provided (for backward compatibility)
         if notes:
             lead.add_comment("Comment", notes)
         
