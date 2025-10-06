@@ -12,7 +12,7 @@ const VisaPage: React.FC = () => {
       <SectionContainer size="lg" className="text-center hero-section" style={{
         backgroundImage: cmsData?.visa_background_image 
           ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData.visa_background_image)}')`
-          : `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1920&h=1080&fit=crop')`,
+          : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative',
@@ -25,10 +25,10 @@ const VisaPage: React.FC = () => {
       }}>
         <div style={{ position: 'relative', zIndex: 2, paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
           <Typography variant="h1" color="white" align="center">
-            {cmsData?.visa_title || "Visa Services"}
+            {cmsData?.visa_title}
           </Typography>
           <Typography variant="body-large" color="white" align="center" className="text-muted">
-            {cmsData?.visa_subtitle || "Professional visa processing for all your travel needs"}
+            {cmsData?.visa_subtitle}
           </Typography>
         </div>
       </SectionContainer>
@@ -41,88 +41,42 @@ const VisaPage: React.FC = () => {
             .map((section: any, index: number) => {
               const isEven = index % 2 === 0;
               return (
-                <div key={index} style={{ 
-                  marginBottom: 'var(--spacing-20)',
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                  gap: 'var(--spacing-8)',
-                  alignItems: 'center'
-                }}>
-                  {/* Image Section */}
-                  <div style={{ order: isEven ? 1 : 2 }}>
-                    {section.image ? (
-                      <img 
-                        src={getFileUrlWithFallback(section.image)} 
-                        alt={section.heading}
-                        style={{ 
-                          width: '100%', 
-                          height: 'auto',
-                          borderRadius: 'var(--border-radius-lg)',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    ) : (
-                      <div style={{
-                        width: '100%',
-                        height: '400px',
-                        backgroundColor: 'var(--color-gray-200)',
-                        borderRadius: 'var(--border-radius-lg)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <Typography variant="body" color="muted">No Image</Typography>
-                      </div>
-                    )}
-                  </div>
+                <div key={index} className="mb-16 lg:mb-20">
+                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
+                    isEven ? 'lg:grid-flow-col' : 'lg:grid-flow-col-dense'
+                  }`}>
+                    {/* Content Section - Always first on mobile */}
+                    <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+                      <Typography variant="h2" className="mb-4">
+                        {section.heading}
+                      </Typography>
+                      <Typography variant="body-large" color="muted" className="leading-relaxed">
+                        {section.content}
+                      </Typography>
+                    </div>
 
-                  {/* Content Section */}
-                  <div style={{ order: isEven ? 2 : 1 }}>
-                    <Typography variant="h2" style={{ marginBottom: 'var(--spacing-4)' }}>
-                      {section.heading}
-                    </Typography>
-                    <Typography variant="body-large" color="muted" style={{ lineHeight: '1.8' }}>
-                      {section.content}
-                    </Typography>
+                    {/* Image Section - Always second on mobile */}
+                    <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                      {section.image ? (
+                        <img 
+                          src={getFileUrlWithFallback(section.image)} 
+                          alt={section.heading}
+                          className="w-full h-auto rounded-xl object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-96 bg-gray-200 rounded-xl flex items-center justify-center">
+                          <Typography variant="body" color="muted">No Image</Typography>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
             })
         ) : (
-          /* Fallback content if no sections are configured */
-          <>
-            <div style={{ marginBottom: 'var(--spacing-16)' }}>
-              <Typography variant="h2" align="center" style={{ marginBottom: 'var(--spacing-8)' }}>
-                Working Visa
-              </Typography>
-              <div style={{ 
-                backgroundColor: 'var(--color-gray-100)', 
-                padding: 'var(--spacing-8)', 
-                borderRadius: 'var(--border-radius-lg)',
-                textAlign: 'center'
-              }}>
-                <Typography variant="body-large" color="muted">
-                  Our working visa services help you secure the necessary documentation for employment opportunities abroad. We handle all the paperwork and requirements to make your work visa application process smooth and efficient.
-                </Typography>
-              </div>
-            </div>
-
-            <div>
-              <Typography variant="h2" align="center" style={{ marginBottom: 'var(--spacing-8)' }}>
-                Travel Visa
-              </Typography>
-              <div style={{ 
-                backgroundColor: 'var(--color-gray-100)', 
-                padding: 'var(--spacing-8)', 
-                borderRadius: 'var(--border-radius-lg)',
-                textAlign: 'center'
-              }}>
-                <Typography variant="body-large" color="muted">
-                  Whether you're planning a vacation, visiting family, or exploring new destinations, our travel visa services ensure you have all the necessary documentation for your journey. We provide comprehensive support for tourist, business, and transit visas.
-                </Typography>
-              </div>
-            </div>
-          </>
+          <Typography variant="body" align="center" color="muted">
+            No visa sections configured yet.
+          </Typography>
         )}
       </SectionContainer>
     </div>

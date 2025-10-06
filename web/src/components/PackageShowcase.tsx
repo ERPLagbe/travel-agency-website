@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom'; // Commented out as it's not used
 import PackageCard from './PackageCard';
 import { useWebsiteCMS, useFeaturedPackages } from '../hooks/useWebsiteCMS';
 import { useFrappeGetCall } from 'frappe-react-sdk';
@@ -46,8 +45,8 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
   const allItems = apiResponse?.message?.data || [];
 
   // Use CMS data if available, otherwise fall back to props or defaults
-  const displayTitle = title || cmsData?.featured_packages_title || "Featured Packages";
-  const displaySubtitle = subtitle || cmsData?.featured_packages_subtitle || "Discover our most popular travel experiences";
+  const displayTitle = title || cmsData?.featured_packages_title;
+  const displaySubtitle = subtitle || cmsData?.featured_packages_subtitle;
   
   // Filter all items to only show featured packages
   const packages = propPackages || (() => {
@@ -67,27 +66,27 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
       const accommodationList = item.custom_accommodation_list || [];
       const hotelInfo = accommodationList.length > 0 
         ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-        : item.custom_hotel_information || "1200/1500M";
+        : item.custom_hotel_information;
 
       return {
         id: item.name,
         title: item.item_name,
         category: "Featured",
-        image: item.image || "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop",
-        price: item.standard_rate || 0,
+        image: item.image,
+        price: item.standard_rate,
         nights: "7 Nights", // Keep for compatibility
-        duration: item.custom_duration || "35/42 Days", // Now dynamic from custom_duration field
+        duration: item.custom_duration,
         destination: "Makkah & Madinah",
         description: "Premium travel package",
-        rating: item.custom_package_rating || 5, // Now dynamic from custom_package_rating
+        rating: item.custom_package_rating,
         reviews: 0,
         features: [],
         // Dynamic data from Item custom fields
-        airInfo: item.custom_air_information || "SA/Biman/Flynas",
-        hotelMakkah: hotelInfo, // Now from accommodation list
-        hotelMadinah: hotelInfo, // Now from accommodation list
-        foodInfo: item.custom_food_information || "Breakfast, Lunch & Dinner",
-        specialServices: item.custom_bustaxi_information || "Ziyarah Tour, Transportation & Guide",
+        airInfo: item.custom_air_information,
+        hotelMakkah: hotelInfo,
+        hotelMadinah: hotelInfo,
+        foodInfo: item.custom_food_information,
+        specialServices: item.custom_bustaxi_information,
         // Pass accommodation list for dynamic rendering
         accommodationList: accommodationList,
         // Pass special services list for dynamic rendering
@@ -95,6 +94,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
       };
     });
   })();
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -117,16 +117,16 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
               key={pkg.id}
               id={pkg.id}
               title={pkg.title}
-              nights={pkg.nights || "7 Nights"}
+              nights={pkg.nights}
               rating={pkg.rating}
               price={pkg.price}
               image={pkg.image}
-              duration={pkg.duration || "35/42 Days"}
-              airInfo={pkg.airInfo || "SA/Biman/Flynas"}
-              hotelMakkah={pkg.hotelMakkah || "1200/1500M"}
-              hotelMadinah={pkg.hotelMadinah || "1200/1500M"}
-              foodInfo={pkg.foodInfo || "Breakfast, Lunch & Dinner"}
-              specialServices={pkg.specialServices || "Ziyarah Tour, Transportation & Guide"}
+              duration={pkg.duration}
+              airInfo={pkg.airInfo}
+              hotelMakkah={pkg.hotelMakkah}
+              hotelMadinah={pkg.hotelMadinah}
+              foodInfo={pkg.foodInfo}
+              specialServices={pkg.specialServices}
               accommodationList={pkg.accommodationList}
               specialServicesList={pkg.specialServicesList}
               primaryButtonText="View All Detail"

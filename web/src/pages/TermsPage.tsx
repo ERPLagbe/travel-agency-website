@@ -52,7 +52,7 @@ const TermsPage: React.FC = () => {
       <SectionContainer>
         <div style={{ paddingTop: 'var(--spacing-6)', paddingBottom: 'var(--spacing-4)' }}>
           <Typography variant="h1" align="center" style={{ marginBottom: 'var(--spacing-2)' }}>
-            {cmsData.terms_title || 'Terms and Conditions'}
+            {cmsData.terms_title}
           </Typography>
         </div>
       </SectionContainer>

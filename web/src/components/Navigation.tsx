@@ -4,6 +4,7 @@ import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { Button } from './Button';
+import { ChevronDown, X, Menu } from 'lucide-react';
 
 interface NavigationProps {
   // No props needed for now, can be extended later
@@ -36,6 +37,7 @@ interface NavigationDropdownItem {
 const Navigation: React.FC<NavigationProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileExpandedItems, setMobileExpandedItems] = useState<Set<string>>(new Set());
   const location = useLocation();
   const { data: cmsData } = useWebsiteCMS();
 
@@ -44,6 +46,22 @@ const Navigation: React.FC<NavigationProps> = () => {
   const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Mobile menu helper functions
+  const toggleMobileExpanded = (itemPath: string) => {
+    const newExpanded = new Set(mobileExpandedItems);
+    if (newExpanded.has(itemPath)) {
+      newExpanded.delete(itemPath);
+    } else {
+      newExpanded.add(itemPath);
+    }
+    setMobileExpandedItems(newExpanded);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false);
+    setMobileExpandedItems(new Set());
+  };
 
   // Build navigation items from CMS data
   const buildNavItems = (): NavItem[] => {
@@ -95,7 +113,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           <Link to="/" className="no-underline">
             <div className="text-white">
               <div className="text-2xl font-bold">
-                {cmsData?.logo && <img className='w-10 h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
+                {cmsData?.logo && <img className='w-[150px] lg:w-full h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
                 {!cmsData?.logo && <div className="text-2xl font-bold">{cmsData?.logo_text }</div> }
               </div>
             </div>
@@ -132,9 +150,11 @@ const Navigation: React.FC<NavigationProps> = () => {
                     <span className="text-white">
                       {item.label}
                     </span>
-                    <span className="text-white text-xs ml-1">
-                      ▼
-                    </span>
+                    <ChevronDown 
+                      className={`w-4 h-4 text-white transition-transform duration-200 ${
+                        activeDropdown === item.path ? 'rotate-180' : ''
+                      }`} 
+                    />
                   </button>
                 ) : (
                   // For regular navigation items, use Link
@@ -162,9 +182,13 @@ const Navigation: React.FC<NavigationProps> = () => {
                 )}
                 
                 {/* Dropdown Menu */}
-                {item.submenu && activeDropdown === item.path && (
+                {item.submenu && (
                   <div 
-                    className="absolute top-full left-0 bg-white shadow-lg rounded-md p-2 min-w-[200px] z-50 border border-gray-200"
+                    className={`absolute top-full left-0 bg-white shadow-xl rounded-lg p-2 min-w-[220px] z-50 border border-gray-200 transition-all duration-300 ease-in-out ${
+                      activeDropdown === item.path 
+                        ? 'opacity-100 visible translate-y-0' 
+                        : 'opacity-0 invisible -translate-y-2 pointer-events-none'
+                    }`}
                     onMouseEnter={() => setActiveDropdown(item.path)}
                     onMouseLeave={() => setActiveDropdown(null)}
                     role="menu"
@@ -174,7 +198,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                       <Link
                         key={subItem.path}
                         to={subItem.path}
-                        className="block px-3 py-2 no-underline text-gray-700 rounded-sm transition-colors duration-300 hover:bg-gray-100"
+                        className="block px-4 py-3 no-underline text-gray-700 rounded-md transition-all duration-200 hover:bg-primary/5 hover:text-primary font-medium"
                         role="menuitem"
                         aria-label={`Navigate to ${subItem.label}`}
                       >
@@ -219,45 +243,75 @@ const Navigation: React.FC<NavigationProps> = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="mobile-menu-btn bg-transparent border-0 text-white cursor-pointer p-2 flex items-center gap-2"
+          className="mobile-menu-btn bg-transparent border-0 text-white cursor-pointer p-2 flex items-center gap-2 transition-colors duration-200 hover:bg-white/10 rounded-lg"
           aria-label="Toggle navigation menu"
           aria-expanded={isMenuOpen}
           aria-controls="mobile-navigation"
         >
-          <span className="text-2xl" aria-hidden="true">☰</span>
+          {isMenuOpen ? (
+            <X className="w-6 h-6" aria-hidden="true" />
+          ) : (
+            <Menu className="w-6 h-6" aria-hidden="true" />
+          )}
         </button>
       </div>
 
       {/* Mobile Navigation Drawer */}
-      {isMenuOpen && (
+      <div 
+        className={`fixed inset-0 z-50 transition-all duration-300 ease-in-out ${
+          isMenuOpen ? 'visible' : 'invisible'
+        }`}
+      >
+        {/* Backdrop */}
+        <div 
+          className={`absolute inset-0 bg-black transition-opacity duration-300 ${
+            isMenuOpen ? 'opacity-50' : 'opacity-0'
+          }`}
+          onClick={closeMobileMenu}
+        />
+        
+        {/* Drawer */}
         <div 
           id="mobile-navigation"
-          className="mobile-nav bg-primary border-t border-gray-700 p-6"
+          className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
           role="navigation"
           aria-label="Mobile navigation menu"
         >
-          <div className="flex flex-col gap-6">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h2 className="text-xl font-bold text-gray-900">Menu</h2>
+            <button
+              onClick={closeMobileMenu}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-col h-full">
             {/* Action Buttons Section */}
-            <div className="border-b border-gray-700 pb-4">
-              <div className="flex flex-col gap-4">
-                {/* Get Appointment Button */}
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex flex-col gap-3">
                 <Button 
                   as="a"
                   href="/contact"
-                  variant="secondary"
+                  variant="primary"
                   className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeMobileMenu}
                   aria-label="Book an appointment"
                 >
                   Get Appointment
                 </Button>
 
-                {/* Login Button */}
                 <Button 
-                  variant="secondary"
+                  variant="secondary-fill"
                   className="w-full"
                   onClick={() => {
-                    setIsMenuOpen(false);
+                    closeMobileMenu();
                     window.location.href = '/login';
                   }}
                   aria-label="Login to your account"
@@ -268,47 +322,71 @@ const Navigation: React.FC<NavigationProps> = () => {
             </div>
 
             {/* Navigation Links */}
-            <div className="space-y-4">
-              {navItems.map((item) => (
-                <div key={item.path}>
-                  {item.submenu ? (
-                    // For dropdown items in mobile, show as non-clickable header
-                    <div className="font-medium py-3 block text-lg text-white">
-                      {item.label}
-                    </div>
-                  ) : (
-                    // For regular navigation items, use Link
-                    <Link
-                      to={item.path}
-                      className={`no-underline font-medium py-3 block text-lg ${
-                        isActive(item.path) ? 'text-accent' : 'text-white'
-                      }`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                  {item.submenu && (
-                    <div className="ml-4 mt-2 space-y-2">
-                      {item.submenu.map((subItem: NavSubItem) => (
-                        <Link
-                          key={subItem.path}
-                          to={subItem.path}
-                          className="no-underline text-white py-2 block text-base"
-                          onClick={() => setIsMenuOpen(false)}
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-2">
+                {navItems.map((item) => (
+                  <div key={item.path} className="border-b border-gray-100 last:border-b-0">
+                    {item.submenu ? (
+                      // Collapsible dropdown items
+                      <div>
+                        <button
+                          onClick={() => toggleMobileExpanded(item.path)}
+                          className="w-full flex items-center justify-between py-4 text-left font-medium text-gray-900 hover:text-primary transition-colors duration-200"
+                          aria-expanded={mobileExpandedItems.has(item.path)}
                         >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                          <span>{item.label}</span>
+                          <ChevronDown 
+                            className={`w-5 h-5 transition-transform duration-200 ${
+                              mobileExpandedItems.has(item.path) ? 'rotate-180' : ''
+                            }`} 
+                          />
+                        </button>
+                        
+                        {/* Collapsible submenu */}
+                        <div 
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                            mobileExpandedItems.has(item.path) 
+                              ? 'max-h-96 opacity-100' 
+                              : 'max-h-0 opacity-0'
+                          }`}
+                        >
+                          <div className="pb-2 pl-4 space-y-1">
+                            {item.submenu.map((subItem: NavSubItem) => (
+                              <Link
+                                key={subItem.path}
+                                to={subItem.path}
+                                className={`block py-3 px-4 text-gray-600 rounded-lg transition-all duration-200 hover:bg-primary/5 hover:text-primary ${
+                                  isActive(subItem.path) ? 'bg-primary/10 text-primary font-medium' : ''
+                                }`}
+                                onClick={closeMobileMenu}
+                              >
+                                {subItem.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Regular navigation items
+                      <Link
+                        to={item.path}
+                        className={`block py-4 font-medium transition-colors duration-200 ${
+                          isActive(item.path) 
+                            ? 'text-primary' 
+                            : 'text-gray-900 hover:text-primary'
+                        }`}
+                        onClick={closeMobileMenu}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

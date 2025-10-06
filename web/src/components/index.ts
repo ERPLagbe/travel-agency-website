@@ -16,6 +16,6 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 
 // New sections
 export { default as CTASection } from '../sections/CTASection';
-export { default as HajjDeals } from '../sections/HajjDeals';
+export { default as AllPackages } from '../sections/AllPackages';
 export { default as WelcomeSection } from '../sections/WelcomeSection';
 export { default as PackagesDescription } from '../sections/PackagesDescription';

@@ -61,8 +61,8 @@ const Testimonials: React.FC = () => {
     );
   }
 
-  const title = cmsData?.testimonials_title || "WHAT OUR CLIENTS SAY?";
-  const subtitle = cmsData?.testimonials_subtitle || "Creating Unforgettable Experiences";
+  const title = cmsData?.testimonials_title;
+  const subtitle = cmsData?.testimonials_subtitle;
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -146,7 +146,7 @@ const Testimonials: React.FC = () => {
                           />
                         ) : (
                           <span className="text-primary font-bold text-lg">
-                            {testimonial.customer_name?.charAt(0) || '?'}
+                            {testimonial.customer_name?.charAt(0)}
                           </span>
                         )}
                       </div>

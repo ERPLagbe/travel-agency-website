@@ -6,13 +6,13 @@ import { Button } from '../components/Button';
 const CTASection: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
 
-  // Get CTA data from CMS with fallbacks
+  // Get CTA data from CMS
   const ctaData = {
-    title: cmsData?.cta_title || "Customise Your Package",
-    description: cmsData?.cta_description || "We are specialists in Customised packages according to your needs.",
-    subtitle: cmsData?.cta_subtitle || "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice.",
-    buttonText: cmsData?.cta_button_text || "Customise Your Package",
-    buttonLink: cmsData?.cta_button_link || "/contact"
+    title: cmsData?.cta_title,
+    description: cmsData?.cta_description,
+    subtitle: cmsData?.cta_subtitle,
+    buttonText: cmsData?.cta_button_text,
+    buttonLink: cmsData?.cta_button_link
   };
 
   return (

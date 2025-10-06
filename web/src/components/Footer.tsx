@@ -14,28 +14,10 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Fallback data if CMS data is not available
-  const fallbackQuickLinks = [
-    { link_text: "About Us", link_url: "/about" },
-    { link_text: "Contact", link_url: "/contact" },
-    { link_text: "Branches", link_url: "/branches" }
-  ];
-
-  const fallbackTermsLinks = [
-    { link_text: "Terms & Conditions", link_url: "/terms" },
-    { link_text: "Privacy Policy", link_url: "/privacy" },
-    { link_text: "Refund Policy", link_url: "/refund" }
-  ];
-
-  const fallbackSocialLinks = [
-    { platform_name: "Facebook", platform_url: "https://facebook.com/bismillahtravel" },
-    { platform_name: "Instagram", platform_url: "https://instagram.com/bismillahtravel" }
-  ];
-
-  // Use CMS data if available, otherwise use fallback
-  const quickLinks = (footerQuickLinks && footerQuickLinks.length > 0) ? footerQuickLinks : fallbackQuickLinks;
-  const termsLinks = (footerTermsLinks && footerTermsLinks.length > 0) ? footerTermsLinks : fallbackTermsLinks;
-  const socialLinks = (socialMediaLinks && socialMediaLinks.length > 0) ? socialMediaLinks : fallbackSocialLinks;
+  // Use CMS data only
+  const quickLinks = footerQuickLinks || [];
+  const termsLinks = footerTermsLinks || [];
+  const socialLinks = socialMediaLinks || [];
 
   return (
     <footer className="bg-primary text-white" role="contentinfo">
@@ -78,7 +60,7 @@ const Footer: React.FC = () => {
             {/* Logo */}
             <div>
               <div className="text-white mb-6">
-                <div className="text-2xl font-bold text-secondary">{cmsData?.logo && <img className='w-10 h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
+                <div className="text-2xl font-bold text-secondary">{cmsData?.logo && <img className='w-1/2 h-full object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
               </div>
                 {cmsData?.business_name && <div className="text-2xl font-bold text-white">{cmsData?.business_name}</div> }
               </div>
@@ -162,25 +144,12 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <div className="text-white text-sm">
-              {cmsData?.footer_copyright || `All rights reserved ${cmsData?.business_name || "Bismillah Travel"} @ 2010 - 2025`}
+              {cmsData?.footer_copyright}
             </div>
 
             {/* Legal Text */}
             <div className="text-white text-xs text-center md:text-right max-w-2xl">
-              {cmsData?.footer_legal_text || (
-                <>
-                  This website is operated by {cmsData?.business_name || "Bismillah Travel"}. 
-                  (Company Number {cmsData?.company_number || "12345678"} and ATOL {cmsData?.atol_number || "ATOL1234"}) T/A registered in England and Wales. 
-                  ATOL protection does not apply to all holiday and travel services listed on this website. 
-                  Please ask us to confirm what protection may apply to your booking. 
-                  If you do not receive an ATOL Certificate then the booking will not be ATOL protected. 
-                  If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. 
-                  Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: 
-                  <a href={cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"} className="text-secondary" target="_blank" rel="noopener noreferrer">
-                    {cmsData?.atol_certificate_url || "https://www.atol.org/about-atol/atol-certificates/"}
-                  </a>
-                </>
-              )}
+              {cmsData?.footer_legal_text}
             </div>
 
             {/* Scroll to Top */}

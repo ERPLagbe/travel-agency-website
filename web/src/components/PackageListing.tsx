@@ -41,7 +41,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     isValidating
   });
   const [sortBy, setSortBy] = useState<'price-low' | 'price-high' | 'name'>('name');
-  const [filterPrice, setFilterPrice] = useState<{ min: number; max: number }>({ min: 0, max: 10000 });
+  const [filterPrice, setFilterPrice] = useState<{ min: number; max: number } | null>(null);
 
   // Sort packages based on selected criteria
   const sortedPackages = React.useMemo(() => {
@@ -61,11 +61,15 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
         break;
     }
     
-    // Filter by price range
-    return sorted.filter(pkg => {
-      const price = pkg.standard_rate || 0;
-      return price >= filterPrice.min && price <= filterPrice.max;
-    });
+    // Filter by price range (only if filter is set)
+    if (filterPrice) {
+      return sorted.filter(pkg => {
+        const price = pkg.standard_rate || 0;
+        return price >= filterPrice.min && price <= filterPrice.max;
+      });
+    }
+    
+    return sorted;
   }, [packages, sortBy, filterPrice]);
 
   if (isValidating) {
@@ -102,57 +106,89 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
           <h1 className="text-4xl font-bold text-primary mb-4">
             {!itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups' 
               ? 'All Packages' 
-              : `${itemGroup} Packages`}
+              : `${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {!itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups'
               ? 'Discover our comprehensive range of spiritual and cultural journey packages designed to provide you with the best travel experience.'
-              : `Discover our carefully curated ${itemGroup.toLowerCase()} packages designed to provide you with the best travel experience.`}
+              : `Discover our carefully curated ${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ').toLowerCase()} packages designed to provide you with the best travel experience.`}
           </p>
         </div>
 
-        {/* Filters and Sorting */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
-            {/* Sort Options */}
-            <div className="flex items-center gap-4">
-              <label className="text-gray-700 font-semibold">Sort by:</label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="name">Name (A-Z)</option>
-                <option value="price-low">Price (Low to High)</option>
-                <option value="price-high">Price (High to Low)</option>
-              </select>
-            </div>
-
-            {/* Price Filter */}
-            <div className="flex items-center gap-4">
-              <label className="text-gray-700 font-semibold">Price Range:</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={filterPrice.min}
-                  onChange={(e) => setFilterPrice(prev => ({ ...prev, min: Number(e.target.value) || 0 }))}
-                  className="border border-gray-300 rounded-lg px-3 py-2 w-20 focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-                <span className="text-gray-500">-</span>
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={filterPrice.max}
-                  onChange={(e) => setFilterPrice(prev => ({ ...prev, max: Number(e.target.value) || 10000 }))}
-                  className="border border-gray-300 rounded-lg px-3 py-2 w-20 focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
+        {/* Modern Filters and Sorting */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8 mb-8">
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-gray-900">Filter & Sort</h2>
+              <div className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                {sortedPackages.length} package{sortedPackages.length !== 1 ? 's' : ''} found
               </div>
             </div>
 
-            {/* Results Count */}
-            <div className="text-gray-600">
-              {sortedPackages.length} package{sortedPackages.length !== 1 ? 's' : ''} found
+            {/* Filter Controls */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Sort Options */}
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-gray-700">Sort by</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 hover:border-gray-300"
+                >
+                  <option value="name">Name (A-Z)</option>
+                  <option value="price-low">Price (Low to High)</option>
+                  <option value="price-high">Price (High to Low)</option>
+                </select>
+              </div>
+
+              {/* Price Filter */}
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-gray-700">Price Range</label>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      placeholder="Min Price"
+                      value={filterPrice?.min || ''}
+                      onChange={(e) => {
+                        const min = Number(e.target.value) || 0;
+                        setFilterPrice(prev => prev ? { ...prev, min } : { min, max: 1000000 });
+                      }}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 hover:border-gray-300 placeholder-gray-400"
+                    />
+                  </div>
+                  <div className="text-gray-400 font-medium">to</div>
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      placeholder="Max Price"
+                      value={filterPrice?.max || ''}
+                      onChange={(e) => {
+                        const max = Number(e.target.value) || 1000000;
+                        setFilterPrice(prev => prev ? { ...prev, max } : { min: 0, max });
+                      }}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 hover:border-gray-300 placeholder-gray-400"
+                    />
+                  </div>
+                  {filterPrice && (
+                    <button
+                      onClick={() => setFilterPrice(null)}
+                      className="flex-shrink-0 w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 rounded-xl flex items-center justify-center transition-all duration-200"
+                      title="Clear price filter"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                {filterPrice && (
+                  <div className="text-xs text-gray-500 bg-blue-50 px-3 py-2 rounded-lg">
+                    Showing packages from £{filterPrice.min.toLocaleString()} to £{filterPrice.max.toLocaleString()}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -165,25 +201,25 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               const accommodationList = pkg.custom_accommodation_list || [];
               const hotelInfo = accommodationList.length > 0 
                 ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-                : pkg.custom_hotel_information || "1200/1500M";
+                : pkg.custom_hotel_information;
 
               return (
                 <PackageCard
                   key={pkg.name}
                   id={pkg.name}
-                  title={pkg.item_name || 'Package'}
+                  title={pkg.item_name}
                   nights="7 Nights" // Keep for compatibility
-                  duration={pkg.custom_duration || "35/42 Days"} // Dynamic duration
-                  rating={pkg.custom_package_rating || 5} // Dynamic rating
-                  price={pkg.standard_rate || 0}
-                  image={pkg.image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop'}
-                  itemGroup={pkg.item_group} // Pass the item group for proper routing
+                  duration={pkg.custom_duration}
+                  rating={pkg.custom_package_rating}
+                  price={pkg.standard_rate}
+                  image={pkg.image}
+                  itemGroup={pkg.item_group}
                   // Dynamic data from Item custom fields
-                  airInfo={pkg.custom_air_information || "SA/Biman/Flynas"}
-                  hotelMakkah={hotelInfo} // From accommodation list
-                  hotelMadinah={hotelInfo} // From accommodation list
-                  foodInfo={pkg.custom_food_information || "Breakfast, Lunch & Dinner"}
-                  specialServices={pkg.custom_bustaxi_information || "Ziyarah Tour, Transportation & Guide"}
+                  airInfo={pkg.custom_air_information}
+                  hotelMakkah={hotelInfo}
+                  hotelMadinah={hotelInfo}
+                  foodInfo={pkg.custom_food_information}
+                  specialServices={pkg.custom_bustaxi_information}
                   // Pass dynamic lists for rendering
                   accommodationList={accommodationList}
                   specialServicesList={pkg.custom_special_services || []}

@@ -12,11 +12,11 @@ const WelcomeSection: React.FC = () => {
           {/* Left Side - Content */}
           <div>
             <h2 className="text-primary text-3xl md:text-4xl font-bold mb-6">
-              {cmsData?.welcome_title || "Welcome to Bismillah Travel - Your Trusted Umrah Travel Agency in the UK."}
+              {cmsData?.welcome_title}
             </h2>
             
             <p className="text-gray-700 text-lg leading-relaxed mb-8">
-              {cmsData?.welcome_description || "At Bismillah Travel, we understand that embarking on a spiritual journey to the holy cities of Mecca and Medina is one of the most profound experiences in a Muslim's life. Our mission is to make this sacred pilgrimage as seamless and meaningful as possible for British Muslims."}
+              {cmsData?.welcome_description}
             </p>
             
             {/* <p className="text-gray-700 text-lg leading-relaxed mb-8">
@@ -24,11 +24,11 @@ const WelcomeSection: React.FC = () => {
             </p> */}
 
             <h3 className="text-primary text-2xl font-bold mb-4">
-              {cmsData?.welcome_services_title || "Our Services - Tailored Islamic Travel Solutions"}
+              {cmsData?.welcome_services_title}
             </h3>
             
             <p className="text-gray-700 text-lg leading-relaxed">
-              {cmsData?.welcome_services_description || "We offer comprehensive Umrah and Hajj packages designed to meet the diverse needs and budgets of our clients. Whether you're planning your first Umrah or returning for another spiritual journey, our team of experienced travel consultants will work closely with you to create a personalized itinerary that ensures a comfortable and spiritually fulfilling experience."}
+              {cmsData?.welcome_services_description}
             </p>
           </div>
 

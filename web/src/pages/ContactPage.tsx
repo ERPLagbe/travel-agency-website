@@ -24,25 +24,8 @@ const CompleteContactPage: React.FC = () => {
     limit: 1000
   });
   
-  // Fallback contact data if CMS is not available
-  const fallbackContactData = {
-    business_name: "Bismillah Travel",
-    business_phone: "+44 20 1234 5678",
-    business_email: "info@bismillahtravel.co.uk",
-    business_address: "Suite No.5, The Old Dispensary<br />30 Romford Road, Stratford<br />London, England, E15 4BZ<br />United Kingdom",
-    company_number: "12345678",
-    atol_number: "ATOL1234",
-    whatsapp_number: "+44 7700 900000"
-  };
-
-  // Use CMS data if available, otherwise use fallback
-  const contactData = cmsData || fallbackContactData;
-
-  // Show error state if CMS data failed to load
-  if (cmsError) {
-    console.error('CMS Error:', cmsError);
-    // Continue with fallback data instead of showing error
-  }
+  // Use CMS data only
+  const contactData = cmsData;
   
   const [formData, setFormData] = useState({
     name: '',
@@ -120,7 +103,7 @@ const CompleteContactPage: React.FC = () => {
       <SectionContainer size="lg" className="text-center hero-section contact-hero">
         <div style={{ paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
           <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-6)' }}>
-            Contact {contactData?.business_name || 'Us'}
+            Contact {contactData?.business_name}
           </Typography>
           <Typography variant="body-large" color="white" align="center">
             Get in touch with us to start planning your spiritual journey

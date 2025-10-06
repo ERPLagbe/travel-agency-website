@@ -103,8 +103,8 @@ const PackageDetails: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Banner Section */}
-      <div className="w-full max-w-7xl mx-auto px-6 py-8">
-        <div className="relative h-32 rounded-xl overflow-hidden shadow-lg">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        <div className="relative h-full py-4 md:h-40 rounded-lg sm:rounded-xl overflow-hidden shadow-lg">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center"
@@ -117,28 +117,28 @@ const PackageDetails: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-purple-800/70"></div>
           
           {/* Content */}
-          <div className="relative h-full flex items-center justify-between px-8">
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+          <div className="relative h-full flex items-center px-4 sm:px-6 md:px-8">
+            <div className="w-full">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3">
                 {packageData.item_name}
               </h1>
               
-              <div className="flex items-center gap-3">
-                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3">
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white text-sm font-medium">
                   {packageData.item_group}
                 </span>
-                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium flex items-center gap-1">
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white text-sm font-medium flex items-center gap-1.5">
                   <Clock className="w-4 h-4" />
-                  {packageData.custom_duration || '35/42 Days'}
+                  {packageData.custom_duration}
                 </span>
                 {/* Rating */}
                 {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
-                  <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium flex items-center gap-1">
+                  <span className="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white text-sm font-medium flex items-center gap-1.5">
                     <Star className="w-4 h-4 fill-current text-secondary" />
                     {(Math.min(5, (packageData.custom_package_rating <= 1 ? packageData.custom_package_rating * 5 : packageData.custom_package_rating))).toFixed(1)}/5
                   </span>
                 )}
-                <span className="bg-amber-400 px-3 py-1 rounded-md text-purple-900 text-sm font-bold flex items-center gap-1">
+                <span className="bg-amber-400 px-3 py-1.5 rounded-lg text-purple-900 text-sm font-bold flex items-center gap-1.5">
                   <Tag className="w-4 h-4" />
                   {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
                 </span>
@@ -148,17 +148,16 @@ const PackageDetails: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Package Description */}
-
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+      
 
             {/* Package Features */}
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-primary mb-6">Package Features</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Package Features</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {packageData.custom_features && packageData.custom_features.length > 0 ? (
                   packageData.custom_features.map((feature: any, index: number) => (
                     <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
@@ -175,9 +174,9 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* ERPNext Custom Fields Information */}
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-primary mb-6">Package Inclusions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Package Inclusions</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Flight Information - Only show if custom_air is 1 and has information */}
                 {packageData.custom_air === 1 && packageData.custom_air_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
@@ -238,8 +237,8 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Accommodation Information */}
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-primary mb-6">Accommodation</h2>
+            <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Accommodation</h2>
               {packageData.custom_accommodation_information && (
                 <div className="mb-6">
                   <p className="text-gray-700">{packageData.custom_accommodation_information}</p>
@@ -250,20 +249,22 @@ const PackageDetails: React.FC = () => {
                 packageData.custom_accommodation_list.map((accommodation: any, index: number) => {
                   // Use hotel_details if available (enriched data), otherwise fall back to link name
                   const hotelName = accommodation.hotel_details?.hotel_name || accommodation.hotel
-                  const location = accommodation.hotel_details?.location || ''
-                  const description = accommodation.hotel_details?.description || ''
+                  const location = accommodation.hotel_details?.location
+                  const description = accommodation.hotel_details?.description
                   const images = accommodation.images || []
                   
                   return (
-                    <div key={index} className="mb-8 last:mb-0 p-6 bg-white rounded-lg shadow-md border-l-4 border-primary">
+                    <div key={index} className="mb-6 last:mb-0   p-4 sm:p-6 bg-gray-50 rounded-xl border border-gray-200">
                       <div className="flex items-start gap-3 mb-4">
-                        <Hotel className="w-6 h-6 text-primary mt-1" />
-                        <div>
-                          <h3 className="text-xl font-bold text-primary mb-2">{hotelName}</h3>
+                        <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Hotel className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg sm:text-xl font-bold text-primary mb-2">{hotelName}</h3>
                           {location && (
                             <div className="flex items-center gap-2 text-gray-600 mb-2">
-                              <MapPin className="w-4 h-4" />
-                              <span>{location}</span>
+                              <MapPin className="w-4 h-4 flex-shrink-0" />
+                              <span className="text-sm sm:text-base">{location}</span>
                             </div>
                           )}
                         </div>
@@ -276,7 +277,7 @@ const PackageDetails: React.FC = () => {
                       {/* Hotel Images */}
                       {images.length > 0 && (
                         <div className="mb-4">
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                             {images.map((image: any, imgIndex: number) => (
                               <div key={imgIndex} className="relative aspect-video rounded-lg overflow-hidden">
                                 <img 
@@ -310,18 +311,18 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Itinerary */}
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-primary mb-6">Itinerary</h2>
+            <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Itinerary</h2>
               <div className="space-y-4">
                 {packageData.custom_itinerary && packageData.custom_itinerary.length > 0 ? (
                   packageData.custom_itinerary.map((day: any, index: number) => (
-                    <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+                    <div key={index} className="flex gap-4 p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
                         {index + 1}
                       </div>
-                      <div>
-                        <h3 className="font-bold text-primary mb-1">{day.title}</h3>
-                        <p className="text-gray-700">{day.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-primary mb-2 text-base sm:text-lg leading-tight">{day.title}</h3>
+                        <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{day.description}</p>
                       </div>
                     </div>
                   ))
@@ -349,14 +350,14 @@ const PackageDetails: React.FC = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 ">
+          <div className="space-y-4 sm:space-y-6">
             {/* Package Price & Info */}
             <div className="lg:sticky lg:top-22 flex flex-col gap-4">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-primary mb-4">Package Details</h3>
-              <div className="mb-6">
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-primary">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg sm:text-xl font-bold text-primary mb-3 sm:mb-4">Package Details</h3>
+              <div className="mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">
                     {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
                   </div>
                   {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
@@ -428,8 +429,8 @@ const PackageDetails: React.FC = () => {
             </div> */}
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-primary mb-4">Quick Actions</h3>
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg sm:text-xl font-bold text-primary mb-3 sm:mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 {cmsData?.business_phone && (
                   <Button 
@@ -456,7 +457,7 @@ const PackageDetails: React.FC = () => {
                 {cmsData?.business_email && (
                   <Button 
                     as="a"
-                    href={`mailto:${cmsData.business_email}?subject=Package Inquiry - ${packageData?.item_name || 'Travel Package'}`}
+                    href={`mailto:${cmsData.business_email}?subject=Package Inquiry - ${packageData?.item_name}`}
                     variant="secondary-fill"
                     className="w-full"
                   >
