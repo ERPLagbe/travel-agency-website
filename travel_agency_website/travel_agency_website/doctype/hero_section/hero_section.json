@@ -1,0 +1,171 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-06 11:11:35.964328",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "slide_image",
+  "section_break_1",
+  "slide_title",
+  "slide_subtitle",
+  "column_break_1",
+  "slide_description",
+  "top_badge_text",
+  "section_break_2",
+  "primary_button_text",
+  "secondary_button_text",
+  "section_break_3",
+  "years_experience",
+  "column_break_2",
+  "happy_pilgrims",
+  "column_break_3",
+  "customer_rating",
+  "section_break_4",
+  "slide_order",
+  "column_break_4",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "slide_image",
+   "fieldtype": "Attach Image",
+   "label": "Slide Background Image",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Upload background image for this slide (Recommended: 1920x1080px)"
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Slide Content"
+  },
+  {
+   "fieldname": "slide_title",
+   "fieldtype": "Data",
+   "label": "Slide Title",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Main heading for this slide"
+  },
+  {
+   "fieldname": "slide_subtitle",
+   "fieldtype": "Data",
+   "label": "Slide Subtitle",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Subtitle text displayed below the title"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "slide_description",
+   "fieldtype": "Small Text",
+   "label": "Description",
+   "description": "Paragraph text displayed below subtitle"
+  },
+  {
+   "fieldname": "top_badge_text",
+   "fieldtype": "Data",
+   "label": "Top Badge Text",
+   "default": "Trusted Since 2008",
+   "description": "Badge text displayed at the top"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Call to Action Buttons"
+  },
+  {
+   "fieldname": "primary_button_text",
+   "fieldtype": "Data",
+   "label": "Primary Button Text",
+   "default": "Explore Packages",
+   "description": "Text for the main action button"
+  },
+  {
+   "fieldname": "secondary_button_text",
+   "fieldtype": "Data",
+   "label": "Secondary Button Text",
+   "default": "Contact Us",
+   "description": "Text for the secondary action button"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Statistics"
+  },
+  {
+   "fieldname": "years_experience",
+   "fieldtype": "Data",
+   "label": "Years Experience",
+   "default": "17+",
+   "description": "Display value for years of experience"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "happy_pilgrims",
+   "fieldtype": "Data",
+   "label": "Happy Pilgrims",
+   "default": "50K+",
+   "description": "Display value for number of happy pilgrims"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_rating",
+   "fieldtype": "Data",
+   "label": "Customer Rating",
+   "default": "4.9★",
+   "description": "Display value for customer rating"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Settings"
+  },
+  {
+   "fieldname": "slide_order",
+   "fieldtype": "Int",
+   "label": "Display Order",
+   "default": 0,
+   "in_list_view": 1,
+   "description": "Order in which slide appears (lower number shows first)"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": 1,
+   "in_list_view": 1,
+   "description": "Uncheck to temporarily hide this slide"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-06 11:11:35.964328",
+ "modified_by": "Administrator",
+ "module": "Travel Agency Website",
+ "name": "Hero Section",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

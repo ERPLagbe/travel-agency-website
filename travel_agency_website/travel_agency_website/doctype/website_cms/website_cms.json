@@ -2,13 +2,11 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:title",
- "creation": "2025-01-27 10:00:00.000000",
+ "creation": "2025-01-27 10:00:00",
  "default_view": "Form",
  "doctype": "DocType",
- "name": "Website CMS",
  "editable_grid": 1,
  "engine": "InnoDB",
- "issingle": 1,
  "field_order": [
   "title",
   "section_break_business",
@@ -27,17 +25,7 @@
   "navigation_dropdowns",
   "navigation_dropdown_items",
   "section_break_hero",
-  "hero_background_image",
-  "hero_floating_image",
-  "hero_trusted_text",
-  "hero_main_title",
-  "hero_subtitle",
-  "hero_description",
-  "hero_primary_button_text",
-  "hero_secondary_button_text",
-  "hero_years_experience",
-  "hero_happy_pilgrims",
-  "hero_customer_rating",
+  "sliders",
   "section_break_packages",
   "featured_packages_title",
   "featured_packages_subtitle",
@@ -97,6 +85,7 @@
    "reqd": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_business",
    "fieldtype": "Section Break",
    "label": "Business Settings"
@@ -125,10 +114,10 @@
    "label": "Business Address"
   },
   {
+   "description": "If provided, WhatsApp icon will be shown in navigation",
    "fieldname": "whatsapp_number",
    "fieldtype": "Data",
-   "label": "WhatsApp Number",
-   "description": "If provided, WhatsApp icon will be shown in navigation"
+   "label": "WhatsApp Number"
   },
   {
    "fieldname": "company_number",
@@ -146,24 +135,24 @@
    "label": "ATOL Certificate URL"
   },
   {
+   "default": "4.9/5",
+   "description": "Rating displayed in contact card (e.g., 4.9/5)",
    "fieldname": "contact_card_rating",
    "fieldtype": "Data",
-   "label": "Contact Card Rating",
-   "default": "4.9/5",
-   "description": "Rating displayed in contact card (e.g., 4.9/5)"
+   "label": "Contact Card Rating"
   },
   {
+   "default": "Rating",
+   "description": "Text displayed next to rating (e.g., Rating)",
    "fieldname": "contact_card_rating_text",
    "fieldtype": "Data",
-   "label": "Contact Card Rating Text",
-   "default": "Rating",
-   "description": "Text displayed next to rating (e.g., Rating)"
+   "label": "Contact Card Rating Text"
   },
   {
+   "description": "Upload your company logo",
    "fieldname": "logo",
    "fieldtype": "Attach Image",
-   "label": "Logo",
-   "description": "Upload your company logo"
+   "label": "Logo"
   },
   {
    "fieldname": "section_break_navigation",
@@ -171,18 +160,18 @@
    "label": "Navigation Settings"
   },
   {
+   "description": "Create dropdown names. Each row represents one dropdown.",
    "fieldname": "navigation_dropdowns",
    "fieldtype": "Table",
    "label": "Navigation Dropdowns",
-   "options": "Navigation Dropdown",
-   "description": "Create dropdown names. Each row represents one dropdown."
+   "options": "Navigation Dropdown"
   },
   {
+   "description": "Link Item Groups to dropdowns. Each row represents one dropdown item.",
    "fieldname": "navigation_dropdown_items",
    "fieldtype": "Table",
    "label": "Navigation Dropdown Items",
-   "options": "Navigation Dropdown Item",
-   "description": "Link Item Groups to dropdowns. Each row represents one dropdown item."
+   "options": "Navigation Dropdown Item"
   },
   {
    "fieldname": "section_break_hero",
@@ -190,97 +179,28 @@
    "label": "Hero Section"
   },
   {
-   "fieldname": "hero_background_image",
-   "fieldtype": "Attach Image",
-   "label": "Hero Background Image",
-   "description": "Main banner image for the hero section"
-  },
-  {
-   "fieldname": "hero_floating_image",
-   "fieldtype": "Attach Image",
-   "label": "Hero Floating Image",
-   "description": "Image that appears in the floating box (e.g., Kaaba image)"
-  },
-  {
-   "fieldname": "hero_trusted_text",
-   "fieldtype": "Data",
-   "label": "Hero Trusted Text",
-   "default": "Trusted"
-  },
-  {
-   "fieldname": "hero_main_title",
-   "fieldtype": "Data",
-   "label": "Hero Main Title",
-   "default": "ISLAMIC TRAVEL AGENCY"
-  },
-  {
-   "fieldname": "hero_subtitle",
-   "fieldtype": "Data",
-   "label": "Hero Subtitle",
-   "default": "For British Muslims"
-  },
-  {
-   "fieldname": "hero_description",
-   "fieldtype": "Text",
-   "label": "Hero Description",
-   "description": "Optional description text below the main title"
-  },
-  {
-   "fieldname": "hero_primary_button_text",
-   "fieldtype": "Data",
-   "label": "Hero Primary Button Text",
-   "default": "Explore Packages"
-  },
-  {
-   "fieldname": "hero_secondary_button_text",
-   "fieldtype": "Data",
-   "label": "Hero Secondary Button Text",
-   "default": "Contact Us"
-  },
-  {
-   "fieldname": "hero_years_experience",
-   "fieldtype": "Data",
-   "label": "Hero Years Experience",
-   "default": "17+",
-   "description": "Years of experience (e.g., 17+)"
-  },
-  {
-   "fieldname": "hero_happy_pilgrims",
-   "fieldtype": "Data",
-   "label": "Hero Happy Pilgrims",
-   "default": "50K+",
-   "description": "Number of happy pilgrims (e.g., 50K+)"
-  },
-  {
-   "fieldname": "hero_customer_rating",
-   "fieldtype": "Data",
-   "label": "Hero Customer Rating",
-   "default": "4.9★",
-   "description": "Customer rating (e.g., 4.9★)"
-  },
-  {
    "fieldname": "section_break_packages",
    "fieldtype": "Section Break",
    "label": "Package Sections"
   },
   {
+   "default": "Featured Packages",
    "fieldname": "featured_packages_title",
    "fieldtype": "Data",
-   "label": "Featured Packages Title",
-   "default": "Featured Packages"
+   "label": "Featured Packages Title"
   },
   {
+   "default": "Discover our most popular travel experiences",
    "fieldname": "featured_packages_subtitle",
    "fieldtype": "Data",
-   "label": "Featured Packages Subtitle",
-   "default": "Discover our most popular travel experiences"
+   "label": "Featured Packages Subtitle"
   },
   {
+   "description": "Select packages from ERPNext Items to display as featured",
    "fieldname": "featured_packages",
    "fieldtype": "Table",
    "label": "Featured Packages",
-   "options": "Featured Package",
-   "description": "Select packages from ERPNext Items to display as featured"
+   "options": "Featured Package"
   },
   {
    "fieldname": "section_break_cta",
@@ -288,34 +208,34 @@
    "label": "CTA Section"
   },
   {
+   "default": "Customise Your Package",
    "fieldname": "cta_title",
    "fieldtype": "Data",
-   "label": "CTA Title",
-   "default": "Customise Your Package"
+   "label": "CTA Title"
   },
   {
+   "default": "We are specialists in Customised packages according to your needs.",
    "fieldname": "cta_description",
    "fieldtype": "Text",
-   "label": "CTA Description",
-   "default": "We are specialists in Customised packages according to your needs."
+   "label": "CTA Description"
   },
   {
+   "default": "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice.",
    "fieldname": "cta_subtitle",
    "fieldtype": "Text",
-   "label": "CTA Subtitle",
-   "default": "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice."
+   "label": "CTA Subtitle"
   },
   {
+   "default": "Customise Your Package",
    "fieldname": "cta_button_text",
    "fieldtype": "Data",
-   "label": "CTA Button Text",
-   "default": "Customise Your Package"
+   "label": "CTA Button Text"
   },
   {
+   "default": "/contact",
    "fieldname": "cta_button_link",
    "fieldtype": "Data",
-   "label": "CTA Button Link",
-   "default": "/contact"
+   "label": "CTA Button Link"
   },
   {
    "fieldname": "section_break_testimonials",
@@ -323,10 +243,10 @@
    "label": "Testimonials Section"
   },
   {
+   "default": "What Our Customers Say",
    "fieldname": "testimonials_title",
    "fieldtype": "Data",
-   "label": "Testimonials Title",
-   "default": "What Our Customers Say"
+   "label": "Testimonials Title"
   },
   {
    "fieldname": "testimonials_subtitle",
@@ -345,10 +265,10 @@
    "label": "Welcome Section"
   },
   {
+   "default": "Welcome to Bismillah Travel - Your Trusted Umrah Travel Agency in the UK.",
    "fieldname": "welcome_title",
    "fieldtype": "Data",
-   "label": "Welcome Title",
-   "default": "Welcome to Bismillah Travel - Your Trusted Umrah Travel Agency in the UK."
+   "label": "Welcome Title"
   },
   {
    "fieldname": "welcome_description",
@@ -356,10 +276,10 @@
    "label": "Welcome Description"
   },
   {
+   "default": "Our Services - Tailored Islamic Travel Solutions",
    "fieldname": "welcome_services_title",
    "fieldtype": "Data",
-   "label": "Welcome Services Title",
-   "default": "Our Services - Tailored Islamic Travel Solutions"
+   "label": "Welcome Services Title"
   },
   {
    "fieldname": "welcome_services_description",
@@ -377,10 +297,10 @@
    "label": "Packages Description Section"
   },
   {
+   "default": "Umrah Packages",
    "fieldname": "umrah_title",
    "fieldtype": "Data",
-   "label": "Umrah Title",
-   "default": "Umrah Packages"
+   "label": "Umrah Title"
   },
   {
    "fieldname": "umrah_description",
@@ -388,10 +308,10 @@
    "label": "Umrah Description"
   },
   {
+   "default": "Hajj Packages",
    "fieldname": "hajj_title",
    "fieldtype": "Data",
-   "label": "Hajj Title",
-   "default": "Hajj Packages"
+   "label": "Hajj Title"
   },
   {
    "fieldname": "hajj_description",
@@ -409,16 +329,16 @@
    "label": "FAQ Section"
   },
   {
+   "default": "Frequently Asked Questions",
    "fieldname": "faq_title",
    "fieldtype": "Data",
-   "label": "FAQ Title",
-   "default": "Frequently Asked Questions"
+   "label": "FAQ Title"
   },
   {
+   "default": "Find answers to common questions about our travel services",
    "fieldname": "faq_subtitle",
    "fieldtype": "Data",
-   "label": "FAQ Subtitle",
-   "default": "Find answers to common questions about our travel services"
+   "label": "FAQ Subtitle"
   },
   {
    "fieldname": "faq_items",
@@ -432,16 +352,16 @@
    "label": "Visa Services"
   },
   {
+   "default": "Visa Services",
    "fieldname": "visa_title",
    "fieldtype": "Data",
-   "label": "Visa Page Title",
-   "default": "Visa Services"
+   "label": "Visa Page Title"
   },
   {
+   "default": "Professional visa processing for all your travel needs",
    "fieldname": "visa_subtitle",
    "fieldtype": "Data",
-   "label": "Visa Page Subtitle",
-   "default": "Professional visa processing for all your travel needs"
+   "label": "Visa Page Subtitle"
   },
   {
    "fieldname": "visa_background_image",
@@ -460,16 +380,16 @@
    "label": "About Page"
   },
   {
+   "default": "About Travel Agency",
    "fieldname": "about_title",
    "fieldtype": "Data",
-   "label": "About Page Title",
-   "default": "About Travel Agency"
+   "label": "About Page Title"
   },
   {
+   "default": "Your trusted partner in spiritual journeys since 2008",
    "fieldname": "about_subtitle",
    "fieldtype": "Data",
-   "label": "About Page Subtitle",
-   "default": "Your trusted partner in spiritual journeys since 2008"
+   "label": "About Page Subtitle"
   },
   {
    "fieldname": "about_background_image",
@@ -506,10 +426,10 @@
    "options": "Social Media Link"
   },
   {
+   "default": "All rights reserved Flight Booking @ 2010 - 2025",
    "fieldname": "footer_copyright",
    "fieldtype": "Data",
-   "label": "Footer Copyright",
-   "default": "All rights reserved Flight Booking @ 2010 - 2025"
+   "label": "Footer Copyright"
   },
   {
    "fieldname": "footer_legal_text",
@@ -522,23 +442,31 @@
    "label": "Terms and Conditions"
   },
   {
+   "default": "Terms and Conditions",
    "fieldname": "terms_title",
    "fieldtype": "Data",
-   "label": "Terms and Conditions Title",
-   "default": "Terms and Conditions"
+   "label": "Terms and Conditions Title"
   },
   {
+   "description": "Write your terms and conditions content here. Supports rich text formatting.",
    "fieldname": "terms_content",
    "fieldtype": "Text Editor",
-   "label": "Terms and Conditions Content",
-   "description": "Write your terms and conditions content here. Supports rich text formatting."
+   "label": "Terms and Conditions Content"
+  },
+  {
+   "fieldname": "sliders",
+   "fieldtype": "Table",
+   "label": "Sliders",
+   "options": "Hero Section"
   }
  ],
  "index_web_pages_for_search": 1,
+ "issingle": 1,
  "links": [],
- "modified": "2025-01-27 10:00:00.000000",
+ "modified": "2025-10-06 11:16:33.851886",
  "modified_by": "Administrator",
  "module": "Travel Agency Website",
+ "name": "Website CMS",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -546,27 +474,18 @@
    "create": 1,
    "delete": 1,
    "email": 1,
-   "export": 1,
    "print": 1,
    "read": 1,
-   "report": 1,
    "role": "System Manager",
    "share": 1,
    "write": 1
   },
   {
-   "create": 0,
-   "delete": 0,
-   "email": 0,
-   "export": 0,
-   "print": 0,
    "read": 1,
-   "report": 0,
-   "role": "Guest",
-   "share": 0,
-   "write": 0
+   "role": "Guest"
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
