@@ -8,15 +8,32 @@ const Testimonials: React.FC = () => {
 
   const testimonials = useMemo(() => (testimonialsData || []), [testimonialsData]);
 
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(0); // index of first visible card
+  const [itemsPerView, setItemsPerView] = useState(1); // 1 on mobile, 3 on desktop
 
   useEffect(() => {
+    const updateItemsPerView = () => {
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches; // lg breakpoint
+      setItemsPerView(isDesktop ? 3 : 1);
+    };
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
+  // Auto-advance
+  useEffect(() => {
     if (!testimonials || testimonials.length === 0) return;
+    const pages = Math.max(1, Math.ceil(testimonials.length / itemsPerView));
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
+      setCurrent((prev) => {
+        const nextPage = Math.floor(prev / itemsPerView) + 1;
+        if (nextPage >= pages) return 0; // loop to start
+        return nextPage * itemsPerView;
+      });
     }, 5000);
     return () => clearInterval(interval);
-  }, [testimonials]);
+  }, [testimonials, itemsPerView]);
 
   if (isValidating) {
     return (
@@ -58,15 +75,25 @@ const Testimonials: React.FC = () => {
     ));
   };
 
+  const maxStartIndex = Math.max(0, (testimonials?.length || 0) - itemsPerView);
+  const pages = Math.max(1, Math.ceil((testimonials?.length || 0) / itemsPerView));
+  const currentPage = Math.min(Math.floor(current / itemsPerView), pages - 1);
+
   const prev = () => {
     if (!testimonials || testimonials.length === 0) return;
-    setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    const newIndex = current - itemsPerView;
+    setCurrent(newIndex < 0 ? (pages - 1) * itemsPerView : newIndex);
   };
 
   const next = () => {
     if (!testimonials || testimonials.length === 0) return;
-    setCurrent((prev) => (prev + 1) % testimonials.length);
+    const newIndex = current + itemsPerView;
+    setCurrent(newIndex > maxStartIndex ? 0 : newIndex);
   };
+
+  // Translate percentage per step (one card width)
+  const stepPercent = 100 / itemsPerView;
+  const translatePercent = (current / itemsPerView) * 100;
 
   return (
     <div className="py-16 bg-gray-50">
@@ -88,10 +115,10 @@ const Testimonials: React.FC = () => {
           <div className="overflow-hidden">
             <div
               className="flex transition-transform duration-700"
-              style={{ transform: `translateX(-${current * 100}%)` }}
+              style={{ transform: `translateX(-${translatePercent}%)` }}
             >
               {(testimonials || []).map((testimonial: any) => (
-                <div key={testimonial.name} className="w-full px-2 flex-shrink-0">
+                <div key={testimonial.name} className="w-full lg:w-1/3 px-2 flex-shrink-0">
                   <div className="bg-white rounded-xl p-8 shadow-lg relative max-w-3xl mx-auto overflow-visible">
                     {/* Quote Mark */}
                     <div className="absolute top-4 left-4 z-10 w-10 h-10 bg-secondary rounded-full flex items-center justify-center shadow-md">
@@ -156,13 +183,13 @@ const Testimonials: React.FC = () => {
 
               {/* Dots */}
               <div className="mt-6 flex items-center justify-center gap-2">
-                {testimonials.map((_: any, index: number) => (
+                {Array.from({ length: pages }).map((_, index: number) => (
                   <button
                     key={index}
-                    onClick={() => setCurrent(index)}
-                    aria-label={`Go to testimonial ${index + 1}`}
+                    onClick={() => setCurrent(index * itemsPerView)}
+                    aria-label={`Go to testimonial page ${index + 1}`}
                     className={`h-2 rounded-full transition-all ${
-                      index === current ? 'w-8 bg-secondary' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                      index === currentPage ? 'w-8 bg-secondary' : 'w-2 bg-gray-300 hover:bg-gray-400'
                     }`}
                   />
                 ))}

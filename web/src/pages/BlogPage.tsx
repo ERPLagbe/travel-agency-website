@@ -40,7 +40,7 @@ const BlogPage: React.FC = () => {
       <SectionContainer>
         <div style={{ paddingTop: 'var(--spacing-6)', paddingBottom: 'var(--spacing-4)' }}>
           <Typography variant="h1" align="center" style={{ marginBottom: 'var(--spacing-2)' }}>
-            Travel Blog
+            Blog Posts
           </Typography>
           <Typography variant="body" color="muted" align="center">
             Discover travel tips, insights, and stories from our experts

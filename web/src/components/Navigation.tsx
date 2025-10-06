@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
+import { Button } from './Button';
 
 interface NavigationProps {
   // No props needed for now, can be extended later
@@ -192,46 +193,27 @@ const Navigation: React.FC<NavigationProps> = () => {
         {/* Action Buttons - Right */}
         <div className="desktop-nav flex-shrink-0 flex items-center gap-4">
           {/* Get Appointment Button */}
-          <Link 
-            to="/contact"
-            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold no-underline rounded-md transition-all duration-200"
-            style={{ 
-              backgroundColor: 'var(--color-secondary)',
-              color: 'white !important'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '0.85';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.color = 'white';
-            }}
+          <Button 
+            as="a"
+            href="/contact"
+            variant="secondary-fill"
+            size="md"
             aria-label="Book an appointment"
           >
             Get Appointment
-          </Link>
+          </Button>
 
           {/* Login Button */}
-          <button 
-            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white rounded-md border-2 border-white bg-transparent transition-all duration-200"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-              e.currentTarget.style.color = '#432b7c';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'white';
-            }}
+          <Button 
+            variant="secondary"
+            size="md"
             onClick={() => {
               window.location.href = '/login';
             }}
             aria-label="Login to your account"
           >
             Login
-          </button>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -259,38 +241,21 @@ const Navigation: React.FC<NavigationProps> = () => {
             <div className="border-b border-gray-700 pb-4">
               <div className="flex flex-col gap-4">
                 {/* Get Appointment Button */}
-                <Link 
-                  to="/contact"
-                  className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-semibold no-underline rounded-md transition-all duration-200"
-                  style={{ 
-                    backgroundColor: 'var(--color-secondary)',
-                    color: 'white !important'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = '0.85';
-                    e.currentTarget.style.color = 'white';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = '1';
-                    e.currentTarget.style.color = 'white';
-                  }}
+                <Button 
+                  as="a"
+                  href="/contact"
+                  variant="secondary"
+                  className="w-full"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Book an appointment"
                 >
                   Get Appointment
-                </Link>
+                </Button>
 
                 {/* Login Button */}
-                <button 
-                  className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-semibold text-white rounded-md border-2 border-white bg-transparent transition-all duration-200"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'white';
-                    e.currentTarget.style.color = '#432b7c';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = 'white';
-                  }}
+                <Button 
+                  variant="secondary"
+                  className="w-full"
                   onClick={() => {
                     setIsMenuOpen(false);
                     window.location.href = '/login';
@@ -298,7 +263,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                   aria-label="Login to your account"
                 >
                   Login
-                </button>
+                </Button>
               </div>
             </div>
 

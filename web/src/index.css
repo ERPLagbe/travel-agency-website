@@ -151,34 +151,83 @@ body {
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-a:hover {
+a:not(.btn):not([role="button"]):hover {
   color: var(--color-secondary);
-  opacity: 0.8;
 }
 
-/* Button Base Styles - Use Tailwind utilities */
+/* Button Base Styles - Professional UI/UX Design System */
 .btn {
-  @apply inline-flex items-center justify-center px-6 py-3 border-0 rounded-md font-medium text-base no-underline cursor-pointer transition-all duration-150 leading-none;
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-0 rounded-lg font-semibold text-base no-underline cursor-pointer leading-none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(67, 43, 124, 0.2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Primary Button - Purple background, white text */
 .btn-primary {
-  @apply bg-primary text-white;
+  background-color: var(--color-primary);
+  color: white;
 }
 
 .btn-primary:hover {
-  @apply opacity-90 -translate-y-0.5;
+  @apply shadow-2xl transform scale-105;
+
 }
 
+.btn-primary:active {
+  background-color: #2a1849;
+}
+
+/* Secondary Button - Yellow background, purple text */
 .btn-secondary {
-  @apply text-black;
+  background-color: transparent;
+  border: 2px solid var(--color-secondary);
+  color: var(--color-white);
+}
+
+.btn-secondary-fill {
   background-color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+  color: var(--color-white);
+}
+
+.btn-secondary-fill:hover {
+  @apply shadow-2xl transform scale-105;
+  
 }
 
 .btn-secondary:hover {
-  @apply opacity-90 -translate-y-0.5;
+  @apply shadow-2xl transform scale-105;
+  background-color: var(--color-secondary);
+  
+}
+
+
+
+
+.btn-secondary:active {
+  @apply shadow-lg transform scale-100;
+}
+
+/* Button Sizes */
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-lg;
 }
 
 /* Container and Layout - Use Tailwind utilities */
@@ -402,14 +451,6 @@ img[src=""], img:not([src]) {
   color: var(--color-secondary) !important;
 }
 
-/* Hero button styles to override global a:hover opacity */
-.hero-button {
-  opacity: 1 !important;
-}
-
-.hero-button:hover {
-  opacity: 1 !important;
-}
 
 /* Animations for PackageCard and other components */
 @keyframes fadeIn {

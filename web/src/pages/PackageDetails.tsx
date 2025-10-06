@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, St
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
+import { Button } from '../components/Button';
 
 interface PackageDetails {
   id: string;
@@ -151,6 +152,9 @@ const PackageDetails: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Package Description */}
+
+
             {/* Package Features */}
             <div className="bg-white rounded-xl p-8 shadow-lg">
               <h2 className="text-2xl font-bold text-primary mb-6">Package Features</h2>
@@ -327,12 +331,27 @@ const PackageDetails: React.FC = () => {
                   </div>
                 )}
               </div>
+              
+            </div>
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-primary mb-6">Package Description</h2>
+              {packageData.description ? (
+                <div 
+                  className="prose prose-lg max-w-none text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: packageData.description }}
+                />
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  No description available for this package.
+                </div>
+              )}
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             {/* Package Price & Info */}
+            <div className="lg:sticky lg:top-22 flex flex-col gap-4">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Package Details</h3>
               <div className="mb-6">
@@ -356,13 +375,13 @@ const PackageDetails: React.FC = () => {
                 <div className="text-gray-600 mt-2">{packageData.item_group}</div>
               </div>
               
-              <button 
-                className="w-full py-3 px-4 rounded-lg text-white font-semibold transition-colors mb-4"
-                style={{ backgroundColor: '#432b7c' }}
+              <Button 
+                variant="primary"
+                className="w-full mb-4"
                 onClick={() => navigate(`/contact?package=${id}`)}
               >
                 Enquire Now
-              </button>
+              </Button>
               
               {/* {cmsData?.business_phone && (
                 <a 
@@ -413,35 +432,39 @@ const PackageDetails: React.FC = () => {
               <h3 className="text-xl font-bold text-primary mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 {cmsData?.business_phone && (
-                  <a 
+                  <Button 
+                    as="a"
                     href={`tel:${cmsData.business_phone}`}
-                    className="w-full py-3 px-4 rounded-lg text-white font-semibold transition-colors block text-center no-underline"
-                    style={{ backgroundColor: '#432b7c' }}
+                    variant="primary"
+                    className="w-full"
                   >
                     Call Now
-                  </a>
+                  </Button>
                 )}
                 {cmsData?.whatsapp_number && (
-                  <a 
+                  <Button 
+                    as="a"
                     href={`https://wa.me/${cmsData.whatsapp_number.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
-                    style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
+                    variant="secondary-fill"
+                    className="w-full"
                   >
                     WhatsApp
-                  </a>
+                  </Button>
                 )}
                 {cmsData?.business_email && (
-                  <a 
+                  <Button 
+                    as="a"
                     href={`mailto:${cmsData.business_email}?subject=Package Inquiry - ${packageData?.item_name || 'Travel Package'}`}
-                    className="w-full py-3 px-4 rounded-lg font-semibold transition-colors block text-center no-underline"
-                    style={{ backgroundColor: '#d4af37', color: '#432b7c' }}
+                    variant="secondary-fill"
+                    className="w-full"
                   >
                     Send Email
-                  </a>
+                  </Button>
                 )}
               </div>
+            </div>
             </div>
           </div>
         </div>

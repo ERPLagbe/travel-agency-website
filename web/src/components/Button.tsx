@@ -2,10 +2,11 @@ import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'secondary-fill';
   size?: 'sm' | 'md' | 'lg';
   as?: 'button' | 'a';
   href?: string;
+ 
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -20,13 +21,14 @@ export const Button: React.FC<ButtonProps> = ({
   const baseClasses = 'btn';
   const variantClasses = {
     primary: 'btn-primary',
-    secondary: 'btn-secondary'
+    secondary: 'btn-secondary',
+    'secondary-fill': 'btn-secondary-fill'
   };
   
   const sizeClasses = {
-    sm: 'text-sm px-4 py-2',
-    md: 'text-base px-6 py-3',
-    lg: 'text-lg px-8 py-4'
+    sm: 'btn-sm',
+    md: '', // Default size
+    lg: 'btn-lg'
   };
 
   const allClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim();
@@ -40,7 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button className={allClasses} {...props}>
+    <button className={allClasses } {...props}>
       {children}
     </button>
   );

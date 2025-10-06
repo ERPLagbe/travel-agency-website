@@ -345,7 +345,7 @@ const CompleteContactPage: React.FC = () => {
               )}
               
               {/* ATOL Number from CMS */}
-              {contactData?.atol_number && (
+              {/* {contactData?.atol_number && (
                 <div>
                   <Typography variant="h3" color="primary" style={{ marginBottom: 'var(--spacing-2)' }}>
                     ATOL Protected
@@ -353,7 +353,7 @@ const CompleteContactPage: React.FC = () => {
                   <Typography variant="body">ATOL Number: {contactData.atol_number}</Typography>
                   <Typography variant="body-small" color="muted">Your financial protection is guaranteed</Typography>
                 </div>
-              )}
+              )} */}
               
               {/* WhatsApp from CMS */}
               {contactData?.whatsapp_number && (

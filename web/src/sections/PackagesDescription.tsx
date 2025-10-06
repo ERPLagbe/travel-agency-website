@@ -40,8 +40,6 @@ const PackagesDescription: React.FC = () => {
                 className="w-full h-96 object-cover rounded-xl shadow-lg"
               />
               
-              {/* Decorative overlay */}
-              <div className="absolute inset-0 bg-primary bg-opacity-20 rounded-xl"></div>
             </div>
           </div>
         </div>

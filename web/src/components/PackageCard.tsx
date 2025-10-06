@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plane, Hotel, Utensils, Sparkles, Calendar, Star } from 'lucide-react';
+import { Button } from './Button';
 
 interface PackageCardProps {
   id: string | number;
@@ -193,12 +194,13 @@ const PackageCard: React.FC<PackageCardProps> = ({
 
       {/* Button */}
       <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2">
-        <button
+        <Button
           onClick={handlePrimaryClick}
-          className="w-full bg-primary hover:bg-primary text-white font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base"
+          variant="primary"
+          className="w-full"
         >
           SELECT PACKAGE
-        </button>
+        </Button>
       </div>
     </div>
   );
