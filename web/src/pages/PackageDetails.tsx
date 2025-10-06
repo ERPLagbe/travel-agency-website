@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag } from 'lucide-react';
+import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, Star } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
@@ -130,6 +130,13 @@ const PackageDetails: React.FC = () => {
                   <Clock className="w-4 h-4" />
                   {packageData.custom_duration || '35/42 Days'}
                 </span>
+                {/* Rating */}
+                {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
+                  <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-md text-white text-sm font-medium flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-current text-secondary" />
+                    {(Math.min(5, (packageData.custom_package_rating <= 1 ? packageData.custom_package_rating * 5 : packageData.custom_package_rating))).toFixed(1)}/5
+                  </span>
+                )}
                 <span className="bg-amber-400 px-3 py-1 rounded-md text-purple-900 text-sm font-bold flex items-center gap-1">
                   <Tag className="w-4 h-4" />
                   {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
@@ -329,10 +336,24 @@ const PackageDetails: React.FC = () => {
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <h3 className="text-xl font-bold text-primary mb-4">Package Details</h3>
               <div className="mb-6">
-                <div className="text-3xl font-bold text-primary mb-2">
-                  {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                <div className="flex items-center justify-between">
+                  <div className="text-3xl font-bold text-primary">
+                    {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                  </div>
+                  {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
+                    <div className="flex items-center gap-1" title="Rating">
+                      {Array.from({ length: 5 }).map((_, i) => {
+                        const normalized = packageData.custom_package_rating <= 1 ? packageData.custom_package_rating * 5 : packageData.custom_package_rating;
+                        const filled = i + 1 <= Math.round(Math.min(5, normalized));
+                        return <Star key={i} className={`w-5 h-5 ${filled ? 'text-secondary fill-current' : 'text-gray-300 fill-current'}`} />
+                      })}
+                      <span className="ml-1 text-sm text-gray-600">
+                        {(Math.min(5, (packageData.custom_package_rating <= 1 ? packageData.custom_package_rating * 5 : packageData.custom_package_rating))).toFixed(1)}/5
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="text-gray-600 mb-4">{packageData.item_group}</div>
+                <div className="text-gray-600 mt-2">{packageData.item_group}</div>
               </div>
               
               <button 

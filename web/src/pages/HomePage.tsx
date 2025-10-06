@@ -2,10 +2,11 @@ import React from 'react';
 import { FAQ, PackageShowcase, Testimonials, HajjDeals, WelcomeSection, PackagesDescription } from '../components';
 import HeroSection from '../sections/HeroSection';
 import CTASection from '../sections/CTASection';
-import { useFAQItems } from '../hooks/useWebsiteCMS';
+import { useFAQItems, useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const HomePage: React.FC = () => {
   const { data: faqItems } = useFAQItems();
+  const { data: cmsData } = useWebsiteCMS();
 
   // Fallback FAQ data if CMS data is not available
   const fallbackFAQs = [
@@ -43,6 +44,9 @@ const HomePage: React.FC = () => {
       }))
     : fallbackFAQs;
 
+  const faqTitle = cmsData?.faq_title || 'FAQ';
+  const faqSubtitle = cmsData?.faq_subtitle || 'Find answers to common questions about our travel services';
+
   return (
     <div>
       {/* Hero Section */}
@@ -67,7 +71,7 @@ const HomePage: React.FC = () => {
       <PackagesDescription />
 
       {/* FAQ Section */}
-      <FAQ faqs={faqs} />
+      <FAQ title={faqTitle} subtitle={faqSubtitle} faqs={faqs} />
     </div>
   );
 };

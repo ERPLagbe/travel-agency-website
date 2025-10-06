@@ -1,11 +1,11 @@
 import React from 'react';
-import { Plane, Hotel, Utensils, Sparkles, Calendar } from 'lucide-react';
+import { Plane, Hotel, Utensils, Sparkles, Calendar, Star } from 'lucide-react';
 
 interface PackageCardProps {
   id: string | number;
   title: string;
   nights?: string;
-  rating?: number;
+  rating?: number; // 0-1 or 0-5
   price: number;
   image: string;
   itemGroup?: string;
@@ -34,6 +34,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   title,
   price,
   image,
+  rating,
   onPrimaryClick,
   duration = "35/42 Days",
   airInfo = "SA/Biman/Flynas",
@@ -52,13 +53,14 @@ const PackageCard: React.FC<PackageCardProps> = ({
     }
   };
 
-  // Format price with validation
-  const formatPrice = () => {
-    if (!price || price === 0) {
-      return 'Price on request';
-    }
-    return `£${price.toLocaleString()}`;
+  // Normalize rating to 0-5 scale if value is 0-1
+  const getNormalizedRating = (value?: number) => {
+    if (value === undefined || value === null || isNaN(value)) return undefined;
+    return value <= 1 ? value * 5 : value; // treat <=1 as 0-1 scale
   };
+
+  const normalizedRating = getNormalizedRating(rating);
+  const percent = normalizedRating !== undefined ? Math.max(0, Math.min(5, normalizedRating)) / 5 * 100 : 0;
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full">
@@ -76,6 +78,28 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn">
             {title}
           </h1>
+          {normalizedRating !== undefined && (
+            <div className="mt-1 flex items-center">
+              <div className="flex items-center gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const fillPct = Math.max(0, Math.min(1, (normalizedRating - i)));
+                  return (
+                    <div key={i} className="relative w-4 h-4">
+                      {/* Base (empty) star */}
+                      <Star className="w-4 h-4 text-white/40" stroke="currentColor" fill="currentColor" />
+                      {/* Filled portion */}
+                      {fillPct > 0 && (
+                        <div className="absolute inset-0 overflow-hidden" style={{ width: `${fillPct * 100}%` }}>
+                          <Star className="w-4 h-4 text-secondary" stroke="currentColor" fill="currentColor" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <span className="ml-2 text-xs text-white/90 font-medium">{normalizedRating.toFixed(1)}/5</span>
+            </div>
+          )}
         </div>
       </div>
 
