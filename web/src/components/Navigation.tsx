@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { ChevronDown, X, Menu } from 'lucide-react';
@@ -37,8 +36,34 @@ const Navigation: React.FC<NavigationProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpandedItems, setMobileExpandedItems] = useState<Set<string>>(new Set());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const { data: cmsData } = useWebsiteCMS();
+
+  // Determine login state from Frappe cookie (user_id)
+  const getCookie = (name: string): string | null => {
+    if (typeof document === 'undefined') return null;
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()!.split(';').shift() || null;
+    return null;
+  };
+
+  // Check login status on component mount and when location changes
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const userId = getCookie('user_id');
+      const loggedIn = !!userId && userId !== 'Guest';
+      setIsLoggedIn(loggedIn);
+    };
+
+    checkLoginStatus();
+    
+    // Also check when location changes (in case user logs in/out on another tab)
+    const interval = setInterval(checkLoginStatus, 1000);
+    
+    return () => clearInterval(interval);
+  }, [location.pathname]);
 
   // Get navigation data from Website CMS (child tables)
   const navigationDropdowns = cmsData?.navigation_dropdowns || [];
@@ -222,14 +247,24 @@ const Navigation: React.FC<NavigationProps> = () => {
             Get Appointment
           </Link>
 
-          {/* Login Button */}
-          <Link
-            to="/login"
-            className="btn btn-secondary btn-md no-underline"
-            aria-label="Login to your account"
-          >
-            Login
-          </Link>
+          {/* Login / Dashboard Button */}
+          {isLoggedIn ? (
+            <a
+              href="/app/home"
+              className="btn btn-secondary btn-md no-underline"
+              aria-label="Go to your dashboard"
+            >
+              Dashboard
+            </a>
+          ) : (
+            <a
+              href="/login"
+              className="btn btn-secondary btn-md no-underline"
+              aria-label="Login to your account"
+            >
+              Login
+            </a>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -297,14 +332,25 @@ const Navigation: React.FC<NavigationProps> = () => {
                   Get Appointment
                 </Link>
 
-                <Link
-                  to="/login"
-                  className="btn btn-secondary-fill w-full no-underline"
-                  onClick={closeMobileMenu}
-                  aria-label="Login to your account"
-                >
-                  Login
-                </Link>
+                {isLoggedIn ? (
+                  <a
+                    href="/app/home"
+                    className="btn btn-secondary-fill w-full no-underline"
+                    onClick={closeMobileMenu}
+                    aria-label="Go to your dashboard"
+                  >
+                    Dashboard
+                  </a>
+                ) : (
+                  <a
+                    href="/login"
+                    className="btn btn-secondary-fill w-full no-underline"
+                    onClick={closeMobileMenu}
+                    aria-label="Login to your account"
+                  >
+                    Login
+                  </a>
+                )}
               </div>
             </div>
 
