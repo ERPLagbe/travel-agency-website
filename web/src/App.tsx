@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FrappeProvider } from 'frappe-react-sdk'
 import { Navigation, Footer, ErrorBoundary } from './components'
 import FloatingActionButtons from './components/FloatingActionButtons'
+import ScrollToTop from './components/ScrollToTop'
 import HomePage from './pages/HomePage'
 // import PackagesPage from './pages/PackagesPage' // Commented out as it's not used
 import PackageListingPage from './pages/PackageListingPage'
@@ -20,6 +21,7 @@ function App() {
       <FrappeProvider url={import.meta.env.VITE_API_URL || 'http://localhost:8000'}>
         <Router>
           <div className="App">
+            <ScrollToTop />
             <Navigation />
             <Routes>
               <Route path="/web" element={<HomePage />} />

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PackageCard from '../components/PackageCard';
 import { useFrappeGetCall } from 'frappe-react-sdk';
 import { Button } from '../components/Button';
 
 const AllPackages: React.FC = () => {
   const [visiblePackages, setVisiblePackages] = useState(6);
+  const navigate = useNavigate();
   
   // Fetch all packages from ERPNext with accommodation data using custom API
   const { data: apiResponse } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -71,7 +73,7 @@ const AllPackages: React.FC = () => {
 
         {/* Package Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-          {displayedPackages.map((pkg) => (
+          {displayedPackages.map((pkg: any) => (
             <PackageCard
               key={pkg.id}
               id={pkg.id}
@@ -93,9 +95,9 @@ const AllPackages: React.FC = () => {
               secondaryButtonText="Enquire Now"
               onPrimaryClick={() => {
                 // Always use packages route
-                window.location.href = `/packages/${pkg.id}`;
+                navigate(`/packages/${pkg.id}`);
               }}
-              onSecondaryClick={() => window.location.href = `/contact?package=${pkg.id}`}
+              onSecondaryClick={() => navigate(`/contact?package=${pkg.id}`)}
             />
           ))}
         </div>

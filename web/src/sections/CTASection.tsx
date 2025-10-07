@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
-import { Button } from '../components/Button';
 
 const CTASection: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
@@ -41,14 +40,12 @@ const CTASection: React.FC = () => {
 
         {/* CTA Button */}
         <div className="text-center">
-          <Button 
-            as="a"
-            href={ctaData.buttonLink}
-            variant="secondary-fill"
-            size="lg"
+          <Link
+            to={ctaData.buttonLink || '/contact'}
+            className="btn btn-secondary-fill btn-lg no-underline"
           >
             {ctaData.buttonText}
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plane, Hotel, Utensils, Sparkles, Calendar, Star } from 'lucide-react';
 import { Button } from './Button';
 
@@ -46,11 +47,13 @@ const PackageCard: React.FC<PackageCardProps> = ({
   accommodationList = [],
   specialServicesList = []
 }) => {
+  const navigate = useNavigate();
+  
   const handlePrimaryClick = () => {
     if (onPrimaryClick) {
       onPrimaryClick();
     } else {
-      window.location.href = `/packages/${id}`;
+      navigate(`/packages/${id}`);
     }
   };
 

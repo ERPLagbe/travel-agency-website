@@ -13,6 +13,7 @@ export { default as PackageCard } from './PackageCard';
 export { default as PackageListing } from './PackageListing';
 export { default as FlightBookingForm } from './FlightBookingForm';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as ScrollToTop } from './ScrollToTop';
 
 // New sections
 export { default as CTASection } from '../sections/CTASection';

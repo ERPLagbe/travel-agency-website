@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Typography } from './';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
-import { Button } from './Button';
 import { ChevronDown, X, Menu } from 'lucide-react';
 
 interface NavigationProps {
@@ -198,13 +197,11 @@ const Navigation: React.FC<NavigationProps> = () => {
                       <Link
                         key={subItem.path}
                         to={subItem.path}
-                        className="block px-4 py-3 no-underline text-gray-700 rounded-md transition-all duration-200 hover:bg-primary/5 hover:text-primary font-medium"
+                        className="flex items-center px-4 py-3 no-underline text-gray-700 rounded-md transition-all duration-200 hover:bg-primary/5 hover:text-primary font-medium min-h-[44px] text-sm"
                         role="menuitem"
                         aria-label={`Navigate to ${subItem.label}`}
                       >
-                        <Typography variant="body-small" className="m-0">
-                          {subItem.label}
-                        </Typography>
+                        {subItem.label}
                       </Link>
                     ))}
                   </div>
@@ -217,27 +214,22 @@ const Navigation: React.FC<NavigationProps> = () => {
         {/* Action Buttons - Right */}
         <div className="desktop-nav flex-shrink-0 flex items-center gap-4">
           {/* Get Appointment Button */}
-          <Button 
-            as="a"
-            href="/contact"
-            variant="secondary-fill"
-            size="md"
+          <Link
+            to="/contact"
+            className="btn btn-secondary-fill btn-md no-underline"
             aria-label="Book an appointment"
           >
             Get Appointment
-          </Button>
+          </Link>
 
           {/* Login Button */}
-          <Button 
-            variant="secondary"
-            size="md"
-            onClick={() => {
-              window.location.href = '/login';
-            }}
+          <Link
+            to="/login"
+            className="btn btn-secondary btn-md no-underline"
             aria-label="Login to your account"
           >
             Login
-          </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -296,28 +288,23 @@ const Navigation: React.FC<NavigationProps> = () => {
             {/* Action Buttons Section */}
             <div className="p-6 border-b border-gray-200">
               <div className="flex flex-col gap-3">
-                <Button 
-                  as="a"
-                  href="/contact"
-                  variant="primary"
-                  className="w-full"
+                <Link
+                  to="/contact"
+                  className="btn btn-primary w-full no-underline"
                   onClick={closeMobileMenu}
                   aria-label="Book an appointment"
                 >
                   Get Appointment
-                </Button>
+                </Link>
 
-                <Button 
-                  variant="secondary-fill"
-                  className="w-full"
-                  onClick={() => {
-                    closeMobileMenu();
-                    window.location.href = '/login';
-                  }}
+                <Link
+                  to="/login"
+                  className="btn btn-secondary-fill w-full no-underline"
+                  onClick={closeMobileMenu}
                   aria-label="Login to your account"
                 >
                   Login
-                </Button>
+                </Link>
               </div>
             </div>
 
