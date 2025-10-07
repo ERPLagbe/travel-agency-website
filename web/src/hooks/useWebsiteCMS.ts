@@ -136,6 +136,23 @@ export const useSocialMediaLinks = () => {
   }
 }
 
+// Simple hook to get gallery images from parent Website CMS
+export const useGalleryImages = () => {
+  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
+    doctype: 'Website CMS',
+    name: 'Website CMS'
+  })
+  
+  // Extract the actual document from the docs array
+  const cmsData = data?.docs?.[0] || null
+  
+  return {
+    data: cmsData?.gallery_images || [],
+    error,
+    isValidating
+  }
+}
+
 // Hook to get packages by item group
 export const usePackagesByItemGroup = (itemGroup: string) => {
   // Convert URL format to proper Item Group name

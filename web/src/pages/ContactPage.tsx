@@ -11,7 +11,7 @@ const CompleteContactPage: React.FC = () => {
   const packageId = searchParams.get('package');
   
   const { createLead, isLoading } = useCreateLead();
-  const { data: cmsData, isValidating: cmsLoading, error: cmsError } = useWebsiteCMS();
+  const { data: cmsData, isValidating: cmsLoading } = useWebsiteCMS();
   const { data: packageData } = useFrappeGetDoc('Item', packageId || '', {
     fields: ['name', 'item_name', 'item_group'],
     shouldFetch: !!packageId
@@ -115,11 +115,7 @@ const CompleteContactPage: React.FC = () => {
 
       {/* Contact Form and Info */}
       <SectionContainer>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-          gap: 'var(--spacing-12)' 
-        }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Contact Form */}
           <Card>
             <Typography variant="h2" style={{ marginBottom: 'var(--spacing-8)' }}>
@@ -140,10 +136,10 @@ const CompleteContactPage: React.FC = () => {
               </div>
             )}
             
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
-                  Full Name <span style={{ color: 'red' }}>*</span>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -152,18 +148,12 @@ const CompleteContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  style={{ 
-                    width: '100%',
-                    padding: 'var(--spacing-3)', 
-                    borderRadius: 'var(--radius-md)', 
-                    border: '1px solid var(--color-gray-300)',
-                    fontSize: 'var(--font-size-base)'
-                  }}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Email Address
                 </label>
                 <input
@@ -172,34 +162,21 @@ const CompleteContactPage: React.FC = () => {
                   placeholder="Your Email Address"
                   value={formData.email}
                   onChange={handleChange}
-                  style={{ 
-                    width: '100%',
-                    padding: 'var(--spacing-3)', 
-                    borderRadius: 'var(--radius-md)', 
-                    border: '1px solid var(--color-gray-300)',
-                    fontSize: 'var(--font-size-base)'
-                  }}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
-                  Phone Number <span style={{ color: 'red' }}>*</span>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Phone Number <span className="text-red-500">*</span>
                 </label>
-                <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                <div className="flex gap-2">
                   <select
                     name="countryCode"
                     value={formData.countryCode}
                     onChange={handleChange}
                     required
-                    style={{ 
-                      width: '120px',
-                      padding: 'var(--spacing-3)', 
-                      borderRadius: 'var(--radius-md)', 
-                      border: '1px solid var(--color-gray-300)',
-                      fontSize: 'var(--font-size-base)',
-                      backgroundColor: 'var(--color-white)'
-                    }}
+                    className="w-24 sm:w-28 px-2 sm:px-3 py-3 border border-gray-300 rounded-lg text-sm sm:text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                   >
                     <option value="+1">🇺🇸 +1</option>
                     <option value="+44">🇬🇧 +44</option>
@@ -231,32 +208,19 @@ const CompleteContactPage: React.FC = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    style={{ 
-                      flex: 1,
-                      padding: 'var(--spacing-3)', 
-                      borderRadius: 'var(--radius-md)', 
-                      border: '1px solid var(--color-gray-300)',
-                      fontSize: 'var(--font-size-base)'
-                    }}
+                    className="flex-1 min-w-0 px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                   />
                 </div>
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Subject
                 </label>
                 <select
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  style={{ 
-                    width: '100%',
-                    padding: 'var(--spacing-3)', 
-                    borderRadius: 'var(--radius-md)', 
-                    border: '1px solid var(--color-gray-300)',
-                    fontSize: 'var(--font-size-base)',
-                    backgroundColor: 'var(--color-white)'
-                  }}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 >
                   <option value="">Select Subject</option>
                   <option value="Package Inquiry">Package Inquiry</option>
@@ -269,21 +233,14 @@ const CompleteContactPage: React.FC = () => {
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Package Interest
                 </label>
                 <select
                   name="packageInterest"
                   value={formData.packageInterest}
                   onChange={handleChange}
-                  style={{ 
-                    width: '100%',
-                    padding: 'var(--spacing-3)', 
-                    borderRadius: 'var(--radius-md)', 
-                    border: '1px solid var(--color-gray-300)',
-                    fontSize: 'var(--font-size-base)',
-                    backgroundColor: 'var(--color-white)'
-                  }}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 >
                   <option value="">Select Package (Optional)</option>
                   {allPackages && allPackages.length > 0 ? (
@@ -299,7 +256,7 @@ const CompleteContactPage: React.FC = () => {
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: 'var(--spacing-2)', fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-gray-700)' }}>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Message
                 </label>
                 <textarea
@@ -308,36 +265,17 @@ const CompleteContactPage: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   rows={5}
-                  style={{ 
-                    width: '100%',
-                    padding: 'var(--spacing-3)', 
-                    borderRadius: 'var(--radius-md)', 
-                    border: '1px solid var(--color-gray-300)', 
-                    resize: 'vertical',
-                    fontSize: 'var(--font-size-base)'
-                  }}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base resize-vertical focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 ></textarea>
               </div>
               {submitStatus === 'success' && (
-                <div style={{ 
-                  padding: 'var(--spacing-3)', 
-                  backgroundColor: 'var(--color-green-100)', 
-                  color: 'var(--color-green-800)',
-                  borderRadius: 'var(--border-radius-md)',
-                  marginBottom: 'var(--spacing-4)'
-                }}>
+                <div className="p-3 bg-green-100 text-green-800 rounded-lg mb-4">
                   ✅ Thank you! Your message has been sent successfully. We will contact you soon.
                 </div>
               )}
               
               {submitStatus === 'error' && (
-                <div style={{ 
-                  padding: 'var(--spacing-3)', 
-                  backgroundColor: 'var(--color-red-100)', 
-                  color: 'var(--color-red-800)',
-                  borderRadius: 'var(--border-radius-md)',
-                  marginBottom: 'var(--spacing-4)'
-                }}>
+                <div className="p-3 bg-red-100 text-red-800 rounded-lg mb-4">
                   ❌ Sorry, there was an error sending your message. Please try again.
                 </div>
               )}
@@ -439,24 +377,10 @@ const CompleteContactPage: React.FC = () => {
         </div>
 
         {/* Additional Info Section */}
-        <div style={{ marginTop: 'var(--spacing-16)' }}>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: 'var(--spacing-8)' 
-          }}>
+        <div className="mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="text-center">
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: 'var(--color-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto var(--spacing-4) auto',
-                color: 'var(--color-white)'
-              }}>
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Clock size={32} />
               </div>
               <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>
@@ -468,17 +392,7 @@ const CompleteContactPage: React.FC = () => {
             </Card>
 
             <Card className="text-center">
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: 'var(--color-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto var(--spacing-4) auto',
-                color: 'var(--color-white)'
-              }}>
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Shield size={32} />
               </div>
               <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>
@@ -490,17 +404,7 @@ const CompleteContactPage: React.FC = () => {
             </Card>
 
             <Card className="text-center">
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: 'var(--color-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto var(--spacing-4) auto',
-                color: 'var(--color-white)'
-              }}>
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Star size={32} />
               </div>
               <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>

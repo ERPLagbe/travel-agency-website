@@ -74,7 +74,11 @@
   "footer_legal_text",
   "section_break_terms",
   "terms_title",
-  "terms_content"
+  "terms_content",
+  "section_break_gallery",
+  "gallery_title",
+  "gallery_subtitle",
+  "gallery_images"
  ],
  "fields": [
   {
@@ -452,6 +456,30 @@
    "fieldname": "terms_content",
    "fieldtype": "Text Editor",
    "label": "Terms and Conditions Content"
+  },
+  {
+   "fieldname": "section_break_gallery",
+   "fieldtype": "Section Break",
+   "label": "Photo Gallery"
+  },
+  {
+   "default": "Photo Gallery",
+   "fieldname": "gallery_title",
+   "fieldtype": "Data",
+   "label": "Gallery Title"
+  },
+  {
+   "default": "Explore our travel memories and experiences",
+   "fieldname": "gallery_subtitle",
+   "fieldtype": "Data",
+   "label": "Gallery Subtitle"
+  },
+  {
+   "description": "Upload images for the photo gallery",
+   "fieldname": "gallery_images",
+   "fieldtype": "Table",
+   "label": "Gallery Images",
+   "options": "Gallery Image"
   },
   {
    "fieldname": "sliders",

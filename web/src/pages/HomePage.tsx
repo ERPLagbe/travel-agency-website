@@ -3,6 +3,7 @@ import { FAQ, PackageShowcase, Testimonials, WelcomeSection, PackagesDescription
 import AllPackages from '../sections/AllPackages';
 import HeroSection from '../sections/HeroSection';
 import CTASection from '../sections/CTASection';
+import Gallery from '../sections/Gallery';
 import { useFAQItems, useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const HomePage: React.FC = () => {
@@ -40,6 +41,9 @@ const HomePage: React.FC = () => {
 
       {/* Umrah/Hajj Packages Description Section */}
       <PackagesDescription />
+
+      {/* Photo Gallery Section */}
+      <Gallery />
 
       {/* FAQ Section */}
       <FAQ title={faqTitle} subtitle={faqSubtitle} faqs={faqs} />
