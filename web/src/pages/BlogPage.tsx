@@ -123,13 +123,13 @@ const BlogPage: React.FC = () => {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-1)' }}>
                         <Calendar size={16} color="var(--color-muted)" />
                         <Typography variant="body-small" color="muted">
-                          {new Date(blog.creation).toLocaleDateString()}
+                          {new Date(blog.published_on || blog.creation).toLocaleDateString()}
                         </Typography>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-1)' }}>
                         <User size={16} color="var(--color-muted)" />
                         <Typography variant="body-small" color="muted">
-                          Admin
+                          {blog.author || 'Admin'}
                         </Typography>
                       </div>
                     </div>

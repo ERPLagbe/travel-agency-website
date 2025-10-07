@@ -12,6 +12,10 @@
   "slug",
   "section_break_content",
   "content",
+  "section_break_meta",
+  "author",
+  "published_on",
+  "published",
   "section_break_seo",
   "featured_image"
  ],
@@ -40,6 +44,31 @@
    "label": "Blog Content",
    "reqd": 1,
    "description": "Write your blog post content here. Supports rich text formatting."
+  },
+  {
+   "fieldname": "section_break_meta",
+   "fieldtype": "Section Break",
+   "label": "Blog Meta"
+  },
+  {
+   "fieldname": "author",
+   "fieldtype": "Data",
+   "label": "Author",
+   "default": "Admin",
+   "description": "Name of the blog post author"
+  },
+  {
+   "fieldname": "published_on",
+   "fieldtype": "Datetime",
+   "label": "Published On",
+   "description": "Date and time when the blog was published"
+  },
+  {
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "Published",
+   "default": 0,
+   "description": "Check to make this blog post visible on the website"
   },
   {
    "fieldname": "section_break_seo",

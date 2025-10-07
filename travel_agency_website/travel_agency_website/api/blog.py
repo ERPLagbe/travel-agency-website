@@ -17,10 +17,13 @@ def get_published_blogs():
 				"slug",
 				"content",
 				"featured_image",
+				"author",
+				"published_on",
 				"creation",
 				"modified"
 			],
-			order_by="creation desc"
+			filters=[["published", "=", 1]],
+			order_by="published_on desc"
 		)
 		
 		
@@ -41,7 +44,7 @@ def get_published_blogs():
 def get_blog_by_slug(slug):
 	"""Get a specific blog post by slug"""
 	try:
-		blog = frappe.get_doc("Blog", {"slug": slug})
+		blog = frappe.get_doc("Blog", {"slug": slug, "published": 1})
 		
 		return {
 			"status": "success",

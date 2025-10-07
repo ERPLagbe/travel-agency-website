@@ -93,7 +93,7 @@ const BlogDetailsPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
               <Calendar size={18} color="var(--color-muted)" />
               <Typography variant="body" color="muted">
-                {new Date(blog.creation).toLocaleDateString('en-US', {
+                {new Date(blog.published_on || blog.creation).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -103,7 +103,7 @@ const BlogDetailsPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
               <User size={18} color="var(--color-muted)" />
               <Typography variant="body" color="muted">
-                Admin
+                {blog.author || 'Admin'}
               </Typography>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>

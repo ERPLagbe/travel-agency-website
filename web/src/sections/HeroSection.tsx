@@ -23,13 +23,13 @@ const HeroSection = () => {
   const firstSlider = cmsData?.sliders?.[0];
   
   const heroData = {
-    trustedText: firstSlider?.top_badge_text || cmsData?.hero_trusted_text || 'Trusted Travel Partner',
-    primaryButtonText: firstSlider?.primary_button_text || cmsData?.hero_primary_button_text || 'Explore Packages',
-    secondaryButtonText: firstSlider?.secondary_button_text || cmsData?.hero_secondary_button_text || 'Get Quote',
-    yearsExperience: firstSlider?.years_experience || cmsData?.hero_years_experience || '10+',
-    happyPilgrims: firstSlider?.happy_pilgrims || cmsData?.hero_happy_pilgrims || '5000+',
-    customerRating: firstSlider?.customer_rating || cmsData?.hero_customer_rating || '4.9',
-    businessPhone: cmsData?.business_phone || '+1-234-567-8900'
+    trustedText: firstSlider?.top_badge_text || cmsData?.hero_trusted_text,
+    primaryButtonText: firstSlider?.primary_button_text || cmsData?.hero_primary_button_text,
+    secondaryButtonText: firstSlider?.secondary_button_text || cmsData?.hero_secondary_button_text,
+    yearsExperience: firstSlider?.years_experience || cmsData?.hero_years_experience,
+    happyPilgrims: firstSlider?.happy_pilgrims || cmsData?.hero_happy_pilgrims,
+    customerRating: firstSlider?.customer_rating || cmsData?.hero_customer_rating,
+    businessPhone: cmsData?.business_phone
   };
 
   useEffect(() => {
@@ -63,6 +63,11 @@ const HeroSection = () => {
     }
   };
 
+  // Don't render if no slides available
+  if (slides.length === 0) {
+    return null;
+  }
+
   return (
     <div className="relative w-full overflow-hidden h-[70vh] lg:h-[80vh] flex items-center">
       {/* Background Image Slider */}
@@ -84,9 +89,7 @@ const HeroSection = () => {
               )}
             </div>
           ))
-        ) : (
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary to-secondary"></div>
-        )}
+        ) : null}
         </div>
 
       {/* Overlay - Keep gradient */}
@@ -100,10 +103,12 @@ const HeroSection = () => {
               isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary">
+            {heroData.trustedText && (
+              <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary">
                 <Award className="w-4 h-4 text-white" />
                 <span className="text-sm font-bold text-white">{heroData.trustedText}</span>
               </div>
+            )}
 
             {/* Animated Title & Subtitle */}
             <div className="mb-6 relative">
@@ -119,26 +124,15 @@ const HeroSection = () => {
                   >
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
                       <span className="text-white drop-shadow-2xl">
-                        {slide.title || 'Welcome to Our Travel Agency'}
+                        {slide.title}
                       </span>
                     </h1>
                     <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
-                      {slide.subtitle || 'Your Journey Begins Here'}
+                      {slide.subtitle}
                     </p>
                   </div>
                 ))
-              ) : (
-                <div className="transition-all duration-700 opacity-100 translate-x-0">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
-                    <span className="text-white drop-shadow-2xl">
-                      Welcome to Our Travel Agency
-                    </span>
-                  </h1>
-                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
-                    Your Journey Begins Here
-                  </p>
-                </div>
-              )}
+              ) : null}
             </div>
 
             <p className="text-gray-200 text-base md:text-lg mb-6 max-w-2xl leading-relaxed">
@@ -147,44 +141,52 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <button 
-                onClick={() => navigate('/category/all')}
-                className="group relative text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-sm sm:text-base"
-              >
-                  <span className="relative flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
-                  {heroData.primaryButtonText}
-                    <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
-                  </span>
-                </button>
+            {(heroData.primaryButtonText || heroData.secondaryButtonText) && (
+              <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
+                {heroData.primaryButtonText && (
+                  <button 
+                    onClick={() => navigate('/category/all')}
+                    className="group relative text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-sm sm:text-base"
+                  >
+                    <span className="relative flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
+                      {heroData.primaryButtonText}
+                      <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
+                    </span>
+                  </button>
+                )}
                 
-              <button 
-                onClick={() => navigate('/contact')}
-                className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-sm sm:text-base"
-              >
-                  <span className="relative flex items-center gap-2">
-                  <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
-                  {heroData.secondaryButtonText}
-                  </span>
-                </button>
+                {heroData.secondaryButtonText && (
+                  <button 
+                    onClick={() => navigate('/contact')}
+                    className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-sm sm:text-base"
+                  >
+                    <span className="relative flex items-center gap-2">
+                      <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
+                      {heroData.secondaryButtonText}
+                    </span>
+                  </button>
+                )}
               </div>
+            )}
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-2xl">
-              <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
-                <div className="text-xs sm:text-sm text-gray-300">Years Experience</div>
+            {(heroData.yearsExperience || heroData.happyPilgrims) && (
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-2xl">
+                {heroData.yearsExperience && (
+                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                    <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
+                    <div className="text-xs sm:text-sm text-gray-300">Years Experience</div>
+                  </div>
+                )}
+                {heroData.happyPilgrims && (
+                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                    <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
+                    <div className="text-xs sm:text-sm text-gray-300">Happy Pilgrims</div>
+                  </div>
+                )}
               </div>
-              <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
-                <div className="text-xs sm:text-sm text-gray-300">Happy Pilgrims</div>
-            </div>
-              {/* <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.customerRating}</div>
-                <div className="text-xs sm:text-sm text-gray-300">Customer Rating</div>
-              </div> */}
-            </div>
+            )}
           </div>
         </div>
       </div>

@@ -9,10 +9,13 @@ export const useBlogs = () => {
       'slug',
       'content',
       'featured_image',
+      'author',
+      'published_on',
       'creation',
       'modified'
     ],
-    orderBy: { field: 'creation', order: 'desc' }
+    filters: [['published', '=', 1]],
+    orderBy: { field: 'published_on', order: 'desc' }
   });
 
   return { 
@@ -31,10 +34,12 @@ export const useBlogBySlug = (slug: string) => {
       'slug',
       'content',
       'featured_image',
+      'author',
+      'published_on',
       'creation',
       'modified'
     ],
-    filters: [['slug', '=', slug]],
+    filters: [['slug', '=', slug], ['published', '=', 1]],
     limit: 1
   });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 const PackagesDescription: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
@@ -35,7 +36,7 @@ const PackagesDescription: React.FC = () => {
           <div>
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=500&fit=crop" 
+                src={getFileUrlWithFallback(cmsData?.packages_image, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=500&fit=crop")} 
                 alt="Pilgrims performing Tawaf around Kaaba"
                 className="w-full h-96 object-cover rounded-xl shadow-lg"
               />

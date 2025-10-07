@@ -47,7 +47,7 @@ const AllPackages: React.FC = () => {
 
   // Handle load more functionality
   const handleLoadMore = () => {
-    setVisiblePackages(prev => prev + 6);
+    setVisiblePackages(prev => prev + 4);
   };
 
   // Get packages to display

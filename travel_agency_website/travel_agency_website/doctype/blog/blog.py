@@ -14,6 +14,10 @@ class Blog(Document):
 		# Auto-generate slug from title if not provided
 		if not self.slug:
 			self.slug = self.generate_slug()
+		
+		# Set published_on when published status changes to True
+		if self.published and not self.published_on:
+			self.published_on = now()
 	
 	def generate_slug(self):
 		"""Generate URL-friendly slug from title"""
@@ -47,6 +51,9 @@ class Blog(Document):
 			"slug": self.slug,
 			"content": self.content,
 			"featured_image": self.featured_image,
+			"author": self.author,
+			"published_on": self.published_on,
+			"published": self.published,
 			"creation": self.creation,
 			"modified": self.modified
 		}
