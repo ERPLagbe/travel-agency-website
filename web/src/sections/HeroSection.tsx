@@ -16,7 +16,8 @@ const HeroSection = () => {
     ?.map((slide: any) => ({
       image: slide.slide_image,
       title: slide.slide_title,
-      subtitle: slide.slide_subtitle
+      subtitle: slide.slide_subtitle,
+      description: slide.slide_description
     })) || [];
 
   // Get hero data from CMS
@@ -29,7 +30,8 @@ const HeroSection = () => {
     yearsExperience: firstSlider?.years_experience || cmsData?.hero_years_experience,
     happyPilgrims: firstSlider?.happy_pilgrims || cmsData?.hero_happy_pilgrims,
     customerRating: firstSlider?.customer_rating || cmsData?.hero_customer_rating,
-    businessPhone: cmsData?.business_phone
+    businessPhone: cmsData?.business_phone,
+    description: firstSlider?.slide_description || cmsData?.hero_description
   };
 
   useEffect(() => {
@@ -116,10 +118,10 @@ const HeroSection = () => {
                 slides.map((slide: any, index: number) => (
                   <div
                     key={index}
-                    className={`transition-all duration-700 ${
+                    className={`transition-opacity duration-700 ${
                       index === currentSlide 
-                        ? 'opacity-100 translate-x-0 relative' 
-                        : 'opacity-0 translate-x-12 absolute top-0 left-0 w-full pointer-events-none'
+                        ? 'opacity-100 relative' 
+                        : 'opacity-0 absolute top-0 left-0 w-full pointer-events-none'
                     }`}
                   >
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
@@ -135,10 +137,27 @@ const HeroSection = () => {
               ) : null}
             </div>
 
-            <p className="text-gray-200 text-base md:text-lg mb-6 max-w-2xl leading-relaxed">
-              Experience the spiritual journey of a lifetime with expert guidance, comfortable accommodations, 
-              and comprehensive packages tailored for your sacred pilgrimage.
-            </p>
+            {/* Description - Animated with fade effect */}
+            <div className="mb-6 relative">
+              {slides.length > 0 ? (
+                slides.map((slide: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`transition-opacity duration-700 ${
+                      index === currentSlide 
+                        ? 'opacity-100 relative' 
+                        : 'opacity-0 absolute top-0 left-0 w-full pointer-events-none'
+                    }`}
+                  >
+                    {slide.description && (
+                      <p className="text-gray-200 text-base md:text-lg max-w-2xl leading-relaxed">
+                        {slide.description}
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : null}
+            </div>
 
             {/* CTA Buttons */}
             {(heroData.primaryButtonText || heroData.secondaryButtonText) && (

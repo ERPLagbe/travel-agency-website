@@ -163,14 +163,7 @@ const Footer: React.FC = () => {
             </div>
             
             {/* Payment Methods */}
-            <div className="mt-6">
-              <div className="flex flex-wrap gap-2">
-                <div className="bg-white rounded px-2 py-1 text-xs font-bold text-blue-600">DISCOVER</div>
-                <div className="bg-white rounded px-2 py-1 text-xs font-bold text-red-600">mastercard</div>
-                <div className="bg-white rounded px-2 py-1 text-xs font-bold text-blue-600">VISA</div>
-                <div className="bg-white rounded px-2 py-1 text-xs font-bold text-blue-600">AMEX</div>
-              </div>
-            </div>
+ 
           </div>
 
           {/* Right Column - Contact Form */}

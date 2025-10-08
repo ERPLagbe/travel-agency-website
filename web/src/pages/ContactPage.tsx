@@ -122,19 +122,7 @@ const CompleteContactPage: React.FC = () => {
               Send us a Message
             </Typography>
             
-            {packageData && (
-              <div style={{ 
-                padding: 'var(--spacing-4)', 
-                backgroundColor: 'var(--color-primary)', 
-                color: 'white',
-                borderRadius: 'var(--radius-md)', 
-                marginBottom: 'var(--spacing-4)'
-              }}>
-                <Typography variant="body" color="white">
-                  Enquiring about: <strong>{packageData.item_name}</strong>
-                </Typography>
-              </div>
-            )}
+     
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>

@@ -182,7 +182,8 @@ a:not(.btn):not([role="button"]):hover {
 }
 
 .btn-primary:hover {
-  @apply shadow-2xl transform scale-105;
+  @apply transition-all duration-300 shadow-2xl transform scale-105;
+  background-color: var(--color-secondary);
 
 }
 
@@ -381,6 +382,19 @@ img[src=""], img:not([src]) {
   .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
   .md\:grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
   .md\:grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Bounce Animation for Chat Button */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
 }
 
     @media (min-width: 1024px) {

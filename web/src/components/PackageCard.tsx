@@ -113,26 +113,26 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="animate-slideIn py-1 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center gap-1 sm:gap-2 mb-1">
               <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-500 font-medium">Duration</span>
+              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Duration</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{duration}</p>
+            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{duration}</p>
           </div>
 
           <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.2s' }}>
             <div className="flex items-center gap-1 sm:gap-2 mb-1">
               <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-500 font-medium">Direct Flight</span>
+              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Direct Flight</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
+            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
           </div>
 
           {/* Hotel / Accommodation blocks */}
           <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.3s' }}>
             <div className="flex items-center gap-1 sm:gap-2 mb-1">
               <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-500 font-medium">Hotel Makkah</span>
+              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Hotel Makkah</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
+            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
           </div>
         </div>
 
@@ -140,16 +140,16 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.5s' }}>
           <div className="flex items-center gap-1 sm:gap-2 mb-1">
             <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-            <span className="text-xs text-gray-500 font-medium">Food Included</span>
+            <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Food Included</span>
           </div>
-          <p className="text-xs sm:text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
+          <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
         </div>
 
         {/* Special Services - Badge Tags */}
         <div className="animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg border-b border-gray-200" style={{ animationDelay: '0.6s' }}>
           <div className="flex items-center gap-1 sm:gap-2 mb-2">
             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-            <span className="text-xs text-gray-500 font-medium">Special Services</span>
+            <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Special Services</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {specialServicesList && specialServicesList.length > 0 ? (
