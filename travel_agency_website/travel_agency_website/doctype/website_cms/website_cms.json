@@ -217,7 +217,9 @@
    "default": "We are specialists in Customised packages according to your needs.",
    "fieldname": "cta_description",
    "fieldtype": "Text",
-   "label": "CTA Description"
+   "label": "CTA Description",
+   "description": "Call to action description (Max 200 characters)",
+   "length": 200
   },
   {
    "default": "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice.",
@@ -464,6 +466,7 @@
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
+ "client_script": "frappe.ui.form.on('Website CMS', {\n\trefresh: function(frm) {\n\t\t// Add character counter for cta_description\n\t\tif (frm.doc.cta_description !== undefined) {\n\t\t\tfrm.set_df_property('cta_description', 'description', 'Call to action description (Max 200 characters) - Current: ' + (frm.doc.cta_description ? frm.doc.cta_description.length : 0) + '/200');\n\t\t}\n\t},\n\tcta_description: function(frm) {\n\t\t// Update character counter when description changes\n\t\tif (frm.doc.cta_description !== undefined) {\n\t\t\tvar currentLength = frm.doc.cta_description ? frm.doc.cta_description.length : 0;\n\t\t\tfrm.set_df_property('cta_description', 'description', 'Call to action description (Max 200 characters) - Current: ' + currentLength + '/200');\n\t\t\t\n\t\t\t// Change field color if approaching limit\n\t\t\tif (currentLength > 180) {\n\t\t\t\tfrm.set_df_property('cta_description', 'bg_color', '#ffebee');\n\t\t\t} else if (currentLength > 150) {\n\t\t\t\tfrm.set_df_property('cta_description', 'bg_color', '#fff3e0');\n\t\t\t} else {\n\t\t\t\tfrm.set_df_property('cta_description', 'bg_color', '');\n\t\t\t}\n\t\t}\n\t}\n});",
  "links": [],
  "modified": "2025-10-06 11:16:33.851886",
  "modified_by": "Administrator",

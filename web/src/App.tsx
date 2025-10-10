@@ -30,6 +30,7 @@ function App() {
               {/* <Route path="/packages" element={<PackagesPage />} /> */}
               <Route path="/packages/:id" element={<PackageDetails />} />
               <Route path="/category/:itemGroup" element={<PackageListingPage />} />
+              <Route path="/dropdown/:dropdownName" element={<PackageListingPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/visa" element={<VisaPage />} />
               <Route path="/about" element={<AboutPage />} />

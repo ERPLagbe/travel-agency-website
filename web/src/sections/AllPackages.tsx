@@ -6,7 +6,6 @@ import { useFrappeGetCall } from 'frappe-react-sdk';
 import { Button } from '../components/Button';
 
 const AllPackages: React.FC = () => {
-  const [visiblePackages, setVisiblePackages] = useState(6);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const navigate = useNavigate();
@@ -14,10 +13,9 @@ const AllPackages: React.FC = () => {
   // Fetch all packages from ERPNext with accommodation data using custom API
   const { data: apiResponse } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
   const allPackages = apiResponse?.message?.data || [];
-  console.log("allPackages", allPackages);
 
-  // Use all packages from ERPNext with dynamic data
-  const packages = allPackages?.map((pkg: any) => {
+  // Use all packages from ERPNext with dynamic data (limit to first 9 for slider)
+  const packages = allPackages?.slice(0, 9).map((pkg: any) => {
     // Process accommodation list to get hotel names and distances
     const accommodationList = pkg.custom_accommodation_list || [];
     const hotelInfo = accommodationList.length > 0 
@@ -27,21 +25,18 @@ const AllPackages: React.FC = () => {
     return {
       id: pkg.name,
       title: pkg.item_name || 'Untitled Package',
-      nights: "7 Nights", // Keep for compatibility
+      nights: "7 Nights",
       duration: pkg.custom_duration || 'N/A',
       rating: pkg.custom_package_rating,
       price: pkg.standard_rate || 0,
       image: pkg.image || '',
       itemGroup: pkg.item_group || '',
-      // Dynamic data from Item custom fields
       airInfo: pkg.custom_air_information || 'N/A',
       hotelMakkah: hotelInfo,
       hotelMadinah: hotelInfo,
       foodInfo: pkg.custom_food_information || 'N/A',
       specialServices: pkg.custom_bustaxi_information || '',
-      // Pass accommodation list for dynamic rendering
       accommodationList: accommodationList,
-      // Pass special services list for dynamic rendering
       specialServicesList: pkg.custom_special_services || []
     };
   }) || [];
@@ -51,8 +46,8 @@ const AllPackages: React.FC = () => {
   // Determine how many cards to show based on screen size
   const getCardsPerView = () => {
     if (typeof window === 'undefined') return 3;
-    if (window.innerWidth < 1024) return 1; // Mobile and tablet: 1 card
-    return 3; // Desktop: 3 cards
+    if (window.innerWidth < 1024) return 1;
+    return 3;
   };
 
   const [cardsPerView, setCardsPerView] = useState(getCardsPerView());
@@ -66,34 +61,25 @@ const AllPackages: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Handle load more functionality
-  const handleLoadMore = () => {
-    setVisiblePackages(prev => prev + 4);
-  };
-
-  // Get packages to display
-  const displayedPackages = packages.slice(0, visiblePackages);
-  const hasMorePackages = packages.length > visiblePackages;
-
   // Calculate pages for slider
-  const pages = Math.max(1, Math.ceil(displayedPackages.length / cardsPerView));
+  const pages = Math.max(1, Math.ceil(packages.length / cardsPerView));
 
   // Auto-play functionality for slider
   useEffect(() => {
-    if (!isAutoPlaying || displayedPackages.length <= cardsPerView) return;
+    if (!isAutoPlaying || packages.length <= cardsPerView) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
         const nextPage = Math.floor(prev / cardsPerView) + 1;
-        if (nextPage >= pages) return 0; // loop to start
+        if (nextPage >= pages) return 0;
         return nextPage * cardsPerView;
       });
-    }, 5000); // Change slide every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, displayedPackages.length, cardsPerView, pages]);
+  }, [isAutoPlaying, packages.length, cardsPerView, pages]);
 
-  const maxStartIndex = Math.max(0, displayedPackages.length - cardsPerView);
+  const maxStartIndex = Math.max(0, packages.length - cardsPerView);
   const currentPage = Math.min(Math.floor(currentIndex / cardsPerView), pages - 1);
 
   const handlePrevious = () => {
@@ -108,9 +94,8 @@ const AllPackages: React.FC = () => {
     setCurrentIndex(newIndex > maxStartIndex ? 0 : newIndex);
   };
 
-  // Translate percentage per step
   const translatePercent = (currentIndex / cardsPerView) * 100;
-  const showNavigation = displayedPackages.length > cardsPerView;
+  const showNavigation = packages.length > cardsPerView;
 
   return (
     <section className="py-16 bg-white">
@@ -137,7 +122,7 @@ const AllPackages: React.FC = () => {
               className="flex transition-transform duration-700 items-stretch"
               style={{ transform: `translateX(-${translatePercent}%)` }}
             >
-              {displayedPackages.map((pkg: any) => (
+              {packages.map((pkg: any) => (
                 <div
                   key={pkg.id}
                   className="w-full lg:w-1/3 px-2 flex-shrink-0 flex"
@@ -160,10 +145,7 @@ const AllPackages: React.FC = () => {
                     specialServicesList={pkg.specialServicesList}
                     primaryButtonText="View All Deal"
                     secondaryButtonText="Enquire Now"
-                    onPrimaryClick={() => {
-                      // Always use packages route
-                      navigate(`/packages/${pkg.id}`);
-                    }}
+                    onPrimaryClick={() => navigate(`/packages/${pkg.id}`)}
                     onSecondaryClick={() => navigate(`/contact?package=${pkg.id}`)}
                   />
                 </div>
@@ -214,19 +196,17 @@ const AllPackages: React.FC = () => {
           )}
         </div>
 
-        {/* Load More Button */}
-        {hasMorePackages && (
-          <div className="text-center mt-12">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleLoadMore}
-              className="px-8 py-3"
-            >
-              Load More Packages
-            </Button>
-          </div>
-        )}
+        {/* View All Packages Button */}
+        <div className="text-center mt-12">
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate('/category/all')}
+            className="px-8 py-3"
+          >
+            View All Packages
+          </Button>
+        </div>
       </div>
     </section>
   );

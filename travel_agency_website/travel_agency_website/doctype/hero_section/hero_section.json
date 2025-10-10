@@ -65,7 +65,8 @@
    "fieldname": "slide_description",
    "fieldtype": "Small Text",
    "label": "Description",
-   "description": "Paragraph text displayed below subtitle"
+   "description": "Paragraph text displayed below subtitle (Max 100 characters)",
+   "length": 100
   },
   {
    "fieldname": "top_badge_text",
@@ -156,6 +157,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
+ "client_script": "frappe.ui.form.on('Hero Section', {\n\trefresh: function(frm) {\n\t\t// Add character counter for slide_description\n\t\tif (frm.doc.slide_description !== undefined) {\n\t\t\tfrm.set_df_property('slide_description', 'description', 'Paragraph text displayed below subtitle (Max 200 characters) - Current: ' + (frm.doc.slide_description ? frm.doc.slide_description.length : 0) + '/200');\n\t\t}\n\t},\n\tslide_description: function(frm) {\n\t\t// Update character counter when description changes\n\t\tif (frm.doc.slide_description !== undefined) {\n\t\t\tvar currentLength = frm.doc.slide_description ? frm.doc.slide_description.length : 0;\n\t\t\tfrm.set_df_property('slide_description', 'description', 'Paragraph text displayed below subtitle (Max 200 characters) - Current: ' + currentLength + '/200');\n\t\t\t\n\t\t\t// Change field color if approaching limit\n\t\t\tif (currentLength > 180) {\n\t\t\t\tfrm.set_df_property('slide_description', 'bg_color', '#ffebee');\n\t\t\t} else if (currentLength > 150) {\n\t\t\t\tfrm.set_df_property('slide_description', 'bg_color', '#fff3e0');\n\t\t\t} else {\n\t\t\t\tfrm.set_df_property('slide_description', 'bg_color', '');\n\t\t\t}\n\t\t}\n\t}\n});",
  "links": [],
  "modified": "2025-10-06 11:11:35.964328",
  "modified_by": "Administrator",

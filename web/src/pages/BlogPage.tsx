@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SectionContainer, Typography, Card } from '../components';
+import { SectionContainer, Typography, Card, PageLayout } from '../components';
 import { useBlogs } from '../hooks/useBlogs';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { Calendar, User, ArrowRight } from 'lucide-react';
@@ -10,32 +10,51 @@ const BlogPage: React.FC = () => {
 
   if (isValidating) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <Typography variant="body" color="muted">Loading blog posts...</Typography>
+      <PageLayout 
+        breadcrumbItems={[
+          { label: 'Home', path: '/' },
+          { label: 'Blog' }
+        ]}
+      >
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <Typography variant="body" color="muted">Loading blog posts...</Typography>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Typography variant="h2" color="error" style={{ marginBottom: 'var(--spacing-4)' }}>
-            Error Loading Blog Posts
-          </Typography>
-          <Typography variant="body" color="muted">
-            Please try again later.
-          </Typography>
+      <PageLayout 
+        breadcrumbItems={[
+          { label: 'Home', path: '/' },
+          { label: 'Blog' }
+        ]}
+      >
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Typography variant="h2" color="error" style={{ marginBottom: 'var(--spacing-4)' }}>
+              Error Loading Blog Posts
+            </Typography>
+            <Typography variant="body" color="muted">
+              Please try again later.
+            </Typography>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div>
+    <PageLayout 
+      breadcrumbItems={[
+        { label: 'Home', path: '/' },
+        { label: 'Blog' }
+      ]}
+    >
       {/* Page Header */}
       <SectionContainer>
         <div className="" style={{ paddingTop: 'var(--spacing-6)', }}>
@@ -153,7 +172,7 @@ const BlogPage: React.FC = () => {
           </div>
         )}
       </SectionContainer>
-    </div>
+    </PageLayout>
   );
 };
 

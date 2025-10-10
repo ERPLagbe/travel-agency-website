@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography } from '../components';
+import { SectionContainer, Typography, PageLayout } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
@@ -7,7 +7,12 @@ const AboutPage: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
 
   return (
-    <div>
+    <PageLayout 
+      breadcrumbItems={[
+        { label: 'Home', path: '/' },
+        { label: 'About Us' }
+      ]}
+    >
       {/* Hero Section */}
       <SectionContainer size="lg" className="text-center hero-section" style={{
         backgroundImage: cmsData?.about_background_image 
@@ -79,7 +84,7 @@ const AboutPage: React.FC = () => {
           </Typography>
         )}
       </SectionContainer>
-    </div>
+    </PageLayout>
   );
 };
 

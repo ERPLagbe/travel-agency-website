@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SectionContainer, Typography, Button, Card } from '../components';
+import { SectionContainer, Typography, Button, Card, PageLayout } from '../components';
 import { Clock, Shield, Star, Phone, Mail, MapPin } from 'lucide-react';
 import { useCreateLead } from '../hooks/useCreateLead';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
@@ -100,16 +100,21 @@ const CompleteContactPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <PageLayout 
+      breadcrumbItems={[
+        { label: 'Home', path: '/' },
+        { label: 'Contact Us' }
+      ]}
+    >
       {/* Hero Section - Clean Design */}
       <SectionContainer size="lg" className="text-center hero-section contact-hero">
         <div style={{ paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
           <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-6)' }}>
             Contact {contactData?.business_name}
           </Typography>
-          <Typography variant="body-large" color="white" align="center">
+          {/* <Typography variant="body-large" color="white" align="center">
             Get in touch with us to start planning your spiritual journey
-          </Typography>
+          </Typography> */}
         </div>
       </SectionContainer>
 
@@ -119,7 +124,7 @@ const CompleteContactPage: React.FC = () => {
           {/* Contact Form */}
           <Card>
             <Typography variant="h2" style={{ marginBottom: 'var(--spacing-8)' }}>
-              Send us a Message
+              Get in Touch
             </Typography>
             
      
@@ -129,13 +134,13 @@ const CompleteContactPage: React.FC = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Full Name <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Full Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 />
               </div>
@@ -144,11 +149,11 @@ const CompleteContactPage: React.FC = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Email Address
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email Address"
-                  value={formData.email}
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email Address"
+                value={formData.email}
                   onChange={handleChange}
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 />
@@ -162,8 +167,8 @@ const CompleteContactPage: React.FC = () => {
                   <select
                     name="countryCode"
                     value={formData.countryCode}
-                    onChange={handleChange}
-                    required
+                onChange={handleChange}
+                required
                     className="w-24 sm:w-28 px-2 sm:px-3 py-3 border border-gray-300 rounded-lg text-sm sm:text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                   >
                     <option value="+1">🇺🇸 +1</option>
@@ -343,12 +348,12 @@ const CompleteContactPage: React.FC = () => {
                     <option value="+682">🇨🇰 +682</option>
                     <option value="+681">🇼🇫 +681</option>
                   </select>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Your Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Your Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
                     required
                     className="flex-1 min-w-0 px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                   />
@@ -378,37 +383,37 @@ const CompleteContactPage: React.FC = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Package Interest
                 </label>
-                <select
-                  name="packageInterest"
-                  value={formData.packageInterest}
-                  onChange={handleChange}
+              <select
+                name="packageInterest"
+                value={formData.packageInterest}
+                onChange={handleChange}
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 >
                   <option value="">Select Package (Optional)</option>
-                  {allPackages && allPackages.length > 0 ? (
-                    allPackages.map((pkg: any) => (
-                      <option key={pkg.name} value={pkg.name}>
-                        {pkg.item_name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>Loading packages...</option>
-                  )}
-                </select>
+                {allPackages && allPackages.length > 0 ? (
+                  allPackages.map((pkg: any) => (
+                    <option key={pkg.name} value={pkg.name}>
+                      {pkg.item_name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>Loading packages...</option>
+                )}
+              </select>
               </div>
               
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Message
                 </label>
-                <textarea
-                  name="message"
-                  placeholder="Your Message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={5}
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={5}
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base resize-vertical focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                ></textarea>
+              ></textarea>
               </div>
               {submitStatus === 'success' && (
                 <div className="p-3 bg-green-100 text-green-800 rounded-lg mb-4">
@@ -559,7 +564,7 @@ const CompleteContactPage: React.FC = () => {
           </div>
         </div>
       </SectionContainer>
-    </div>
+    </PageLayout>
   );
 };
 

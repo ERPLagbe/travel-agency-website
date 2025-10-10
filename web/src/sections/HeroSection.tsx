@@ -151,7 +151,9 @@ const HeroSection = () => {
                   >
                     {slide.description && (
                       <p className="text-gray-200 text-base md:text-lg max-w-2xl leading-relaxed">
-                        {slide.description}
+                        {slide.description.length > 100 
+                          ? `${slide.description.substring(0, 100)}...` 
+                          : slide.description}
                       </p>
                     )}
                   </div>

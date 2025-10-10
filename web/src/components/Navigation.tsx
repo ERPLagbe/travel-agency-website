@@ -69,7 +69,30 @@ const Navigation: React.FC<NavigationProps> = () => {
   const navigationDropdowns = cmsData?.navigation_dropdowns || [];
   const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    const currentPath = location.pathname;
+    
+    // Exact match
+    if (currentPath === path) return true;
+    
+    // Handle home page
+    if (path === '/' && currentPath === '/') return true;
+    
+    // Handle sub-pages (e.g., /packages/123 should be active when on /packages)
+    if (path !== '/' && currentPath.startsWith(path + '/')) return true;
+    
+    // Handle dynamic routes
+    if (path.includes('/category/') && currentPath.includes('/category/')) {
+      const pathCategory = path.split('/category/')[1];
+      const currentCategory = currentPath.split('/category/')[1];
+      return pathCategory === currentCategory;
+    }
+    
+    // Handle package details
+    if (path === '/packages' && currentPath.startsWith('/packages/')) return true;
+    
+    return false;
+  };
 
   // Mobile menu helper functions
   const toggleMobileExpanded = (itemPath: string) => {
@@ -107,7 +130,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         }));
 
         const navItem: NavItem = {
-          path: `/${dropdown.dropdown_name.toLowerCase()}`,
+          path: `/dropdown/${dropdown.dropdown_name.toLowerCase()}`,
           label: dropdown.dropdown_name, // Keep original dynamic dropdown name
           submenu: submenu.length > 0 ? submenu : undefined
         };
@@ -150,42 +173,43 @@ const Navigation: React.FC<NavigationProps> = () => {
             {navItems.map((item) => (
               <div key={item.path} className="relative">
                 {item.submenu ? (
-                  // For dropdown items, use a button instead of Link to prevent navigation
-                  <button
-                    className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md bg-transparent border-0 cursor-pointer ${
-                      isActive(item.path) ? 'text-accent' : 'text-white'
-                    }`}
-                    onMouseEnter={() => setActiveDropdown(item.path)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                    onFocus={() => setActiveDropdown(item.path)}
-                    onBlur={(e) => {
-                      // Only close if focus is moving outside the dropdown
-                      if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
-                        setActiveDropdown(null);
-                      }
-                    }}
-                    aria-haspopup="true"
-                    aria-expanded={activeDropdown === item.path ? 'true' : 'false'}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveDropdown(activeDropdown === item.path ? null : item.path);
-                    }}
-                  >
-                    <span className="text-white">
-                      {item.label}
-                    </span>
-                    <ChevronDown 
-                      className={`w-4 h-4 text-white transition-transform duration-200 ${
-                        activeDropdown === item.path ? 'rotate-180' : ''
-                      }`} 
-                    />
-                  </button>
+                  // For dropdown items, use Link for navigation with hover for submenu
+                  <div className="relative">
+                    <Link
+                      to={item.path}
+                      className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
+                        isActive(item.path) 
+                          ? 'bg-secondary text-white' 
+                          : 'text-white hover:text-accent hover:bg-white/5'
+                      }`}
+                      onMouseEnter={() => setActiveDropdown(item.path)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      onFocus={() => setActiveDropdown(item.path)}
+                      onBlur={(e) => {
+                        // Only close if focus is moving outside the dropdown
+                        if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
+                          setActiveDropdown(null);
+                        }
+                      }}
+                    >
+                      <span>
+                        {item.label}
+                      </span>
+                      <ChevronDown 
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          activeDropdown === item.path ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </Link>
+                  </div>
                 ) : (
                   // For regular navigation items, use Link
                   <Link
                     to={item.path}
                     className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
-                      isActive(item.path) ? 'text-accent' : 'text-white'
+                      isActive(item.path) 
+                        ? 'bg-secondary text-white' 
+                        : 'text-white hover:text-accent hover:bg-white/5'
                     }`}
                     onMouseEnter={() => setActiveDropdown(item.path)}
                     onMouseLeave={() => setActiveDropdown(null)}
@@ -362,18 +386,29 @@ const Navigation: React.FC<NavigationProps> = () => {
                     {item.submenu ? (
                       // Collapsible dropdown items
                       <div>
-                        <button
-                          onClick={() => toggleMobileExpanded(item.path)}
-                          className="w-full flex items-center justify-between py-4 text-left font-medium text-gray-900 hover:text-primary transition-colors duration-200"
-                          aria-expanded={mobileExpandedItems.has(item.path)}
-                        >
-                          <span>{item.label}</span>
-                          <ChevronDown 
-                            className={`w-5 h-5 transition-transform duration-200 ${
-                              mobileExpandedItems.has(item.path) ? 'rotate-180' : ''
-                            }`} 
-                          />
-                        </button>
+                        <div className="flex">
+                          <Link
+                            to={item.path}
+                            className={`flex-1 py-4 px-4 text-left font-medium rounded-lg transition-colors duration-200 ${
+                              isActive(item.path) 
+                                ? 'bg-secondary text-white' 
+                                : 'text-gray-900 hover:text-primary hover:bg-gray-50'
+                            }`}
+                          >
+                            <span>{item.label}</span>
+                          </Link>
+                          <button
+                            onClick={() => toggleMobileExpanded(item.path)}
+                            className="py-4 px-2 text-gray-600 hover:text-primary transition-colors duration-200"
+                            aria-expanded={mobileExpandedItems.has(item.path)}
+                          >
+                            <ChevronDown 
+                              className={`w-5 h-5 transition-transform duration-200 ${
+                                mobileExpandedItems.has(item.path) ? 'rotate-180' : ''
+                              }`} 
+                            />
+                          </button>
+                        </div>
                         
                         {/* Collapsible submenu */}
                         <div 
@@ -389,7 +424,9 @@ const Navigation: React.FC<NavigationProps> = () => {
                                 key={subItem.path}
                                 to={subItem.path}
                                 className={`block py-3 px-4 text-gray-600 rounded-lg transition-all duration-200 hover:bg-primary/5 hover:text-primary ${
-                                  isActive(subItem.path) ? 'bg-primary/10 text-primary font-medium' : ''
+                                  isActive(subItem.path) 
+                                    ? 'bg-secondary text-white font-medium' 
+                                    : ''
                                 }`}
                                 onClick={closeMobileMenu}
                               >
@@ -403,10 +440,10 @@ const Navigation: React.FC<NavigationProps> = () => {
                       // Regular navigation items
                       <Link
                         to={item.path}
-                        className={`block py-4 font-medium transition-colors duration-200 ${
+                        className={`block py-4 font-medium transition-colors duration-200 px-4 rounded-lg ${
                           isActive(item.path) 
-                            ? 'text-primary' 
-                            : 'text-gray-900 hover:text-primary'
+                            ? 'bg-secondary text-white' 
+                            : 'text-gray-900 hover:text-primary hover:bg-gray-50'
                         }`}
                         onClick={closeMobileMenu}
                       >

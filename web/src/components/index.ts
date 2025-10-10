@@ -14,6 +14,8 @@ export { default as PackageListing } from './PackageListing';
 export { default as FlightBookingForm } from './FlightBookingForm';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ScrollToTop } from './ScrollToTop';
+export { default as Breadcrumb } from './Breadcrumb';
+export { default as PageLayout } from './PageLayout';
 
 // New sections
 export { default as CTASection } from '../sections/CTASection';

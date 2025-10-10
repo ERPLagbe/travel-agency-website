@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, St
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
-import { Button } from '../components/Button';
+import { Button, PageLayout } from '../components';
 
 interface PackageDetails {
   id: string;
@@ -78,30 +78,52 @@ const PackageDetails: React.FC = () => {
   
   if (isValidating) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading package details...</p>
+      <PageLayout 
+        breadcrumbItems={[
+          { label: 'Home', path: '/' },
+          { label: 'Packages', path: '/packages' },
+          { label: 'Loading...' }
+        ]}
+      >
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading package details...</p>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
   
   if (error || !packageData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary mb-4">Package Not Found</h1>
-          <p className="text-gray-600 mb-4">The package you're looking for doesn't exist.</p>
-          <Link to="/" className="text-primary hover:underline">Return to Home</Link>
+      <PageLayout 
+        breadcrumbItems={[
+          { label: 'Home', path: '/' },
+          { label: 'Packages', path: '/packages' },
+          { label: 'Not Found' }
+        ]}
+      >
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-primary mb-4">Package Not Found</h1>
+            <p className="text-gray-600 mb-4">The package you're looking for doesn't exist.</p>
+            <Link to="/" className="text-primary hover:underline">Return to Home</Link>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <PageLayout 
+      breadcrumbItems={[
+        { label: 'Home', path: '/' },
+        { label: 'Packages', path: '/packages' },
+        { label: packageData.item_name || 'Package Details' }
+      ]}
+    >
       {/* Hero Banner Section */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         <div className="relative h-full py-4 md:h-40 rounded-lg sm:rounded-xl overflow-hidden shadow-lg">
@@ -470,7 +492,7 @@ const PackageDetails: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

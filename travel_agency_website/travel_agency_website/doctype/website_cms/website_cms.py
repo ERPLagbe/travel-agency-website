@@ -10,7 +10,9 @@ class WebsiteCMS(Document):
 	
 	def validate(self):
 		"""Validate the document before saving"""
-		pass
+		# Validate CTA description character limit
+		if self.cta_description and len(self.cta_description) > 200:
+			frappe.throw(f"CTA description cannot exceed 200 characters. Current length: {len(self.cta_description)} characters")
 		
 		# Prevent deletion of the main record
 		if self.name == "Main Website Settings":
