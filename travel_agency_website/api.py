@@ -99,6 +99,26 @@ def get_accommodation_files(accommodation_name):
         }
 
 @frappe.whitelist(allow_guest=True)
+def get_website_cms():
+    """Get Website CMS data with all related child tables"""
+    try:
+        # Get the main Website CMS document
+        cms_doc = frappe.get_doc("Website CMS", "Website CMS", ignore_permissions=True)
+        
+        # Convert to dict and include all child table data
+        cms_data = cms_doc.as_dict()
+        
+        return {
+            "docs": [cms_data]
+        }
+    except Exception as e:
+        frappe.log_error(f"Error in get_website_cms: {str(e)}")
+        return {
+            "error": str(e),
+            "docs": []
+        }
+
+@frappe.whitelist(allow_guest=True)
 def get_items_with_accommodation():
     """Get all items with their accommodation list and custom fields"""
     try:

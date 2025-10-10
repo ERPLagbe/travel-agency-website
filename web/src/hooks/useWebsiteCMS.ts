@@ -2,13 +2,10 @@ import { useFrappeGetDocList, useFrappeGetCall } from 'frappe-react-sdk'
 
 // Simple hook to get Website CMS data (Single DocType)
 export const useWebsiteCMS = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData,
@@ -19,13 +16,10 @@ export const useWebsiteCMS = () => {
 
 // Simple hook to get testimonials from parent Website CMS
 export const useTestimonials = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.testimonials || [],
@@ -36,13 +30,10 @@ export const useTestimonials = () => {
 
 // Simple hook to get featured packages from parent Website CMS
 export const useFeaturedPackages = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.featured_packages || [],
@@ -53,13 +44,10 @@ export const useFeaturedPackages = () => {
 
 // Simple hook to get Hajj packages from parent Website CMS
 export const useHajjPackages = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.hajj_packages || [],
@@ -70,13 +58,10 @@ export const useHajjPackages = () => {
 
 // Simple hook to get FAQ items from parent Website CMS
 export const useFAQItems = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.faq_items || [],
@@ -87,13 +72,10 @@ export const useFAQItems = () => {
 
 // Simple hook to get footer quick links from parent Website CMS
 export const useFooterQuickLinks = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.footer_quick_links || [],
@@ -104,13 +86,10 @@ export const useFooterQuickLinks = () => {
 
 // Simple hook to get footer terms links from parent Website CMS
 export const useFooterTermsLinks = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.footer_terms_links || [],
@@ -121,13 +100,10 @@ export const useFooterTermsLinks = () => {
 
 // Simple hook to get social media links from parent Website CMS
 export const useSocialMediaLinks = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.footer_social_media || [],
@@ -138,13 +114,10 @@ export const useSocialMediaLinks = () => {
 
 // Simple hook to get gallery images from parent Website CMS
 export const useGalleryImages = () => {
-  const { data, error, isValidating } = useFrappeGetCall('frappe.desk.form.load.getdoc', {
-    doctype: 'Website CMS',
-    name: 'Website CMS'
-  })
+  const { data, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_website_cms')
   
-  // Extract the actual document from the docs array
-  const cmsData = data?.docs?.[0] || null
+  // Extract the actual document from the docs array (data is wrapped in message property)
+  const cmsData = data?.message?.docs?.[0] || null
   
   return {
     data: cmsData?.gallery_images || [],
