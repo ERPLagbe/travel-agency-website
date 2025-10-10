@@ -43,14 +43,10 @@
   "section_break_welcome",
   "welcome_title",
   "welcome_description",
-  "welcome_services_title",
-  "welcome_services_description",
   "welcome_image",
   "section_break_packages_desc",
-  "umrah_title",
-  "umrah_description",
-  "hajj_title",
-  "hajj_description",
+  "section_title",
+  "description",
   "packages_image",
   "section_break_faq",
   "faq_title",
@@ -276,19 +272,8 @@
   },
   {
    "fieldname": "welcome_description",
-   "fieldtype": "Text",
+   "fieldtype": "Text Editor",
    "label": "Welcome Description"
-  },
-  {
-   "default": "Our Services - Tailored Islamic Travel Solutions",
-   "fieldname": "welcome_services_title",
-   "fieldtype": "Data",
-   "label": "Welcome Services Title"
-  },
-  {
-   "fieldname": "welcome_services_description",
-   "fieldtype": "Text",
-   "label": "Welcome Services Description"
   },
   {
    "fieldname": "welcome_image",
@@ -302,25 +287,14 @@
   },
   {
    "default": "Umrah Packages",
-   "fieldname": "umrah_title",
+   "fieldname": "section_title",
    "fieldtype": "Data",
-   "label": "Umrah Title"
+   "label": "Section Title"
   },
   {
-   "fieldname": "umrah_description",
-   "fieldtype": "Text",
-   "label": "Umrah Description"
-  },
-  {
-   "default": "Hajj Packages",
-   "fieldname": "hajj_title",
-   "fieldtype": "Data",
-   "label": "Hajj Title"
-  },
-  {
-   "fieldname": "hajj_description",
-   "fieldtype": "Text",
-   "label": "Hajj Description"
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
   },
   {
    "fieldname": "packages_image",

@@ -38,7 +38,7 @@ const BlogPage: React.FC = () => {
     <div>
       {/* Page Header */}
       <SectionContainer>
-        <div style={{ paddingTop: 'var(--spacing-6)', paddingBottom: 'var(--spacing-4)' }}>
+        <div className="" style={{ paddingTop: 'var(--spacing-6)', }}>
           <Typography variant="h1" align="center" style={{ marginBottom: 'var(--spacing-2)' }}>
             Blog Posts
           </Typography>
@@ -46,12 +46,12 @@ const BlogPage: React.FC = () => {
             Discover travel tips, insights, and stories from our experts
           </Typography>
         </div>
-      </SectionContainer>
+ 
 
       {/* Blog Posts */}
-      <SectionContainer>
+      
         {blogs.length === 0 ? (
-          <div className="text-center" style={{ padding: 'var(--spacing-8) 0' }}>
+          <div className="text-center ">
             <Typography variant="h3" style={{ marginBottom: 'var(--spacing-4)' }}>
               No Blog Posts Yet
             </Typography>
@@ -89,7 +89,7 @@ const BlogPage: React.FC = () => {
                   )} */}
                   <img src={getFileUrlWithFallback(blog.featured_image)} alt={blog.title} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                   
-                  <div style={{ padding: 'var(--spacing-6)' }}>
+                  <div  style={{ padding: 'var(--spacing-6)' }}>
                     {/* Title */}
                     <Typography variant="h3" style={{ 
                       marginBottom: 'var(--spacing-3)',

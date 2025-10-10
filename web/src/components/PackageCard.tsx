@@ -162,14 +162,14 @@ const PackageCard: React.FC<PackageCardProps> = ({
                 </span>
               ))
             ) : (
-              specialServices.split(',').map((service, index) => (
+              specialServices ? specialServices.split(',').map((service, index) => (
                 <span
                   key={index}
                   className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
                 >
                   {service.trim()}
                 </span>
-              ))
+              )) : null
             )}
           </div>
         </div>

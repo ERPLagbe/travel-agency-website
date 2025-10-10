@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
                   <a href={`tel:${cmsData.business_phone}`} className="text-white hover:text-secondary transition-colors">
                     {cmsData.business_phone}
                   </a>
-                </div>
+            </div>
               )}
               
               {/* Email */}
@@ -129,38 +129,38 @@ const Footer: React.FC = () => {
                 ))}
               </div>
             )}
-          </div>
+            </div>
 
           {/* Middle Column - Quick Links */}
-          <div>
+              <div>
             <h4 className="text-white font-semibold text-base mb-4">Quick Links</h4>
-            <div className="space-y-2">
-              {quickLinks.map((link: any, index: number) => (
-                <Link 
-                  key={index}
-                  to={link.link_url} 
+                <div className="space-y-2">
+                  {quickLinks.map((link: any, index: number) => (
+                    <Link 
+                      key={index}
+                      to={link.link_url} 
                   className=" text-white text-sm  h flex items-center gap-2"
-                  aria-label={`Navigate to ${link.link_text}`}
-                >
+                      aria-label={`Navigate to ${link.link_text}`}
+                    >
                   <span className="text-secondary">›</span> {link.link_text}
-                </Link>
-              ))}
-            </div>
-            
-            {/* Our Terms */}
+                    </Link>
+                  ))}
+              </div>
+
+              {/* Our Terms */}
             <h4 className="text-white font-semibold text-base mt-6 mb-4">Our Terms</h4>
-            <div className="space-y-2">
-              {termsLinks.map((link: any, index: number) => (
-                <Link 
-                  key={index}
-                  to={link.link_url} 
+                <div className="space-y-2">
+                  {termsLinks.map((link: any, index: number) => (
+                    <Link 
+                      key={index}
+                      to={link.link_url} 
                   className=" text-white text-sm  hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
-                  aria-label={`Navigate to ${link.link_text}`}
-                >
+                      aria-label={`Navigate to ${link.link_text}`}
+                    >
                   <span className="text-secondary">›</span> {link.link_text}
-                </Link>
-              ))}
-            </div>
+                    </Link>
+                  ))}
+                </div>
             
             {/* Payment Methods */}
  
@@ -168,6 +168,7 @@ const Footer: React.FC = () => {
 
           {/* Right Column - Contact Form */}
           <div className="bg-white bg-opacity-5 mb-2 rounded-lg p-6">
+            <h4 className="text-black font-semibold text-base mb-4">Get in Touch</h4>
             <form onSubmit={handleSubmit} className="space-y-3">
               {/* Name */}
               <input
@@ -375,7 +376,7 @@ const Footer: React.FC = () => {
                   required
                   className="flex-1 min-w-0 px-3 py-2 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:ring-2 focus:ring-secondary focus:border-secondary focus:outline-none"
                 />
-              </div>
+            </div>
 
               {/* Subject */}
               <select

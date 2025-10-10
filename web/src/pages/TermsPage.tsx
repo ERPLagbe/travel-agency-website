@@ -50,15 +50,15 @@ const TermsPage: React.FC = () => {
     <div>
       {/* Page Header */}
       <SectionContainer>
-        <div style={{ paddingTop: 'var(--spacing-6)', paddingBottom: 'var(--spacing-4)' }}>
+        <div >
           <Typography variant="h1" align="center" style={{ marginBottom: 'var(--spacing-2)' }}>
             {cmsData.terms_title}
           </Typography>
         </div>
-      </SectionContainer>
+      
 
       {/* Terms Content */}
-      <SectionContainer>
+     
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           {cmsData.terms_content ? (
             <div

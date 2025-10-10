@@ -74,15 +74,11 @@ class WebsiteCMS(Document):
 			"welcome_section": {
 				"title": self.welcome_title,
 				"description": self.welcome_description,
-				"services_title": self.welcome_services_title,
-				"services_description": self.welcome_services_description,
 				"image": self.welcome_image
 			},
 			"packages_description": {
-				"umrah_title": self.umrah_title,
-				"umrah_description": self.umrah_description,
-				"hajj_title": self.hajj_title,
-				"hajj_description": self.hajj_description,
+				"section_title": self.section_title,
+				"description": self.description,
 				"image": self.packages_image
 			},
 			"faq": {

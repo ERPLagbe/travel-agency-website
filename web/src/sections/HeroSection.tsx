@@ -127,8 +127,8 @@ const HeroSection = () => {
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
                       <span className="text-white drop-shadow-2xl">
                         {slide.title}
-                      </span>
-                    </h1>
+                </span>
+              </h1>
                     <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
                       {slide.subtitle}
                     </p>
@@ -167,12 +167,12 @@ const HeroSection = () => {
                     onClick={() => navigate('/category/all')}
                     className="group relative text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-sm sm:text-base"
                   >
-                    <span className="relative flex items-center gap-2">
+                  <span className="relative flex items-center gap-2">
                       <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
                       {heroData.primaryButtonText}
-                      <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
-                    </span>
-                  </button>
+                    <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
+                  </span>
+                </button>
                 )}
                 
                 {heroData.secondaryButtonText && (
@@ -180,11 +180,11 @@ const HeroSection = () => {
                     onClick={() => navigate('/contact')}
                     className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-sm sm:text-base"
                   >
-                    <span className="relative flex items-center gap-2">
+                  <span className="relative flex items-center gap-2">
                       <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                       {heroData.secondaryButtonText}
-                    </span>
-                  </button>
+                  </span>
+                </button>
                 )}
               </div>
             )}

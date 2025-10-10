@@ -15,21 +15,10 @@ const WelcomeSection: React.FC = () => {
               {cmsData?.welcome_title}
             </h2>
             
-            <p className="text-gray-700 text-lg leading-relaxed mb-8">
-              {cmsData?.welcome_description}
-            </p>
-            
-            {/* <p className="text-gray-700 text-lg leading-relaxed mb-8">
-              With years of experience in Islamic travel, we have built strong relationships with trusted partners in Saudi Arabia, ensuring that every aspect of your journey - from flights and accommodation to ground transportation and spiritual guidance - is handled with the utmost care and attention to detail.
-            </p> */}
-
-            <h3 className="text-primary text-2xl font-bold mb-4">
-              {cmsData?.welcome_services_title}
-            </h3>
-            
-            <p className="text-gray-700 text-lg leading-relaxed">
-              {cmsData?.welcome_services_description}
-            </p>
+            <div 
+              className="prose prose-lg max-w-none text-gray-700 max-h-96 overflow-y-auto pr-4"
+              dangerouslySetInnerHTML={{ __html: cmsData?.welcome_description || '' }}
+            />
           </div>
 
           {/* Right Side - Image */}
