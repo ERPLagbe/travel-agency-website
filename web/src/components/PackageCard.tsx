@@ -41,10 +41,8 @@ const PackageCard: React.FC<PackageCardProps> = ({
   duration = "35/42 Days",
   airInfo = "SA/Biman/Flynas",
   hotelMakkah = "1200/1500M",
-  hotelMadinah = "1200/1500M",
   foodInfo = "Breakfast, Lunch & Dinner",
   specialServices = "Ziyarah Tour, Transportation & Guide",
-  accommodationList = [],
   specialServicesList = []
 }) => {
   const navigate = useNavigate();
@@ -64,22 +62,26 @@ const PackageCard: React.FC<PackageCardProps> = ({
   };
 
   const normalizedRating = getNormalizedRating(rating);
-  const percent = normalizedRating !== undefined ? Math.max(0, Math.min(5, normalizedRating)) / 5 * 100 : 0;
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full">
-      {/* Header Image */}
-      <div className="relative h-[250px] overflow-hidden">
+      {/* Header Image - Clickable */}
+      <div 
+        className="relative h-[250px] overflow-hidden cursor-pointer group/image"
+        onClick={handlePrimaryClick}
+      >
         <img
           src={image}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        {/* Clickable overlay indicator */}
+        <div className="absolute inset-0 bg-primary/0 group-hover/image:bg-primary/10 transition-all duration-300"></div>
 
-        {/* Title overlay */}
+        {/* Title overlay - Clickable */}
         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-          <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn">
+          <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn cursor-pointer hover:text-secondary transition-colors duration-300">
             {title}
           </h1>
           {normalizedRating !== undefined && (
@@ -107,70 +109,68 @@ const PackageCard: React.FC<PackageCardProps> = ({
         </div>
       </div>
 
-      {/* Features - Compact Grid Layout - This grows to fill space */}
+      {/* Features - Horizontal Layout */}
       <div className="px-4 sm:px-6 py-4 flex-grow">
-        <div className="grid grid-cols-1 gap-1 mb-3 sm:mb-4">
-          <div className="animate-slideIn py-1 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Duration</span>
+        <div className="space-y-3 mb-4">
+          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+            <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
+            <div className="flex-1">
+              <span className="text-base font-bold text-gray-800">Duration: </span>
+              <span className="text-base text-gray-600">{duration}</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{duration}</p>
           </div>
 
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.2s' }}>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Plane className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Direct Flight</span>
+          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+            <Plane className="w-5 h-5 text-primary flex-shrink-0" />
+            <div className="flex-1">
+              <span className="text-base font-bold text-gray-800">Direct Flight: </span>
+              <span className="text-base text-gray-600">{airInfo}</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{airInfo}</p>
           </div>
 
-          {/* Hotel / Accommodation blocks */}
-          <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.3s' }}>
-            <div className="flex items-center gap-1 sm:gap-2 mb-1">
-              <Hotel className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-              <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Hotel Makkah</span>
+          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+            <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
+            <div className="flex-1">
+              <span className="text-base font-bold text-gray-800">Hotel Makkah: </span>
+              <span className="text-base text-gray-600">{hotelMakkah}</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{hotelMakkah}</p>
           </div>
-        </div>
 
-        {/* Food */}
-        <div className="animate-slideIn py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg transition-all duration-300 hover:bg-gray-50 cursor-pointer group mb-1 border-b border-gray-200" style={{ animationDelay: '0.5s' }}>
-          <div className="flex items-center gap-1 sm:gap-2 mb-1">
-            <Utensils className="w-3 h-3 sm:w-4 sm:h-4 text-primary transition-all duration-300 group-hover:scale-110" />
-            <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Food Included</span>
+          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+            <Utensils className="w-5 h-5 text-primary flex-shrink-0" />
+            <div className="flex-1">
+              <span className="text-base font-bold text-gray-800">Food: </span>
+              <span className="text-base text-gray-600">{foodInfo}</span>
+            </div>
           </div>
-          <p className="text-xs sm:text-sm font-medium text-gray-600 transition-colors duration-300 group-hover:text-primary">{foodInfo}</p>
-        </div>
 
-        {/* Special Services - Badge Tags */}
-        <div className="animate-slideIn py-2 sm:py-3 px-2 sm:px-3 rounded-lg border-b border-gray-200" style={{ animationDelay: '0.6s' }}>
-          <div className="flex items-center gap-1 sm:gap-2 mb-2">
-            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-            <span className="text-xs text-gray-600 font-semibold group-hover:text-primary">Special Services</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {specialServicesList && specialServicesList.length > 0 ? (
-              specialServicesList.map((service, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
-                >
-                  {service.title}
-                </span>
-              ))
-            ) : (
-              specialServices ? specialServices.split(',').map((service, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
-                >
-                  {service.trim()}
-                </span>
-              )) : null
-            )}
+          {/* Special Services - Badge Tags */}
+          <div className="py-2 border-b border-gray-200">
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="w-5 h-5 text-primary flex-shrink-0" />
+              <span className="text-base font-bold text-gray-800">Special Services</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {specialServicesList && specialServicesList.length > 0 ? (
+                specialServicesList.map((service, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
+                  >
+                    {service.title}
+                  </span>
+                ))
+              ) : (
+                specialServices ? specialServices.split(',').map((service, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
+                  >
+                    {service.trim()}
+                  </span>
+                )) : null
+              )}
+            </div>
           </div>
         </div>
       </div>
