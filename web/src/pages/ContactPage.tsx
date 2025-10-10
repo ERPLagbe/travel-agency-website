@@ -107,9 +107,9 @@ const CompleteContactPage: React.FC = () => {
       ]}
     >
       {/* Hero Section - Clean Design */}
-      <SectionContainer size="lg" className="text-center hero-section contact-hero">
-        <div style={{ paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
-          <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-6)' }}>
+      <SectionContainer size="lg" className="text-center relative h-[15vh] flex items-center bg-primary text-white contact-hero">
+        <div style={{ paddingTop: 'var(--spacing-8)', paddingBottom: 'var(--spacing-8)' }}>
+          <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-4)' }}>
             Contact {contactData?.business_name}
           </Typography>
           {/* <Typography variant="body-large" color="white" align="center">
@@ -119,11 +119,11 @@ const CompleteContactPage: React.FC = () => {
       </SectionContainer>
 
       {/* Contact Form and Info */}
-      <SectionContainer>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <SectionContainer className="py-8">
+        <div id='contact-form' className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Contact Form */}
           <Card>
-            <Typography variant="h2" style={{ marginBottom: 'var(--spacing-8)' }}>
+            <Typography variant="h2" style={{ marginBottom: 'var(--spacing-6)' }}>
               Get in Touch
             </Typography>
             
@@ -440,10 +440,10 @@ const CompleteContactPage: React.FC = () => {
 
           {/* Contact Information */}
           <Card>
-            <Typography variant="h2" style={{ marginBottom: 'var(--spacing-8)' }}>
+            <Typography variant="h2" style={{ marginBottom: 'var(--spacing-6)' }}>
               Our Contact Details
             </Typography>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-6)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
               {/* Address from CMS */}
               <div>
                 <Typography variant="h3" color="primary" style={{ marginBottom: 'var(--spacing-2)' }}>
@@ -524,13 +524,13 @@ const CompleteContactPage: React.FC = () => {
         </div>
 
         {/* Additional Info Section */}
-        <div className="mt-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="text-center">
               <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Clock size={32} />
               </div>
-              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>
+              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-2)' }}>
                 Quick Response
               </Typography>
               <Typography variant="body" color="muted">
@@ -542,7 +542,7 @@ const CompleteContactPage: React.FC = () => {
               <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Shield size={32} />
               </div>
-              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>
+              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-2)' }}>
                 Licensed & Insured
               </Typography>
               <Typography variant="body" color="muted">
@@ -554,7 +554,7 @@ const CompleteContactPage: React.FC = () => {
               <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 text-white">
                 <Star size={32} />
               </div>
-              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-3)' }}>
+              <Typography variant="h3" style={{ marginBottom: 'var(--spacing-2)' }}>
                 5-Star Service
               </Typography>
               <Typography variant="body" color="muted">

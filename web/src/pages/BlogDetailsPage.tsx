@@ -44,16 +44,7 @@ const BlogDetailsPage: React.FC = () => {
   return (
     <div>
       {/* Back Button */}
-      <SectionContainer>
-        <div style={{ paddingTop: 'var(--spacing-4)', paddingBottom: 'var(--spacing-2)' }}>
-          <Link to="/blog">
-            <Button variant="outline" size="sm">
-              <ArrowLeft size={16} style={{ marginRight: 'var(--spacing-2)' }} />
-              Back to Blog
-            </Button>
-          </Link>
-        </div>
-      </SectionContainer>
+
 
       {/* Featured Image */}
       {blog.featured_image && (

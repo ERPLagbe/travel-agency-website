@@ -14,6 +14,7 @@ import BlogPage from './pages/BlogPage'
 import BlogDetailsPage from './pages/BlogDetailsPage'
 import TermsPage from './pages/TermsPage'
 import BranchPage from './pages/BranchPage'
+import GalleryPage from './pages/GalleryPage'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/branches" element={<BranchPage />} />
             </Routes>

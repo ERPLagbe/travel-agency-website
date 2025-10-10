@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useWebsiteCMS, useGalleryImages } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { X } from 'lucide-react';
 
 const Gallery: React.FC = () => {
+  const navigate = useNavigate();
   const { data: cmsData } = useWebsiteCMS();
   const { data: galleryImages } = useGalleryImages();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -76,11 +78,14 @@ const Gallery: React.FC = () => {
           })}
         </div>
 
-        {/* Show More Button */}
+        {/* View All Button */}
         {galleryImages && galleryImages.filter((img: any) => img.is_active === 1).length > 8 && (
           <div className="text-center mt-8">
-            <button className="bg-secondary text-primary px-8 py-3 rounded-lg font-semibold hover:bg-secondary/90 transition-colors duration-200 hover:shadow-lg hover:-translate-y-0.5">
-              Show More Photos
+            <button 
+              onClick={() => navigate('/gallery')}
+              className="cursor-pointer bg-secondary text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary/90 transition-colors duration-200 hover:shadow-lg hover:-translate-y-0.5"
+            > 
+              View All Photos
             </button>
           </div>
         )}
