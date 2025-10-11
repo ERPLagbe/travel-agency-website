@@ -27,7 +27,7 @@ const VisaPage: React.FC = () => {
           <Typography variant="h1" color="white" align="center">
             {cmsData?.visa_title}
           </Typography>
-          <Typography variant="body-large" color="white" align="center" className="text-muted">
+          <Typography variant="body-large" color="white" align="center" className="">
             {cmsData?.visa_subtitle}
           </Typography>
         </div>

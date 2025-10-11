@@ -36,6 +36,11 @@
   "cta_subtitle",
   "cta_button_text",
   "cta_button_link",
+  "section_break_statistics",
+  "stat_hajj_travelers",
+  "stat_umrah_travelers", 
+  "stat_satisfied_pilgrims",
+  "stat_years_experience",
   "section_break_testimonials",
   "testimonials_title",
   "testimonials_subtitle",
@@ -238,6 +243,35 @@
    "fieldname": "cta_button_link",
    "fieldtype": "Data",
    "label": "CTA Button Link"
+  },
+  {
+   "fieldname": "section_break_statistics",
+   "fieldtype": "Section Break",
+   "label": "Statistics Section"
+  },
+  {
+   "default": "700+",
+   "fieldname": "stat_hajj_travelers",
+   "fieldtype": "Data",
+   "label": "Hajj Travelers Count"
+  },
+  {
+   "default": "2.2K+",
+   "fieldname": "stat_umrah_travelers",
+   "fieldtype": "Data", 
+   "label": "Umrah Travelers Count"
+  },
+  {
+   "default": "99%",
+   "fieldname": "stat_satisfied_pilgrims",
+   "fieldtype": "Data",
+   "label": "Satisfied Pilgrims Percentage"
+  },
+  {
+   "default": "7+",
+   "fieldname": "stat_years_experience",
+   "fieldtype": "Data",
+   "label": "Years of Experience"
   },
   {
    "fieldname": "section_break_testimonials",

@@ -32,7 +32,7 @@ const AboutPage: React.FC = () => {
           <Typography variant="h1" color="white" align="center">
             {cmsData?.about_title}
           </Typography>
-          <Typography variant="body-large" color="white" align="center" className="text-muted">
+          <Typography variant="body-large" color="white" align="center" className="">
             {cmsData?.about_subtitle}
           </Typography>
         </div>

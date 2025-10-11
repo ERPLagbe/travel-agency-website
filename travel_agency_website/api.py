@@ -134,7 +134,6 @@ def get_items_with_accommodation():
                 "custom_duration",
                 "custom_package_rating",
                 "custom_air_information",
-                "custom_hotel_information", 
                 "custom_food_information",
                 "custom_bustaxi_information"
             ],

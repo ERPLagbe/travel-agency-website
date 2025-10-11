@@ -83,6 +83,12 @@ class WebsiteCMS(Document):
 				"description": self.description,
 				"image": self.packages_image
 			},
+			"statistics": {
+				"hajj_travelers": self.stat_hajj_travelers,
+				"umrah_travelers": self.stat_umrah_travelers,
+				"satisfied_pilgrims": self.stat_satisfied_pilgrims,
+				"years_experience": self.stat_years_experience
+			},
 			"faq": {
 				"title": self.faq_title,
 				"subtitle": self.faq_subtitle,

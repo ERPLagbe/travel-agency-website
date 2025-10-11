@@ -54,10 +54,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     
     if (itemGroup && itemGroup !== 'all' && allPackages.length > 0) {
       // Convert URL format to proper Item Group name
-      const properItemGroup = itemGroup
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+    const properItemGroup = itemGroup
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
       
       if (properItemGroup) {
         setSelectedItemGroups([properItemGroup]);
@@ -237,14 +237,14 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
             {isDropdownView && dropdownName
               ? dropdownName.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
               : !itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups' 
-                ? 'All Packages' 
+              ? 'All Packages' 
                 : `${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {isDropdownView && dropdownName
               ? `Explore our comprehensive range of ${dropdownName.toLowerCase()} packages, carefully organized by categories to help you find the perfect journey.`
               : !itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups'
-                ? 'Discover our comprehensive range of spiritual and cultural journey packages designed to provide you with the best travel experience.'
+              ? 'Discover our comprehensive range of spiritual and cultural journey packages designed to provide you with the best travel experience.'
                 : `Discover our carefully curated ${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ').toLowerCase()} packages designed to provide you with the best travel experience.`}
           </p>
         </div>
@@ -348,16 +348,16 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                 </div>
                 <div className="flex items-center gap-3">
                   <label className="text-sm font-medium text-gray-700">Sort by:</label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
                     className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                  >
-                    <option value="name">Name (A-Z)</option>
-                    <option value="price-low">Price (Low to High)</option>
-                    <option value="price-high">Price (High to Low)</option>
-                  </select>
-                </div>
+              >
+                <option value="name">Name (A-Z)</option>
+                <option value="price-low">Price (Low to High)</option>
+                <option value="price-high">Price (High to Low)</option>
+              </select>
+            </div>
               </div>
             </div>
 
@@ -421,53 +421,53 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               <p className="text-gray-500">
                 We couldn't find any packages in this category. Please check back later.
               </p>
-            </div>
+          </div>
           )
         ) : (
           // Regular display for item group or all packages view
           sortedPackages.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-              {sortedPackages.map((pkg) => {
-                // Process accommodation list to get hotel names and distances
-                const accommodationList = pkg.custom_accommodation_list || [];
-                const hotelInfo = accommodationList.length > 0 
-                  ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
+            {sortedPackages.map((pkg) => {
+              // Process accommodation list to get hotel names and distances
+              const accommodationList = pkg.custom_accommodation_list || [];
+              const hotelInfo = accommodationList.length > 0 
+                ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
                   : pkg.custom_hotel_information;
 
-                return (
-                  <PackageCard
-                    key={pkg.name}
-                    id={pkg.name}
+              return (
+                <PackageCard
+                  key={pkg.name}
+                  id={pkg.name}
                     title={pkg.item_name}
-                    nights="7 Nights" // Keep for compatibility
+                  nights="7 Nights" // Keep for compatibility
                     duration={pkg.custom_duration}
                     rating={pkg.custom_package_rating}
                     price={pkg.standard_rate}
                     image={pkg.image}
                     itemGroup={pkg.item_group}
-                    // Dynamic data from Item custom fields
+                  // Dynamic data from Item custom fields
                     airInfo={pkg.custom_air_information}
                     hotelMakkah={hotelInfo}
                     hotelMadinah={hotelInfo}
                     foodInfo={pkg.custom_food_information}
                     specialServices={pkg.custom_bustaxi_information}
-                    // Pass dynamic lists for rendering
-                    accommodationList={accommodationList}
-                    specialServicesList={pkg.custom_special_services || []}
-                    primaryButtonText="View Details"
-                    secondaryButtonText="Enquire Now"
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">📦</div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-2">No Packages Found</h3>
-              <p className="text-gray-500">
-                We couldn't find any packages matching your criteria. Try adjusting your filters.
-              </p>
-            </div>
+                  // Pass dynamic lists for rendering
+                  accommodationList={accommodationList}
+                  specialServicesList={pkg.custom_special_services || []}
+                  primaryButtonText="View Details"
+                  secondaryButtonText="Enquire Now"
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">📦</div>
+            <h3 className="text-2xl font-bold text-gray-600 mb-2">No Packages Found</h3>
+            <p className="text-gray-500">
+              We couldn't find any packages matching your criteria. Try adjusting your filters.
+            </p>
+          </div>
           )
         )}
           </div>
