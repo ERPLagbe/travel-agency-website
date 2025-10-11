@@ -163,7 +163,7 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             {(heroData.primaryButtonText || heroData.secondaryButtonText) && (
-              <div className="flex flex-col md:flex-row flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="flex-row  gap-4 sm:gap-4 mb-6 sm:mb-8">
                 {heroData.primaryButtonText && (
                   <button 
                     onClick={() => navigate('/category/all')}
