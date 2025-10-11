@@ -647,3 +647,58 @@ img[src=""], img:not([src]) {
   scrollbar-color: #4a2c7a rgba(74, 44, 122, 0.1);
 }
 
+/* Zoom compatibility fixes for 125% and higher zoom levels */
+@media screen and (min-resolution: 1.25dppx) {
+  /* Fix hero section height and layout at zoom */
+  .hero-section {
+    min-height: 60vh !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Ensure text remains readable and properly sized at zoom */
+  .hero-section h1 {
+    font-size: clamp(1.5rem, 4vw, 3rem) !important;
+    line-height: 1.2 !important;
+    word-wrap: break-word !important;
+  }
+  
+  .hero-section p {
+    font-size: clamp(0.875rem, 2.5vw, 1.5rem) !important;
+    line-height: 1.4 !important;
+    word-wrap: break-word !important;
+  }
+  
+  /* Fix button sizing and layout at zoom */
+  .hero-section button {
+    min-height: 2.5rem !important;
+    padding: 0.5rem 1rem !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Fix container width and padding at zoom */
+  .hero-section .container,
+  .hero-section [class*="max-w-"] {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Fix grid layouts at zoom */
+  .hero-section .grid {
+    gap: 0.5rem !important;
+  }
+  
+  /* Fix absolute positioning at zoom */
+  .hero-section .absolute {
+    position: relative !important;
+    transform: none !important;
+  }
+  
+  /* Ensure images scale properly at zoom */
+  .hero-section img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+}
+

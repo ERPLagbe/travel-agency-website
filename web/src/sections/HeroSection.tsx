@@ -71,7 +71,7 @@ const HeroSection = () => {
   }
 
   return (
-    <div className="relative w-full overflow-hidden h-[70vh] lg:h-[80vh] flex items-center">
+    <div className="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[80vh] flex items-center">
       {/* Background Image Slider */}
       <div className="absolute inset-0 w-full h-full">
         {slides.length > 0 ? (
@@ -98,7 +98,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8 z-10">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="w-full">
             {/* Left Aligned Content */}
           <div className={`text-white max-w-3xl transition-all duration-1000 transform ${
@@ -124,12 +124,12 @@ const HeroSection = () => {
                         : 'opacity-0 absolute top-0 left-0 w-full pointer-events-none'
                     }`}
                   >
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
                       <span className="text-white drop-shadow-2xl">
                         {slide.title}
                 </span>
               </h1>
-                    <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
+                    <p className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
                       {slide.subtitle}
                     </p>
                   </div>
@@ -150,7 +150,7 @@ const HeroSection = () => {
                     }`}
                   >
                     {slide.description && (
-                      <p className="text-gray-200 text-base md:text-lg max-w-2xl leading-relaxed">
+                      <p className="text-gray-200 text-sm xs:text-base md:text-lg max-w-2xl leading-relaxed">
                         {slide.description.length > 100 
                           ? `${slide.description.substring(0, 100)}...` 
                           : slide.description}
@@ -163,14 +163,14 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             {(heroData.primaryButtonText || heroData.secondaryButtonText) && (
-              <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="flex flex-col md:flex-row flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {heroData.primaryButtonText && (
                   <button 
                     onClick={() => navigate('/category/all')}
-                    className="group relative text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-sm sm:text-base"
+                    className="group relative text-white px-4 py-2 xs:px-6 xs:py-3 sm:px-8 sm:py-4 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-primary cursor-pointer text-xs xs:text-sm sm:text-base"
                   >
                   <span className="relative flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
+                      <Sparkles className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 group-hover:rotate-180 transition-transform duration-500" />
                       {heroData.primaryButtonText}
                     <span className="inline-block transition-transform group-hover:translate-x-2 duration-300">→</span>
                   </span>
@@ -180,10 +180,10 @@ const HeroSection = () => {
                 {heroData.secondaryButtonText && (
                   <button 
                     onClick={() => navigate('/contact')}
-                    className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-sm sm:text-base"
+                    className="relative px-4 py-2 xs:px-6 xs:py-3 sm:px-8 sm:py-4 rounded-full font-semibold border-2 border-secondary text-white transition-all duration-300 transform hover:scale-105 hover:bg-secondary hover:text-white cursor-pointer text-xs xs:text-sm sm:text-base"
                   >
                   <span className="relative flex items-center gap-2">
-                      <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <Phone className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                       {heroData.secondaryButtonText}
                   </span>
                 </button>
@@ -193,17 +193,17 @@ const HeroSection = () => {
 
             {/* Stats */}
             {(heroData.yearsExperience || heroData.happyPilgrims) && (
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-2xl">
+              <div className="grid grid-cols-2 xs:grid-cols-3 gap-2 xs:gap-3 sm:gap-4 md:gap-6 max-w-2xl">
                 {heroData.yearsExperience && (
-                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
-                    <div className="text-xs sm:text-sm text-gray-300">Years Experience</div>
+                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                    <div className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
+                    <div className="text-xs xs:text-xs sm:text-sm text-gray-300">Years Experience</div>
                   </div>
                 )}
                 {heroData.happyPilgrims && (
-                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
-                    <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
-                    <div className="text-xs sm:text-sm text-gray-300">Happy Pilgrims</div>
+                  <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
+                    <div className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.happyPilgrims}</div>
+                    <div className="text-xs xs:text-xs sm:text-sm text-gray-300">Happy Pilgrims</div>
                   </div>
                 )}
               </div>
