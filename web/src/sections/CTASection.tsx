@@ -24,7 +24,7 @@ const CTASection: React.FC = () => {
           {cmsData?.stat_hajj_travelers && (
             <div className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-                {cmsData.stat_hajj_travelers}
+                {cmsData.stat_hajj_travelers} +
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
                 HAJJ TRAVELER
@@ -36,7 +36,7 @@ const CTASection: React.FC = () => {
           {cmsData?.stat_umrah_travelers && (
             <div className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-                {cmsData.stat_umrah_travelers}
+                {cmsData.stat_umrah_travelers} +
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
                 UMRAH TRAVELER
@@ -48,7 +48,7 @@ const CTASection: React.FC = () => {
           {cmsData?.stat_satisfied_pilgrims && (
             <div className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-                {cmsData.stat_satisfied_pilgrims}
+                {cmsData.stat_satisfied_pilgrims} %
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
                 SATISFIED PILGRIMS
@@ -60,7 +60,7 @@ const CTASection: React.FC = () => {
           {cmsData?.stat_years_experience && (
             <div className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-                {cmsData.stat_years_experience}
+                {cmsData.stat_years_experience} +
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
                 YEARS OF EXPERIENCE

@@ -16,7 +16,8 @@ export const useBranches = () => {
       'custom_head_office',
       'custom_disabled',
       'custom_map_location',
-      'custom_bank'
+      'custom_bank',
+      'custom_contact_number'
     ],
     filters: [['custom_disabled', '!=', 1]], // Only show non-disabled branches
     orderBy: { field: 'custom_head_office', order: 'desc' } // Head office first

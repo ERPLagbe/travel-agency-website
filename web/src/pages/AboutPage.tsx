@@ -5,6 +5,11 @@ import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 const AboutPage: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
+  
+  // Debug: Log the CMS data structure
+  console.log('AboutPage CMS Data:', cmsData);
+  console.log('About Story:', cmsData?.about?.story);
+  console.log('About Sections:', cmsData?.about?.sections);
 
   return (
     <PageLayout 
@@ -15,8 +20,8 @@ const AboutPage: React.FC = () => {
     >
       {/* Hero Section */}
       <SectionContainer size="lg" className="text-center hero-section" style={{
-        backgroundImage: cmsData?.about_background_image 
-          ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData.about_background_image)}')`
+        backgroundImage: cmsData?.about?.background_image 
+          ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData.about.background_image)}')`
           : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -30,38 +35,46 @@ const AboutPage: React.FC = () => {
       }}>
         <div style={{ position: 'relative', zIndex: 2, paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
           <Typography variant="h1" color="white" align="center">
-            {cmsData?.about_title}
+            {cmsData?.about?.title}
           </Typography>
           <Typography variant="body-large" color="white" align="center" className="">
-            {cmsData?.about_subtitle}
+            {cmsData?.about?.subtitle}
           </Typography>
         </div>
       </SectionContainer>
 
+      {/* About Story Section */}
+      
+
       {/* Dynamic About Sections with Alternating Layout */}
       <SectionContainer>
-        {cmsData?.about_sections && cmsData.about_sections.length > 0 ? (
-          cmsData.about_sections
+      {(cmsData?.about?.story?.title && cmsData?.about?.story?.description) || 
+       (cmsData?.about_story_title && cmsData?.about_story_description) ? (
+        
+          <div className="mx-auto ">
+            <Typography variant="h2" className="mb-6">
+              {cmsData?.about?.story?.title || cmsData?.about_story_title}
+            </Typography>
+            <div 
+              className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ 
+                __html: cmsData?.about?.story?.description || cmsData?.about_story_description 
+              }}
+            />
+          </div>
+       
+      ) : null}
+        {(cmsData?.about?.sections && cmsData.about.sections.length > 0) || 
+         (cmsData?.about_sections && cmsData.about_sections.length > 0) ? (
+          (cmsData?.about?.sections || cmsData?.about_sections)
             .sort((a: any, b: any) => (a.display_order || 1) - (b.display_order || 1))
             .map((section: any, index: number) => {
               const isEven = index % 2 === 0;
               return (
                 <div key={index} className="mb-16 lg:mb-20">
-                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
-                    isEven ? 'lg:grid-flow-col' : 'lg:grid-flow-col-dense'
-                  }`}>
-                    {/* Content Section - Always first on mobile */}
-                    <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                      <Typography variant="h2" className="mb-4">
-                        {section.heading}
-                      </Typography>
-                      <Typography variant="body-large" color="muted" className="leading-relaxed">
-                        {section.content}
-                      </Typography>
-                    </div>
-
-                    {/* Image Section - Always second on mobile */}
-                    <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                    {/* Image Section - Alternating position */}
+                    <div className={`lg:col-span-4 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                       {section.image ? (
                         <img 
                           src={getFileUrlWithFallback(section.image)} 
@@ -73,6 +86,16 @@ const AboutPage: React.FC = () => {
                           <Typography variant="body" color="muted">No Image</Typography>
                         </div>
                       )}
+                    </div>
+
+                    {/* Content Section - Alternating position */}
+                    <div className={`lg:col-span-8 ${isEven ? 'lg:order-2' : 'lg:order-1'} overflow-y-auto max-h-96 pr-4`}>
+                      <Typography variant="h2" className="mb-4">
+                        {section.heading}
+                      </Typography>
+                      <Typography variant="body-large" color="muted" className="leading-relaxed">
+                        {section.content}
+                      </Typography>
                     </div>
                   </div>
                 </div>
@@ -89,3 +112,4 @@ const AboutPage: React.FC = () => {
 };
 
 export default AboutPage;
+

@@ -45,21 +45,9 @@ const VisaPage: React.FC = () => {
               const isEven = index % 2 === 0;
               return (
                 <div key={index} className="mb-16 lg:mb-20">
-                  <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
-                    isEven ? 'lg:grid-flow-col' : 'lg:grid-flow-col-dense'
-                  }`}>
-                    {/* Content Section - Always first on mobile */}
-                    <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                      <Typography variant="h2" className="mb-4">
-                        {section.heading}
-                      </Typography>
-                      <Typography variant="body-large" color="muted" className="leading-relaxed">
-                        {section.content}
-                      </Typography>
-                    </div>
-
-                    {/* Image Section - Always second on mobile */}
-                    <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                    {/* Image Section - Alternating position */}
+                    <div className={`lg:col-span-4 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                       {section.image ? (
                         <img 
                           src={getFileUrlWithFallback(section.image)} 
@@ -71,6 +59,16 @@ const VisaPage: React.FC = () => {
                           <Typography variant="body" color="muted">No Image</Typography>
                         </div>
                       )}
+                    </div>
+
+                    {/* Content Section - Alternating position */}
+                    <div className={`lg:col-span-8 ${isEven ? 'lg:order-2' : 'lg:order-1'} overflow-y-auto max-h-96 pr-4`}>
+                      <Typography variant="h2" className="mb-4">
+                        {section.heading}
+                      </Typography>
+                      <Typography variant="body-large" color="muted" className="leading-relaxed">
+                        {section.content}
+                      </Typography>
                     </div>
                   </div>
                 </div>

@@ -153,59 +153,74 @@ const AllPackages: React.FC = () => {
             </div>
           </div>
 
-          {/* Navigation Controls - Centered with arrows and dots inline */}
+          {/* Navigation Controls with View All Button */}
           {showNavigation && (
-            <div className="flex items-center justify-center gap-4 mt-8">
-              {/* Left Arrow */}
-              <button
-                onClick={handlePrevious}
-                className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
-                aria-label="Previous packages"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
+            <div className="flex items-center justify-between mt-8">
+              {/* Left side - Navigation arrows and dots */}
+              <div className="flex items-center gap-4">
+                {/* Left Arrow */}
+                <button
+                  onClick={handlePrevious}
+                  className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
+                  aria-label="Previous packages"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
 
-              {/* Dots Indicator */}
-              <div className="flex items-center gap-2">
-                {Array.from({ length: pages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setIsAutoPlaying(false);
-                      setCurrentIndex(index * cardsPerView);
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentPage
-                        ? 'bg-primary w-8'
-                        : 'bg-gray-300 w-2 hover:bg-gray-400'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
+                {/* Dots Indicator */}
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: pages }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setIsAutoPlaying(false);
+                        setCurrentIndex(index * cardsPerView);
+                      }}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentPage
+                          ? 'bg-primary w-8'
+                          : 'bg-gray-300 w-2 hover:bg-gray-400'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={handleNext}
+                  className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
+                  aria-label="Next packages"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
 
-              {/* Right Arrow */}
-              <button
-                onClick={handleNext}
-                className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
-                aria-label="Next packages"
+              {/* Right side - View All Packages Button */}
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/category/all')}
+                className="px-6 py-2"
               >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+                View All Packages
+              </Button>
             </div>
           )}
-        </div>
 
-        {/* View All Packages Button */}
-        <div className="text-center mt-12">
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => navigate('/category/all')}
-            className="px-8 py-3"
-          >
-            View All Packages
-          </Button>
+          {/* View All Packages Button for when navigation is hidden */}
+          {!showNavigation && (
+            <div className="text-center mt-8">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/category/all')}
+                className="px-8 py-3"
+              >
+                View All Packages
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </section>

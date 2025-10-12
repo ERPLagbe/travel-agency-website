@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, ChevronUp, MapPin, Phone, Mail } from 'lucide-react';
+import { Facebook, Instagram, ChevronUp, MapPin, ExternalLink } from 'lucide-react';
 import { useWebsiteCMS, useFooterQuickLinks, useFooterTermsLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { useCreateLead } from '../hooks/useCreateLead';
+import { useBranches } from '../hooks/useBranches';
 
 const Footer: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
@@ -11,9 +12,11 @@ const Footer: React.FC = () => {
   const { data: footerTermsLinks } = useFooterTermsLinks();
   const { data: socialMediaLinks } = useSocialMediaLinks();
   const { createLead, isLoading } = useCreateLead();
+  const { data: branches } = useBranches();
 
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     countryCode: '+1',
     phone: '',
     subject: '',
@@ -37,6 +40,7 @@ const Footer: React.FC = () => {
       const fullPhone = `${formData.countryCode}${formData.phone}`;
       await createLead({
         lead_name: formData.name,
+        email_id: formData.email,
         phone: fullPhone,
         subject: formData.subject,
         description: formData.message,
@@ -45,7 +49,7 @@ const Footer: React.FC = () => {
       });
       
       setSubmitStatus('success');
-      setFormData({ name: '', countryCode: '+1', phone: '', subject: '', message: '' });
+      setFormData({ name: '', email: '', countryCode: '+1', phone: '', subject: '', message: '' });
     } catch (err) {
       setSubmitStatus('error');
       console.error('Error creating lead:', err);
@@ -56,6 +60,32 @@ const Footer: React.FC = () => {
   const quickLinks = footerQuickLinks || [];
   const termsLinks = footerTermsLinks || [];
   const socialLinks = socialMediaLinks || [];
+
+  // Get main branch (head office)
+  const mainBranch = branches?.find((branch: any) => branch.custom_head_office) || branches?.[0];
+
+  // Open Google Maps with main branch location
+  const openInGoogleMaps = () => {
+    if (!mainBranch) return;
+    
+    if (mainBranch.custom_map_location) {
+      // Use coordinates for more precise location
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mainBranch.custom_map_location)}`;
+      window.open(googleMapsUrl, '_blank');
+    } else {
+      // Fallback to address search
+      const address = [
+        mainBranch.custom_address_line_1,
+        mainBranch.custom_address_line_2,
+        mainBranch.custom_city,
+        mainBranch.custom_postal_code,
+        mainBranch.custom_country
+      ].filter(Boolean).join(', ');
+      
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+      window.open(googleMapsUrl, '_blank');
+    }
+  };
 
   return (
     <footer className="bg-primary text-white" role="contentinfo">
@@ -129,6 +159,22 @@ const Footer: React.FC = () => {
                 ))}
               </div>
             )}
+
+            {/* Google Maps Button */}
+            {mainBranch && (
+              <div 
+                className="mt-4 p-4 bg-transparent bg-opacity-10 rounded-lg cursor-pointer transition-all duration-200 border border-white border-opacity-20 hover:bg-opacity-20 hover:border-opacity-40"
+                onClick={openInGoogleMaps}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <MapPin size={20} />
+                  <span className="text-sm font-semibold">
+                    {mainBranch.custom_map_location ? 'View on Google Maps' : 'Open in Google Maps'}
+                  </span>
+                  <ExternalLink size={16} />
+                </div>
+              </div>
+            )}
             </div>
 
           {/* Middle Column - Quick Links */}
@@ -178,6 +224,16 @@ const Footer: React.FC = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:ring-2 focus:ring-secondary focus:border-secondary focus:outline-none"
+              />
+
+              {/* Email */}
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:ring-2 focus:ring-secondary focus:border-secondary focus:outline-none"
               />
 

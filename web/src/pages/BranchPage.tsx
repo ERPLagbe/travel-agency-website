@@ -157,6 +157,20 @@ const BranchPage: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Phone Number - Will be available once custom_phone_number field is added to Branch DocType */}
+                  {branch.custom_contact_number && (
+                    <div className="mb-6">
+                      <div className="flex items-center  gap-3">
+                        <Phone size={20} className="text-gray-600" />
+                       
+                          <Typography variant="body" className="font-medium">
+                            {branch.custom_contact_number}
+                          </Typography>
+                        
+                      </div>
+                    </div>
+                  )}
+
                   {/* Map Location */}
                   <div 
                     className="mt-4 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all duration-200 border border-gray-200 hover:bg-primary hover:text-white hover:border-primary"

@@ -94,6 +94,16 @@ class WebsiteCMS(Document):
 				"subtitle": self.faq_subtitle,
 				"items": self.get_faq_items()
 			},
+			"about": {
+				"title": self.about_title,
+				"subtitle": self.about_subtitle,
+				"background_image": self.about_background_image,
+				"story": {
+					"title": self.about_story_title,
+					"description": self.about_story_description
+				},
+				"sections": self.get_about_sections()
+			},
 			"footer": {
 				"quick_links": self.get_footer_quick_links(),
 				"terms_links": self.get_footer_terms_links(),
@@ -211,6 +221,19 @@ class WebsiteCMS(Document):
 				"display_order": link.display_order
 			})
 		return sorted(links, key=lambda x: x["display_order"])
+	
+	def get_about_sections(self):
+		"""Get about sections"""
+		sections = []
+		for section in self.about_sections:
+			sections.append({
+				"heading": section.heading,
+				"content": section.content,
+				"image": section.image,
+				"display_order": section.display_order
+			})
+		return sorted(sections, key=lambda x: x["display_order"])
+	
 
 
 @frappe.whitelist()

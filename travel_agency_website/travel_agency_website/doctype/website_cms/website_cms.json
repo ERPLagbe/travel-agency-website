@@ -66,6 +66,9 @@
   "about_title",
   "about_subtitle",
   "about_background_image",
+  "section_break_about_story",
+  "about_story_title",
+  "about_story_description",
   "about_sections",
   "section_break_footer",
   "footer_quick_links",
@@ -409,6 +412,23 @@
    "fieldname": "about_background_image",
    "fieldtype": "Attach Image",
    "label": "About Background Image"
+  },
+  {
+   "fieldname": "section_break_about_story",
+   "fieldtype": "Section Break",
+   "label": "About Story Section"
+  },
+  {
+   "default": "Our Story",
+   "fieldname": "about_story_title",
+   "fieldtype": "Data",
+   "label": "Story Title"
+  },
+  {
+   "default": "Share your company's journey, mission, and values with rich text formatting",
+   "fieldname": "about_story_description",
+   "fieldtype": "Text Editor",
+   "label": "Story Description"
   },
   {
    "fieldname": "about_sections",
