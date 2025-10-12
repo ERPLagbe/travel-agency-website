@@ -110,6 +110,18 @@ class WebsiteCMS(Document):
 				"social_media": self.get_social_media_links(),
 				"copyright": self.footer_copyright,
 				"legal_text": self.footer_legal_text
+			},
+			"terms": {
+				"title": self.terms_title,
+				"content": self.terms_content
+			},
+			"privacy": {
+				"title": self.privacy_title,
+				"content": self.privacy_content
+			},
+			"refund": {
+				"title": self.refund_title,
+				"content": self.refund_content
 			}
 		}
 	

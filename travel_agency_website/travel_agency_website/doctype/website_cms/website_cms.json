@@ -79,6 +79,12 @@
   "section_break_terms",
   "terms_title",
   "terms_content",
+  "section_break_privacy",
+  "privacy_title",
+  "privacy_content",
+  "section_break_refund",
+  "refund_title",
+  "refund_content",
   "section_break_gallery",
   "gallery_title",
   "gallery_subtitle",
@@ -486,6 +492,40 @@
    "fieldname": "terms_content",
    "fieldtype": "Text Editor",
    "label": "Terms and Conditions Content"
+  },
+  {
+   "fieldname": "section_break_privacy",
+   "fieldtype": "Section Break",
+   "label": "Privacy Policy"
+  },
+  {
+   "default": "Privacy Policy",
+   "fieldname": "privacy_title",
+   "fieldtype": "Data",
+   "label": "Privacy Policy Title"
+  },
+  {
+   "description": "Write your privacy policy content here. Supports rich text formatting.",
+   "fieldname": "privacy_content",
+   "fieldtype": "Text Editor",
+   "label": "Privacy Policy Content"
+  },
+  {
+   "fieldname": "section_break_refund",
+   "fieldtype": "Section Break",
+   "label": "Refund Policy"
+  },
+  {
+   "default": "Refund Policy",
+   "fieldname": "refund_title",
+   "fieldtype": "Data",
+   "label": "Refund Policy Title"
+  },
+  {
+   "description": "Write your refund policy content here. Supports rich text formatting.",
+   "fieldname": "refund_content",
+   "fieldtype": "Text Editor",
+   "label": "Refund Policy Content"
   },
   {
    "fieldname": "section_break_gallery",

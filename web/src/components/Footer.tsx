@@ -206,6 +206,24 @@ const Footer: React.FC = () => {
                   <span className="text-secondary">›</span> {link.link_text}
                     </Link>
                   ))}
+                  
+                  {/* Privacy Policy Link */}
+                  <Link 
+                    to="/privacy" 
+                    className="text-white text-sm hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
+                    aria-label="Navigate to Privacy Policy"
+                  >
+                    <span className="text-secondary">›</span> Privacy Policy
+                  </Link>
+                  
+                  {/* Refund Policy Link */}
+                  <Link 
+                    to="/refund-policy" 
+                    className="text-white text-sm hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
+                    aria-label="Navigate to Refund Policy"
+                  >
+                    <span className="text-secondary">›</span> Refund Policy
+                  </Link>
                 </div>
             
             {/* Payment Methods */}

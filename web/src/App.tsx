@@ -13,6 +13,8 @@ import AboutPage from './pages/AboutPage'
 import BlogPage from './pages/BlogPage'
 import BlogDetailsPage from './pages/BlogDetailsPage'
 import TermsPage from './pages/TermsPage'
+import PrivacyPage from './pages/PrivacyPage'
+import RefundPage from './pages/RefundPage'
 import BranchPage from './pages/BranchPage'
 import GalleryPage from './pages/GalleryPage'
 
@@ -39,6 +41,8 @@ function App() {
               <Route path="/blog/:slug" element={<BlogDetailsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/refund-policy" element={<RefundPage />} />
               <Route path="/branches" element={<BranchPage />} />
             </Routes>
             <Footer />

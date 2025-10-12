@@ -23,7 +23,8 @@ export const useCreateLead = () => {
 
     try {
       // Use custom whitelisted API method
-      const response = await fetch('http://localhost:8000/api/method/travel_agency_website.api.create_lead_from_website', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/method/travel_agency_website.api.create_lead_from_website`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

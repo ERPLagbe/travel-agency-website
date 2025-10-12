@@ -15,22 +15,43 @@ def create_lead_from_website(first_name, email_id="", phone="", company_name="",
         if not phone:
             frappe.throw(_("Phone is required"))
         
-        # Create Lead document
-        lead = frappe.get_doc({
-            "doctype": "Lead",
-            "first_name": first_name,
-            "email_id": email_id or "",
-            "phone": phone,
-            "company_name": company_name or "",
-            "status": "Lead",
-            "source": "Website",
-            "custom_package": package_id or "",
-            "custom_subject": subject or "",
-            "custom_description": description or ""
-        })
+        # Check if email already exists (only if email is provided)
+        existing_lead = None
+        if email_id:
+            existing_lead = frappe.get_all("Lead", 
+                filters={"email_id": email_id}, 
+                fields=["name"], 
+                limit=1
+            )
         
-        # Insert with ignore_permissions to bypass Guest restrictions
-        lead.insert(ignore_permissions=True)
+        # Handle existing email
+        if existing_lead:
+            # Update existing lead instead of creating new one
+            lead = frappe.get_doc("Lead", existing_lead[0].name)
+            lead.first_name = first_name
+            lead.phone = phone
+            lead.company_name = company_name or ""
+            lead.custom_subject = subject or ""
+            lead.custom_description = description or ""
+            lead.custom_package = package_id or ""
+            lead.save(ignore_permissions=True)
+        else:
+            # Create new Lead document
+            lead = frappe.get_doc({
+                "doctype": "Lead",
+                "first_name": first_name,
+                "email_id": email_id or "",
+                "phone": phone,
+                "company_name": company_name or "",
+                "status": "Lead",
+                "source": "Website",
+                "custom_package": package_id or "",
+                "custom_subject": subject or "",
+                "custom_description": description or ""
+            })
+            
+            # Insert with ignore_permissions to bypass Guest restrictions
+            lead.insert(ignore_permissions=True)
         
         # Add notes as a comment if provided (for backward compatibility)
         if notes:
@@ -41,7 +62,8 @@ def create_lead_from_website(first_name, email_id="", phone="", company_name="",
         return {
             "success": True,
             "message": "Thank you for contacting us! We will get back to you soon.",
-            "lead_name": lead.name
+            "lead_name": lead.name,
+            "is_update": bool(existing_lead)
         }
         
     except Exception as e:
