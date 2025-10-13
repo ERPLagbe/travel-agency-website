@@ -52,7 +52,7 @@ const AboutPage: React.FC = () => {
       {(cmsData?.about?.story?.title && cmsData?.about?.story?.description) || 
        (cmsData?.about_story_title && cmsData?.about_story_description) ? (
         
-          <div className="mx-auto ">
+          <div className="mx-auto mb-6">
             <Typography variant="h2" className="mb-6">
               {cmsData?.about?.story?.title || cmsData?.about_story_title}
             </Typography>

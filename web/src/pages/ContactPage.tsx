@@ -489,11 +489,11 @@ const CompleteContactPage: React.FC = () => {
                 </div>
               )}
               
-              {/* Company Number from CMS */}
+              {/* Business ID from CMS */}
               {contactData?.company_number && (
                 <div>
                   <Typography variant="h3" color="primary" style={{ marginBottom: 'var(--spacing-2)' }}>
-                    Company Number
+                    Business ID
                   </Typography>
                   <Typography variant="body">{contactData.company_number}</Typography>
                 </div>

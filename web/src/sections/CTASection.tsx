@@ -16,13 +16,17 @@ const CTASection: React.FC = () => {
   }
 
   return (
-    <section className="py-16 bg-primary">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-16 bg-primary relative overflow-hidden">
+      {/* Glassmorphism Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20"></div>
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Statistics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Hajj Travelers */}
           {cmsData?.stat_hajj_travelers && (
-            <div className="text-center">
+            <div className="text-center bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
                 {cmsData.stat_hajj_travelers} +
               </div>
@@ -34,7 +38,7 @@ const CTASection: React.FC = () => {
 
           {/* Umrah Travelers */}
           {cmsData?.stat_umrah_travelers && (
-            <div className="text-center">
+            <div className="text-center bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
                 {cmsData.stat_umrah_travelers} +
               </div>
@@ -46,7 +50,7 @@ const CTASection: React.FC = () => {
 
           {/* Satisfied Pilgrims */}
           {cmsData?.stat_satisfied_pilgrims && (
-            <div className="text-center">
+            <div className="text-center bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
                 {cmsData.stat_satisfied_pilgrims} %
               </div>
@@ -58,7 +62,7 @@ const CTASection: React.FC = () => {
 
           {/* Years of Experience */}
           {cmsData?.stat_years_experience && (
-            <div className="text-center">
+            <div className="text-center bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
                 {cmsData.stat_years_experience} +
               </div>
