@@ -3,9 +3,9 @@
 
 /* Tailwind v4 Theme Configuration */
 @theme {
-  --color-primary: #432b7c;
-  --color-secondary: #d4af37;
-  --color-accent: #d4af37;
+  --color-primary: #0c2b7b;
+  --color-secondary: #e03065;
+  --color-accent: #e03065;
   --color-white: #ffffff;
   --color-black: #111827;
   --color-gray-50: #f9fafb;
@@ -18,14 +18,14 @@
   --color-gray-700: #374151;
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
-  --color-purple-300: #d4af37;
-  --color-purple-600: #432b7c;
+  --color-purple-300: #e03065;
+  --color-purple-600: #0c2b7b;
   
   /* Custom color utilities */
-  --color-bg-primary: #432b7c;
-  --color-bg-secondary: #d4af37;
-  --color-text-primary: #432b7c;
-  --color-text-secondary: #d4af37;
+  --color-bg-primary: #0c2b7b;
+  --color-bg-secondary: #e03065;
+  --color-text-primary: #0c2b7b;
+  --color-text-secondary: #e03065;
   
   --font-family-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-xs: 0.75rem;
@@ -523,7 +523,7 @@ img[src=""], img:not([src]) {
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  color: #4a2c7a;
+  color: #0c2b7b;
   font-weight: 700;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
@@ -568,16 +568,16 @@ img[src=""], img:not([src]) {
 }
 
 .prose ul li::marker {
-  color: #4a2c7a;
+  color: #0c2b7b;
 }
 
 .prose ol li::marker {
-  color: #4a2c7a;
+  color: #0c2b7b;
 }
 
 .prose strong {
   font-weight: 600;
-  color: #4a2c7a;
+  color: #0c2b7b;
 }
 
 .prose em {
@@ -586,18 +586,18 @@ img[src=""], img:not([src]) {
 }
 
 .prose a {
-  color: #4a2c7a;
+  color: #0c2b7b;
   text-decoration: underline;
   font-weight: 500;
 }
 
 .prose a:hover {
-  color: #e6b800;
+  color: #e03065;
   transition: color 0.2s ease;
 }
 
 .prose blockquote {
-  border-left: 4px solid #4a2c7a;
+  border-left: 4px solid #0c2b7b;
   padding-left: 1.5rem;
   margin: 1.5rem 0;
   font-style: italic;
@@ -617,34 +617,34 @@ img[src=""], img:not([src]) {
 }
 
 .prose::-webkit-scrollbar-track {
-  background: rgba(74, 44, 122, 0.1);
+  background: rgba(12, 43, 123, 0.1);
   border-radius: 4px;
-  border: 1px solid rgba(74, 44, 122, 0.2);
+  border: 1px solid rgba(12, 43, 123, 0.2);
 }
 
 .prose::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #4a2c7a 0%, #6b46c1 100%);
+  background: linear-gradient(180deg, #0c2b7b 0%, #1e40af 100%);
   border-radius: 4px;
-  border: 1px solid rgba(74, 44, 122, 0.3);
-  box-shadow: 0 2px 4px rgba(74, 44, 122, 0.2);
+  border: 1px solid rgba(12, 43, 123, 0.3);
+  box-shadow: 0 2px 4px rgba(12, 43, 123, 0.2);
 }
 
 .prose::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #6b46c1 0%, #4a2c7a 100%);
-  box-shadow: 0 4px 8px rgba(74, 44, 122, 0.3);
+  background: linear-gradient(180deg, #1e40af 0%, #0c2b7b 100%);
+  box-shadow: 0 4px 8px rgba(12, 43, 123, 0.3);
   transform: scale(1.05);
   transition: all 0.2s ease;
 }
 
 .prose::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, #e6b800 0%, #d4af00 100%);
-  box-shadow: 0 2px 4px rgba(230, 184, 0, 0.4);
+  background: linear-gradient(180deg, #e03065 0%, #dc2626 100%);
+  box-shadow: 0 2px 4px rgba(224, 48, 101, 0.4);
 }
 
 /* Firefox scrollbar */
 .prose {
   scrollbar-width: thin;
-  scrollbar-color: #4a2c7a rgba(74, 44, 122, 0.1);
+  scrollbar-color: #0c2b7b rgba(12, 43, 123, 0.1);
 }
 
 /* Zoom compatibility fixes for 125% and higher zoom levels */

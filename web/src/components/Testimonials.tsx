@@ -21,17 +21,18 @@ const Testimonials: React.FC = () => {
     return () => window.removeEventListener('resize', updateItemsPerView);
   }, []);
 
-  // Auto-advance
+  // Auto-advance with proper loop handling
   useEffect(() => {
     if (!testimonials || testimonials.length === 0) return;
+    const maxStartIndex = Math.max(0, testimonials.length - itemsPerView);
     const interval = setInterval(() => {
       setCurrent((prev) => {
         const nextIndex = prev + 1;
-        return nextIndex >= testimonials.length ? 0 : nextIndex;
+        return nextIndex > maxStartIndex ? 0 : nextIndex;
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, [testimonials]);
+  }, [testimonials, itemsPerView]);
 
   if (isValidating) {
     return (
@@ -75,14 +76,16 @@ const Testimonials: React.FC = () => {
 
   const prev = () => {
     if (!testimonials || testimonials.length === 0) return;
+    const maxStartIndex = Math.max(0, testimonials.length - itemsPerView);
     const newIndex = current - 1;
-    setCurrent(newIndex < 0 ? testimonials.length - 1 : newIndex);
+    setCurrent(newIndex < 0 ? maxStartIndex : newIndex);
   };
 
   const next = () => {
     if (!testimonials || testimonials.length === 0) return;
+    const maxStartIndex = Math.max(0, testimonials.length - itemsPerView);
     const newIndex = current + 1;
-    setCurrent(newIndex >= testimonials.length ? 0 : newIndex);
+    setCurrent(newIndex > maxStartIndex ? 0 : newIndex);
   };
 
   // Translate percentage per step (one card width)
@@ -157,7 +160,7 @@ const Testimonials: React.FC = () => {
           </div>
 
           {/* Controls */}
-          {testimonials && testimonials.length > 1 && (
+          {testimonials && testimonials.length > itemsPerView && (
             <>
               <button
                 onClick={prev}
@@ -176,7 +179,7 @@ const Testimonials: React.FC = () => {
 
               {/* Dots */}
               <div className="mt-6 flex items-center justify-center gap-2">
-                {Array.from({ length: testimonials.length }).map((_, index: number) => (
+                {Array.from({ length: Math.max(1, testimonials.length - itemsPerView + 1) }).map((_, index: number) => (
                   <button
                     key={index}
                     onClick={() => setCurrent(index)}

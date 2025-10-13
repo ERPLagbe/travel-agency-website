@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import PackageCard from './PackageCard';
+import React from 'react';
+import FeaturedPackageCard from './FeaturedPackageCard';
 import { useWebsiteCMS, useFeaturedPackages } from '../hooks/useWebsiteCMS';
 import { useFrappeGetCall } from 'frappe-react-sdk';
 
@@ -47,8 +46,6 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
 }) => {
   const { data: cmsData } = useWebsiteCMS();
   const { data: featuredPackages } = useFeaturedPackages();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
   // Fetch all Items with accommodation data using custom API
   const { data: apiResponse } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -71,8 +68,8 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
       featuredItemNames.includes(item.name)
     );
     
-    // Convert to package format with dynamic data from Item custom fields
-    return featuredItems.map((item: any) => {
+    // Convert to package format with dynamic data from Item custom fields (limit to 3)
+    return featuredItems.slice(0, 3).map((item: any) => {
       // Process accommodation list to get hotel names and distances
       const accommodationList = item.custom_accommodation_list || [];
       const hotelInfo = accommodationList.length > 0 
@@ -106,60 +103,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
     });
   }, [propPackages, featuredPackages, allItems]);
 
-  // Determine how many cards to show based on screen size
-  const getCardsPerView = () => {
-    if (typeof window === 'undefined') return 3;
-    if (window.innerWidth < 1024) return 1; // Mobile and tablet: 1 card
-    return 3; // Desktop: 3 cards
-  };
 
-  const [cardsPerView, setCardsPerView] = useState(getCardsPerView());
-
-  useEffect(() => {
-    const handleResize = () => {
-      setCardsPerView(getCardsPerView());
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Calculate pages
-  const pages = Math.max(1, Math.ceil(packages.length / cardsPerView));
-
-  // Auto-play functionality
-  useEffect(() => {
-    if (!isAutoPlaying || packages.length <= cardsPerView) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => {
-        const nextPage = Math.floor(prev / cardsPerView) + 1;
-        if (nextPage >= pages) return 0; // loop to start
-        return nextPage * cardsPerView;
-      });
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, packages.length, cardsPerView, pages]);
-
-  const maxStartIndex = Math.max(0, packages.length - cardsPerView);
-  const currentPage = Math.min(Math.floor(currentIndex / cardsPerView), pages - 1);
-
-  const handlePrevious = () => {
-    setIsAutoPlaying(false);
-    const newIndex = currentIndex - cardsPerView;
-    setCurrentIndex(newIndex < 0 ? (pages - 1) * cardsPerView : newIndex);
-  };
-
-  const handleNext = () => {
-    setIsAutoPlaying(false);
-    const newIndex = currentIndex + cardsPerView;
-    setCurrentIndex(newIndex > maxStartIndex ? 0 : newIndex);
-  };
-
-  // Translate percentage per step
-  const translatePercent = (currentIndex / cardsPerView) * 100;
-  const showNavigation = packages.length > cardsPerView;
 
   // Show loading state
   if (!apiResponse || !featuredPackages) {
@@ -218,84 +162,20 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
           </p>
         </div>
 
-        {/* Slider Container */}
-        <div className="relative">
-          {/* Package Cards Slider */}
-          <div className="overflow-hidden pb-4">
-            <div
-              className="flex transition-transform duration-700 items-stretch"
-              style={{ transform: `translateX(-${translatePercent}%)` }}
-            >
-              {packages.map((pkg: Package) => (
-                <div
-                  key={pkg.id}
-                  className="w-full lg:w-1/3 px-2 flex-shrink-0 flex"
-                >
-                  <PackageCard
-                    id={pkg.id}
-                    title={pkg.title}
-                    nights={pkg.nights}
-                    rating={pkg.rating}
-                    price={pkg.price}
-                    image={pkg.image}
-                    duration={pkg.duration}
-                    airInfo={pkg.airInfo}
-                    hotelMakkah={pkg.hotelMakkah}
-                    hotelMadinah={pkg.hotelMadinah}
-                    foodInfo={pkg.foodInfo}
-                    specialServices={pkg.specialServices}
-                    accommodationList={pkg.accommodationList}
-                    specialServicesList={pkg.specialServicesList}
-                    primaryButtonText="View All Detail"
-                    secondaryButtonText="Enquire Now"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Navigation Controls - Centered with arrows and dots inline */}
-          {showNavigation && (
-            <div className="flex items-center justify-center gap-4 mt-8">
-              {/* Left Arrow */}
-              <button
-                onClick={handlePrevious}
-                className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
-                aria-label="Previous packages"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              {/* Dots Indicator */}
-              <div className="flex items-center gap-2">
-                {Array.from({ length: pages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setIsAutoPlaying(false);
-                      setCurrentIndex(index * cardsPerView);
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentPage
-                        ? 'bg-primary w-8'
-                        : 'bg-gray-300 w-2 hover:bg-gray-400'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Right Arrow */}
-              <button
-                onClick={handleNext}
-                className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
-                aria-label="Next packages"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
+        {/* Package Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {packages.map((pkg: Package) => (
+            <FeaturedPackageCard
+              key={pkg.id}
+              id={pkg.id}
+              name={pkg.title}
+              rating={pkg.rating}
+              price={pkg.price}
+              image={pkg.image}
+            />
+          ))}
         </div>
+
       </div>
     </section>
   );

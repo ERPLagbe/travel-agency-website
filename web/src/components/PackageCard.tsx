@@ -64,24 +64,24 @@ const PackageCard: React.FC<PackageCardProps> = ({
   const normalizedRating = getNormalizedRating(rating);
 
   return (
-    <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full">
-      {/* Header Image - Clickable */}
-      <div 
-        className="relative h-[250px] overflow-hidden cursor-pointer group/image"
-        onClick={handlePrimaryClick}
-      >
+    <div 
+      className="w-full bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-102 flex flex-col h-full cursor-pointer"
+      onClick={handlePrimaryClick}
+    >
+      {/* Header Image */}
+      <div className="relative h-[250px] overflow-hidden group/image">
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
         {/* Clickable overlay indicator */}
         <div className="absolute inset-0 bg-primary/0 group-hover/image:bg-primary/10 transition-all duration-300"></div>
 
-        {/* Title overlay - Clickable */}
+        {/* Title overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-          <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn cursor-pointer hover:text-secondary transition-colors duration-300">
+          <h1 className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg animate-fadeIn hover:text-secondary transition-colors duration-300">
             {title}
           </h1>
           {normalizedRating !== undefined && (
@@ -96,7 +96,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
                       {/* Filled portion */}
                       {fillPct > 0 && (
                         <div className="absolute inset-0 overflow-hidden" style={{ width: `${fillPct * 100}%` }}>
-                          <Star className="w-4 h-4 text-secondary" stroke="currentColor" fill="currentColor" />
+                          <Star className="w-4 h-4 text-yellow-500" stroke="currentColor" fill="currentColor" />
                         </div>
                       )}
                     </div>
@@ -198,7 +198,10 @@ const PackageCard: React.FC<PackageCardProps> = ({
       {/* Button */}
       <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2">
         <Button
-          onClick={handlePrimaryClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrimaryClick();
+          }}
           variant="primary"
           className="w-full"
         >

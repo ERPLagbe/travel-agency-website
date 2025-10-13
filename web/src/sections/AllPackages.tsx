@@ -61,36 +61,35 @@ const AllPackages: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Calculate pages for slider
-  const pages = Math.max(1, Math.ceil(packages.length / cardsPerView));
+  // Calculate total possible positions for single card movement
+  const totalPositions = Math.max(1, packages.length - cardsPerView + 1);
 
-  // Auto-play functionality for slider
+  // Auto-play functionality for slider - slide one card at a time
   useEffect(() => {
     if (!isAutoPlaying || packages.length <= cardsPerView) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
-        const nextPage = Math.floor(prev / cardsPerView) + 1;
-        if (nextPage >= pages) return 0;
-        return nextPage * cardsPerView;
+        const nextIndex = prev + 1; // Move one card at a time
+        if (nextIndex >= packages.length - cardsPerView + 1) return 0; // loop to start
+        return nextIndex;
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, packages.length, cardsPerView, pages]);
+  }, [isAutoPlaying, packages.length, cardsPerView]);
 
   const maxStartIndex = Math.max(0, packages.length - cardsPerView);
-  const currentPage = Math.min(Math.floor(currentIndex / cardsPerView), pages - 1);
 
   const handlePrevious = () => {
     setIsAutoPlaying(false);
-    const newIndex = currentIndex - cardsPerView;
-    setCurrentIndex(newIndex < 0 ? (pages - 1) * cardsPerView : newIndex);
+    const newIndex = currentIndex - 1; // Move one card at a time
+    setCurrentIndex(newIndex < 0 ? maxStartIndex : newIndex);
   };
 
   const handleNext = () => {
     setIsAutoPlaying(false);
-    const newIndex = currentIndex + cardsPerView;
+    const newIndex = currentIndex + 1; // Move one card at a time
     setCurrentIndex(newIndex > maxStartIndex ? 0 : newIndex);
   };
 
@@ -125,7 +124,7 @@ const AllPackages: React.FC = () => {
               {packages.map((pkg: any) => (
                 <div
                   key={pkg.id}
-                  className="w-full lg:w-1/3 px-2 flex-shrink-0 flex"
+                  className="w-full lg:w-1/3 px-2 py-4 flex-shrink-0 flex"
                 >
                   <PackageCard
                     id={pkg.id}
@@ -169,15 +168,15 @@ const AllPackages: React.FC = () => {
 
                 {/* Dots Indicator */}
                 <div className="flex items-center gap-2">
-                  {Array.from({ length: pages }).map((_, index) => (
+                  {Array.from({ length: totalPositions }).map((_, index) => (
                     <button
                       key={index}
                       onClick={() => {
                         setIsAutoPlaying(false);
-                        setCurrentIndex(index * cardsPerView);
+                        setCurrentIndex(index);
                       }}
                       className={`h-2 rounded-full transition-all duration-300 ${
-                        index === currentPage
+                        index === currentIndex
                           ? 'bg-primary w-8'
                           : 'bg-gray-300 w-2 hover:bg-gray-400'
                       }`}
