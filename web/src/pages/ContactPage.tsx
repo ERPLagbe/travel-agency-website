@@ -12,10 +12,10 @@ const CompleteContactPage: React.FC = () => {
   
   const { createLead, isLoading } = useCreateLead();
   const { data: cmsData, isValidating: cmsLoading } = useWebsiteCMS();
-  const { data: packageData } = useFrappeGetDoc('Item', packageId || '', {
-    fields: ['name', 'item_name', 'item_group'],
-    shouldFetch: !!packageId
-  });
+  // const { data: packageData } = useFrappeGetDoc('Item', packageId || '', {
+  //   fields: ['name', 'item_name', 'item_group'],
+  //   shouldFetch: !!packageId
+  // });
   
   // Fetch all available packages for dropdown
   const { data: allPackages } = useFrappeGetDocList('Item', {
@@ -107,7 +107,7 @@ const CompleteContactPage: React.FC = () => {
       ]}
     >
       {/* Hero Section - Clean Design */}
-      <SectionContainer size="lg" className="text-center relative h-[15vh] flex items-center bg-primary text-white contact-hero">
+      <SectionContainer size="lg" className="text-center relative h-[20vh] flex items-center bg-primary text-white contact-hero">
         <div style={{ paddingTop: 'var(--spacing-8)', paddingBottom: 'var(--spacing-8)' }}>
           <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-4)' }}>
             Contact {contactData?.business_name}
@@ -361,15 +361,16 @@ const CompleteContactPage: React.FC = () => {
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Subject
+                  Inquiry Type <span className="text-red-500">*</span>
                 </label>
                 <select
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
+                  required
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
                 >
-                  <option value="">Select Subject</option>
+                  <option value="">Select Inquiry Type</option>
                   <option value="Package Inquiry">Package Inquiry</option>
                   <option value="Service Inquiry">Service Inquiry</option>
                   <option value="General Inquiry">General Inquiry</option>

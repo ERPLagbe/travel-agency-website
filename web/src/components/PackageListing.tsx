@@ -18,6 +18,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const [selectedDropdowns, setSelectedDropdowns] = useState<string[]>([]);
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   
   // Fetch all packages with accommodation data using custom API
   const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -262,8 +263,8 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
         {/* Main Content with Sidebar */}
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside className="lg:w-72 flex-shrink-0">
+          {/* Desktop Sidebar Filters */}
+          <aside className="hidden lg:block lg:w-72 flex-shrink-0">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
               {/* Filter Header */}
               <div className="flex items-center justify-between mb-6">
@@ -385,6 +386,27 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
           {/* Main Content Area */}
           <div className="flex-1">
+            {/* Mobile Filter Button */}
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+                className="w-full bg-white rounded-2xl shadow-lg border border-gray-100 p-4 flex items-center justify-between hover:bg-gray-50 transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-[1.02]"
+              >
+                <span className="font-semibold text-gray-900">Filters</span>
+                <span className="text-sm text-gray-500">
+                  {selectedDropdowns.length + selectedItemGroups.length + (filterPrice ? 1 : 0) + selectedRatings.length} applied
+                </span>
+                <svg 
+                  className={`w-5 h-5 text-gray-500 transition-transform duration-300 ease-in-out ${isMobileFilterOpen ? 'rotate-180' : 'rotate-0'}`}
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
             {/* Sort and Results Count */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -515,6 +537,157 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
           </div>
           )
         )}
+          </div>
+
+        {/* Mobile Filter Panel */}
+        <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ease-in-out ${
+          isMobileFilterOpen 
+            ? 'opacity-100 visible' 
+            : 'opacity-0 invisible pointer-events-none'
+        }`}>
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out"
+            onClick={() => setIsMobileFilterOpen(false)}
+          />
+          {/* Drawer */}
+          <div className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+            isMobileFilterOpen 
+              ? 'translate-x-0' 
+              : 'translate-x-full'
+          }`}>
+              <div className="p-6">
+                {/* Mobile Filter Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                  <button
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 ease-in-out hover:scale-110"
+                  >
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Mobile Filter Content - Same as desktop sidebar */}
+                <div className="space-y-6">
+                  {/* Dropdown Categories Filter */}
+                  {availableDropdowns.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableDropdowns.map(dropdown => (
+                          <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={selectedDropdowns.includes(dropdown)}
+                              onChange={() => handleDropdownToggle(dropdown)}
+                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                            />
+                            <span className="text-sm text-gray-700">{dropdown}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Item Groups Filter */}
+                  {availableItemGroups.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Item Groups</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableItemGroups.map(itemGroup => (
+                          <label key={itemGroup} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={selectedItemGroups.includes(itemGroup)}
+                              onChange={() => handleItemGroupToggle(itemGroup)}
+                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                            />
+                            <span className="text-sm text-gray-700">{itemGroup}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Rating Filter */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Rating</h3>
+                    <div className="space-y-2">
+                      {[5, 4, 3, 2, 1].map(rating => (
+                        <label key={rating} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={selectedRatings.includes(rating)}
+                            onChange={() => {
+                              setSelectedRatings(prev => 
+                                prev.includes(rating) 
+                                  ? prev.filter(r => r !== rating)
+                                  : [...prev, rating]
+                              );
+                            }}
+                            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                          />
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <span
+                                key={i}
+                                className={`text-sm ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                            <span className="text-sm text-gray-700 ml-1">{rating} Star{rating !== 1 ? 's' : ''}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Price Range Filter */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Price Range</h3>
+                    <div className="space-y-3">
+                      <input
+                        type="number"
+                        placeholder="Min Price"
+                        value={filterPrice?.min || ''}
+                        onChange={(e) => {
+                          const min = Number(e.target.value) || 0;
+                          setFilterPrice(prev => prev ? { ...prev, min } : { min, max: 1000000 });
+                        }}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max Price"
+                        value={filterPrice?.max || ''}
+                        onChange={(e) => {
+                          const max = Number(e.target.value) || 1000000;
+                          setFilterPrice(prev => prev ? { ...prev, max } : { min: 0, max });
+                        }}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clear All Button */}
+                  {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
+                    <button
+                      onClick={() => {
+                        clearAllFilters();
+                        setIsMobileFilterOpen(false);
+                      }}
+                      className="w-full bg-red-50 text-red-600 py-2 px-4 rounded-lg font-medium hover:bg-red-100 transition-colors"
+                    >
+                      Clear All Filters
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

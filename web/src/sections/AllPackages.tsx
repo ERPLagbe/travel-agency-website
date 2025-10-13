@@ -154,7 +154,7 @@ const AllPackages: React.FC = () => {
 
           {/* Navigation Controls with View All Button */}
           {showNavigation && (
-            <div className="flex items-center justify-between mt-8">
+            <div className="flex flex-col lg:flex-row gap-4 items-center justify-between mt-8">
               {/* Left side - Navigation arrows and dots */}
               <div className="flex items-center gap-4">
                 {/* Left Arrow */}

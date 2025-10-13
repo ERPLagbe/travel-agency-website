@@ -8,8 +8,9 @@ const AboutPage: React.FC = () => {
   
   // Debug: Log the CMS data structure
   console.log('AboutPage CMS Data:', cmsData);
-  console.log('About Story:', cmsData?.about?.story);
-  console.log('About Sections:', cmsData?.about?.sections);
+  console.log('About Story:', cmsData?.about_title);
+  console.log('About Sections:', cmsData?.about_subtitle);
+  console.log('About Background Image:', cmsData?.about_background_image);
 
   return (
     <PageLayout 
@@ -19,14 +20,14 @@ const AboutPage: React.FC = () => {
       ]}
     >
       {/* Hero Section */}
-      <SectionContainer size="lg" className="text-center hero-section" style={{
-        backgroundImage: cmsData?.about?.background_image 
-          ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData.about.background_image)}')`
+      <SectionContainer size="lg" className="text-center " style={{
+        backgroundImage: cmsData?.about_background_image 
+          ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData?.about_background_image)}')`
           : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative',
-        minHeight: '60vh',
+        minHeight: '40vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -35,10 +36,10 @@ const AboutPage: React.FC = () => {
       }}>
         <div style={{ position: 'relative', zIndex: 2, paddingTop: 'var(--spacing-16)', paddingBottom: 'var(--spacing-16)' }}>
           <Typography variant="h1" color="white" align="center">
-            {cmsData?.about?.title}
+            {cmsData?.about_title}
           </Typography>
           <Typography variant="body-large" color="white" align="center" className="">
-            {cmsData?.about?.subtitle}
+            {cmsData?.about_subtitle}
           </Typography>
         </div>
       </SectionContainer>

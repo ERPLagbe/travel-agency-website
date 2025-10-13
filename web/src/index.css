@@ -104,6 +104,7 @@ body {
   overflow-x: hidden;
 }
 
+
 /* Dynamic gradient using CSS variables */
 .dynamic-hero-gradient {
   background: linear-gradient(

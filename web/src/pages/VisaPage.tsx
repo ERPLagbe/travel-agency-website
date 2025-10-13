@@ -12,14 +12,14 @@ const VisaPage: React.FC = () => {
       { label: 'Visa Services' }
     ]}>
       {/* Hero Section */}
-      <SectionContainer size="lg" className="text-center hero-section" style={{
+      <SectionContainer size="lg" className="text-center  " style={{
         backgroundImage: cmsData?.visa_background_image 
           ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('${getFileUrlWithFallback(cmsData.visa_background_image)}')`
           : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative',
-        minHeight: '60vh',
+        minHeight: '40vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

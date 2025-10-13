@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageCircle, Mail, Phone, X } from 'lucide-react';
+import { Mail, Phone, X, MessageSquare } from 'lucide-react';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const FloatingActionButtons: React.FC = () => {
@@ -62,8 +62,8 @@ const FloatingActionButtons: React.FC = () => {
       type: 'whatsapp',
       onClick: handleWhatsApp,
       title: 'WhatsApp Chat',
-      backgroundColor: '#007bff',
-      icon: <MessageCircle size={24} />,
+      // backgroundColor: '#25D366',
+      icon: <img src="/image.png" alt="WhatsApp" width={56} height={56} />,
       position: buttonIndex++
     });
   }
@@ -84,7 +84,7 @@ const FloatingActionButtons: React.FC = () => {
       type: 'call',
       onClick: handleCall,
       title: 'Call Now',
-      backgroundColor: '#28a745',
+      backgroundColor: '#007bff',
       icon: <Phone size={24} />,
       position: buttonIndex++
     });
@@ -183,7 +183,7 @@ const FloatingActionButtons: React.FC = () => {
           }}
           title="Quick Contact"
         >
-          <MessageCircle size={24} />
+          <MessageSquare size={24} />
         </button>
       )}
 

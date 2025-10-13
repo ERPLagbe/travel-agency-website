@@ -24,7 +24,7 @@ const WelcomeSection: React.FC = () => {
           </div>
 
           {/* Right Side - Content (col-8) */}
-          <div className="lg:col-span-8 order-last lg:order-last overflow-y-auto">
+          <div className="mt-6 lg:mt-0 lg:col-span-8 order-last lg:order-last overflow-y-auto">
             <h2 className="text-primary text-3xl md:text-4xl font-bold mb-6">
               {cmsData?.welcome_title}
             </h2>

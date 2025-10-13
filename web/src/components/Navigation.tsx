@@ -65,6 +65,28 @@ const Navigation: React.FC<NavigationProps> = () => {
     return () => clearInterval(interval);
   }, [location.pathname]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Prevent scrolling on the body
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isMenuOpen]);
+
   // Get navigation data from Website CMS (child tables)
   const navigationDropdowns = cmsData?.navigation_dropdowns || [];
   const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
@@ -344,39 +366,7 @@ const Navigation: React.FC<NavigationProps> = () => {
 
           {/* Content */}
           <div className="flex flex-col h-full">
-            {/* Action Buttons Section */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex flex-col gap-3">
-                <Link
-                  to="/contact"
-                  className="btn btn-primary w-full no-underline"
-                  onClick={closeMobileMenu}
-                  aria-label="Book an appointment"
-                >
-                  Get Appointment
-                </Link>
-
-                {isLoggedIn ? (
-                  <a
-                    href="/app/home"
-                    className="btn btn-secondary-fill w-full no-underline"
-                    onClick={closeMobileMenu}
-                    aria-label="Go to your dashboard"
-                  >
-                    Dashboard
-                  </a>
-                ) : (
-                  <a
-                    href="/login"
-                    className="btn btn-secondary-fill w-full no-underline"
-                    onClick={closeMobileMenu}
-                    aria-label="Login to your account"
-                  >
-                    Login
-                  </a>
-                )}
-              </div>
-            </div>
+            
 
             {/* Navigation Links */}
             <div className="flex-1 overflow-y-auto p-6">
@@ -453,7 +443,41 @@ const Navigation: React.FC<NavigationProps> = () => {
                   </div>
                 ))}
               </div>
+              {/* Action Buttons Section */}
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex flex-col gap-3">
+                <Link
+                  to="/contact"
+                  className="btn btn-primary w-full no-underline"
+                  onClick={closeMobileMenu}
+                  aria-label="Book an appointment"
+                >
+                  Get Appointment
+                </Link>
+
+                {isLoggedIn ? (
+                  <a
+                    href="/app/home"
+                    className="btn btn-secondary-fill w-full no-underline"
+                    onClick={closeMobileMenu}
+                    aria-label="Go to your dashboard"
+                  >
+                    Dashboard
+                  </a>
+                ) : (
+                  <a
+                    href="/login"
+                    className="btn btn-secondary-fill w-full no-underline"
+                    onClick={closeMobileMenu}
+                    aria-label="Login to your account"
+                  >
+                    Login
+                  </a>
+                )}
+              </div>
             </div>
+            </div>
+            
           </div>
         </div>
       </div>

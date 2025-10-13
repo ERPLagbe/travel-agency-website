@@ -139,26 +139,7 @@ const Footer: React.FC = () => {
               )}
             </div>
             
-            {/* Social Media */}
-            {socialLinks && socialLinks.length > 0 && (
-              <div className="flex gap-3">
-                {socialLinks.map((social: any, index: number) => (
-                  <a 
-                    key={index}
-                    href={social.platform_url} 
-                    className="w-8 h-8 flex items-center justify-center text-white hover:text-secondary transition-colors"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Follow us on ${social.platform_name}`}
-                  >
-                    {social.platform_name === 'Facebook' && <Facebook className="w-5 h-5" />}
-                    {social.platform_name === 'Instagram' && <Instagram className="w-5 h-5" />}
-                    {social.platform_name === 'Twitter' && <Facebook className="w-5 h-5" />}
-                    {social.platform_name === 'YouTube' && <Instagram className="w-5 h-5" />}
-                  </a>
-                ))}
-              </div>
-            )}
+            
 
             {/* Google Maps Button */}
             {mainBranch && (
@@ -178,7 +159,7 @@ const Footer: React.FC = () => {
             </div>
 
           {/* Middle Column - Quick Links */}
-              <div>
+              <div className='lg:px-18'>
             <h4 className="text-white font-semibold text-base mb-4">Quick Links</h4>
                 <div className="space-y-2">
                   {quickLinks.map((link: any, index: number) => (
@@ -191,6 +172,8 @@ const Footer: React.FC = () => {
                   <span className="text-secondary">›</span> {link.link_text}
                     </Link>
                   ))}
+
+                  
               </div>
 
               {/* Our Terms */}
@@ -226,7 +209,27 @@ const Footer: React.FC = () => {
                   </Link>
                 </div>
             
-            {/* Payment Methods */}
+
+            {/* Social Media */}
+            {socialLinks && socialLinks.length > 0 && (
+              <div className=" mt-6 flex gap-3">
+                {socialLinks.map((social: any, index: number) => (
+                  <a 
+                    key={index}
+                    href={social.platform_url} 
+                    className="w-8 h-8 flex items-center justify-center text-white hover:text-secondary transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Follow us on ${social.platform_name}`}
+                  >
+                    {social.platform_name === 'Facebook' && <Facebook className="w-5 h-5" />}
+                    {social.platform_name === 'Instagram' && <Instagram className="w-5 h-5" />}
+                    {social.platform_name === 'Twitter' && <Facebook className="w-5 h-5" />}
+                    {social.platform_name === 'YouTube' && <Instagram className="w-5 h-5" />}
+                  </a>
+                ))}
+              </div>
+            )}
  
           </div>
 
@@ -452,14 +455,15 @@ const Footer: React.FC = () => {
                 />
             </div>
 
-              {/* Subject */}
+              {/* Inquiry Type */}
               <select
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
+                required
                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:ring-2 focus:ring-secondary focus:border-secondary focus:outline-none"
               >
-                <option value="">Select Subject</option>
+                <option value="">Select Inquiry Type *</option>
                 <option value="Package Inquiry">Package Inquiry</option>
                 <option value="Service Inquiry">Service Inquiry</option>
                 <option value="General Inquiry">General Inquiry</option>
