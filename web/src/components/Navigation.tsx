@@ -179,8 +179,8 @@ const Navigation: React.FC<NavigationProps> = () => {
                       to={item.path}
                       className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
                         isActive(item.path) 
-                          ? 'bg-secondary text-white' 
-                          : 'text-white hover:text-accent hover:bg-white/5'
+                          ? 'bg-secondary !text-white' 
+                          : '!text-white  hover:bg-white/5'
                       }`}
                       onMouseEnter={() => setActiveDropdown(item.path)}
                       onMouseLeave={() => setActiveDropdown(null)}

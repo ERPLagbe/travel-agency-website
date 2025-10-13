@@ -17,6 +17,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const [filterPrice, setFilterPrice] = useState<{ min: number; max: number } | null>(null);
   const [selectedDropdowns, setSelectedDropdowns] = useState<string[]>([]);
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   
   // Fetch all packages with accommodation data using custom API
   const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -78,33 +79,6 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
   
-  // Get packages based on view type (for grouped display only)
-  let groupedPackages: { [key: string]: any[] } = {};
-  
-  if (isDropdownView && dropdownName) {
-    // Get all item groups for this dropdown (case-insensitive match)
-    const dropdownItemGroups = navigationDropdownItems
-      .filter((item: any) => item.dropdown_name.toLowerCase() === dropdownName.toLowerCase())
-      .map((item: any) => item.item_group);
-    
-    console.log('🔍 Dropdown Debug:', {
-      dropdownName,
-      navigationDropdownItems,
-      dropdownItemGroups,
-      allPackagesCount: allPackages.length
-    });
-    
-    // Group packages by item group (for display purposes)
-    allPackages.forEach((pkg: any) => {
-      if (dropdownItemGroups.includes(pkg.item_group)) {
-        if (!groupedPackages[pkg.item_group]) {
-          groupedPackages[pkg.item_group] = [];
-        }
-        groupedPackages[pkg.item_group].push(pkg);
-      }
-    });
-  }
-  
   // Debug logging
   console.log('🔍 PackageListing Component Debug:', {
     itemGroup,
@@ -162,6 +136,18 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       });
     }
     
+    // Apply rating filter
+    if (selectedRatings.length > 0) {
+      filtered = filtered.filter(pkg => {
+        const packageRating = pkg.custom_package_rating || 0;
+        // Convert decimal rating to star rating (0.7 = 3.5 stars = 4 stars when rounded)
+        // If rating is between 0-1, multiply by 5, otherwise use as-is
+        const normalizedRating = packageRating <= 1 ? packageRating * 5 : packageRating;
+        const starRating = Math.round(normalizedRating);
+        return selectedRatings.includes(starRating);
+      });
+    }
+    
     // Sort packages
     switch (sortBy) {
       case 'price-low':
@@ -176,7 +162,31 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     }
     
     return filtered;
-  }, [allPackages, sortBy, filterPrice, selectedDropdowns, selectedItemGroups, navigationDropdownItems]);
+  }, [allPackages, sortBy, filterPrice, selectedDropdowns, selectedItemGroups, selectedRatings, navigationDropdownItems]);
+
+  // Get packages based on view type (for grouped display only)
+  const groupedPackages = React.useMemo(() => {
+    const grouped: { [key: string]: any[] } = {};
+    
+    if (isDropdownView && dropdownName) {
+      // Get all item groups for this dropdown (case-insensitive match)
+      const dropdownItemGroups = navigationDropdownItems
+        .filter((item: any) => item.dropdown_name.toLowerCase() === dropdownName.toLowerCase())
+        .map((item: any) => item.item_group);
+      
+      // Group FILTERED packages by item group (use sortedPackages instead of allPackages)
+      sortedPackages.forEach((pkg: any) => {
+        if (dropdownItemGroups.includes(pkg.item_group)) {
+          if (!grouped[pkg.item_group]) {
+            grouped[pkg.item_group] = [];
+          }
+          grouped[pkg.item_group].push(pkg);
+        }
+      });
+    }
+    
+    return grouped;
+  }, [isDropdownView, dropdownName, navigationDropdownItems, sortedPackages]);
 
   // Show loading state if data is still loading
   if (isLoading) {
@@ -226,6 +236,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     setSelectedDropdowns([]);
     setSelectedItemGroups([]);
     setFilterPrice(null);
+    setSelectedRatings([]);
   };
 
   return (
@@ -257,7 +268,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               {/* Filter Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Filters</h2>
-                {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice) && (
+                {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
                   <button
                     onClick={clearAllFilters}
                     className="text-sm text-secondary hover:text-primary font-medium transition-colors"
@@ -307,6 +318,40 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                     </div>
                   </div>
                 )}
+
+                {/* Rating Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Rating</h3>
+                  <div className="space-y-2">
+                    {[5, 4, 3, 2, 1].map(rating => (
+                      <label key={rating} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={selectedRatings.includes(rating)}
+                          onChange={() => {
+                            setSelectedRatings(prev => 
+                              prev.includes(rating) 
+                                ? prev.filter(r => r !== rating)
+                                : [...prev, rating]
+                            );
+                          }}
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                        />
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <span
+                              key={i}
+                              className={`text-sm ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                            >
+                              ★
+                            </span>
+                          ))}
+                          <span className="text-sm text-gray-700 ml-1">{rating} Star{rating !== 1 ? 's' : ''}</span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Price Range Filter */}
                 <div>

@@ -111,8 +111,8 @@ const PackageCard: React.FC<PackageCardProps> = ({
 
       {/* Features - Horizontal Layout */}
       <div className="px-4 sm:px-6 py-4 flex-grow">
-        <div className="space-y-3 mb-4">
-          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
               <span className="text-base font-bold text-gray-800">Duration: </span>
@@ -120,7 +120,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+          <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Plane className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
               <span className="text-base font-bold text-gray-800">Direct Flight: </span>
@@ -128,7 +128,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+          <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
               <span className="text-base font-bold text-gray-800">Hotel Makkah: </span>
@@ -136,7 +136,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 py-2 border-b border-gray-200">
+          <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Utensils className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
               <span className="text-base font-bold text-gray-800">Food: </span>
@@ -155,7 +155,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
                 specialServicesList.map((service, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
                   >
                     {service.title}
                   </span>
@@ -176,7 +176,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       </div>
 
       {/* Price Section */}
-      <div className="px-4 sm:px-6 py-4 sm:py-5 text-center bg-white group cursor-default">
+      <div className="px-4 sm:px-6 py-3 text-center bg-white group cursor-default">
         <div className="inline-block">
           {price && price > 0 ? (
             <>
