@@ -54,5 +54,5 @@ jspm_packages/
 # Aider AI Chat
 .aider*
 
-/travel_agency_website/public/
-/travel_agency_website/www/
+travel_agency_website/public/
+travel_agency_website/www/

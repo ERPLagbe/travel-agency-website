@@ -259,5 +259,7 @@ website_route_rules = [
     {'from_route': '/blog', 'to_route': 'web'},
     {'from_route': '/terms', 'to_route': 'web'},
     {'from_route': '/branches', 'to_route': 'web'},
+    {'from_route': '/category/<path:item_group>', 'to_route': 'web'},
+    {'from_route': '/dropdown/<path:dropdown_name>', 'to_route': 'web'},
     {'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},
 ]
