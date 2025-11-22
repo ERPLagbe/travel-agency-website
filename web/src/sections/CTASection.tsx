@@ -31,7 +31,7 @@ const CTASection: React.FC = () => {
                 {cmsData.stat_hajj_travelers} +
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
-                HAJJ TRAVELER
+                Working Visa Count
               </div>
             </div>
           )}
@@ -43,7 +43,7 @@ const CTASection: React.FC = () => {
                 {cmsData.stat_umrah_travelers} +
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
-                UMRAH TRAVELER
+                Student Visa Count
               </div>
             </div>
           )}
@@ -55,7 +55,7 @@ const CTASection: React.FC = () => {
                 {cmsData.stat_satisfied_pilgrims} %
               </div>
               <div className="text-white font-medium text-sm lg:text-base">
-                SATISFIED PILGRIMS
+                Satisfied Customers Percentage
               </div>
             </div>
           )}
