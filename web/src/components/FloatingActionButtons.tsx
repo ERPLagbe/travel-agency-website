@@ -62,7 +62,7 @@ const FloatingActionButtons: React.FC = () => {
       type: 'whatsapp',
       onClick: handleWhatsApp,
       title: 'WhatsApp Chat',
-      // backgroundColor: '#25D366',
+      backgroundColor: '#25D366',
       icon: <img src="/image.png" alt="WhatsApp" width={56} height={56} />,
       position: buttonIndex++
     });
