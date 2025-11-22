@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, X, MessageSquare } from 'lucide-react';
+import { Mail, Phone, X, MessageSquare, MessageCircleMore } from 'lucide-react';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const FloatingActionButtons: React.FC = () => {
@@ -63,7 +63,7 @@ const FloatingActionButtons: React.FC = () => {
       onClick: handleWhatsApp,
       title: 'WhatsApp Chat',
       backgroundColor: '#25D366',
-      icon: <img src="/image.png" alt="WhatsApp" width={56} height={56} />,
+      icon: <MessageCircleMore size={24} />,
       position: buttonIndex++
     });
   }
