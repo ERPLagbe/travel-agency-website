@@ -281,7 +281,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
               <div className="space-y-6">
                 {/* Dropdown Categories Filter */}
-                {availableDropdowns.length > 0 && (
+                /* {availableDropdowns.length > 0 && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -298,7 +298,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                       ))}
                     </div>
                   </div>
-                )}
+                )} */
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
@@ -573,7 +573,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                 {/* Mobile Filter Content - Same as desktop sidebar */}
                 <div className="space-y-6">
                   {/* Dropdown Categories Filter */}
-                  {availableDropdowns.length > 0 && (
+                  /* {availableDropdowns.length > 0 && (
                     <div>
                       <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
                       <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -590,7 +590,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                         ))}
                       </div>
                     </div>
-                  )}
+                  )} */
 
                   {/* Item Groups Filter */}
                   {availableItemGroups.length > 0 && (
