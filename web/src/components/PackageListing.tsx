@@ -115,18 +115,24 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     // Start with all packages
     let filtered = [...allPackages];
     
-    // Apply dropdown filter
-    if (selectedDropdowns.length > 0) {
-      const itemGroupsInSelectedDropdowns = navigationDropdownItems
-        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
-        .map((item: any) => item.item_group);
+    // Apply dropdown filter OR item group filter (combined with OR logic)
+    if (selectedDropdowns.length > 0 || selectedItemGroups.length > 0) {
+      const itemGroupsToInclude = new Set<string>();
       
-      filtered = filtered.filter(pkg => itemGroupsInSelectedDropdowns.includes(pkg.item_group));
-    }
-    
-    // Apply item group filter
-    if (selectedItemGroups.length > 0) {
-      filtered = filtered.filter(pkg => selectedItemGroups.includes(pkg.item_group));
+      // Add item groups from selected dropdowns
+      if (selectedDropdowns.length > 0) {
+        navigationDropdownItems
+          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+          .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
+      }
+      
+      // Add explicitly selected item groups
+      if (selectedItemGroups.length > 0) {
+        selectedItemGroups.forEach((group: string) => itemGroupsToInclude.add(group));
+      }
+      
+      // Filter packages by the combined item groups (OR logic)
+      filtered = filtered.filter(pkg => itemGroupsToInclude.has(pkg.item_group));
     }
     
     // Apply price range filter
@@ -170,14 +176,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     const grouped: { [key: string]: any[] } = {};
     
     if (isDropdownView && dropdownName) {
-      // Get all item groups for this dropdown (case-insensitive match)
-      const dropdownItemGroups = navigationDropdownItems
-        .filter((item: any) => item.dropdown_name.toLowerCase() === dropdownName.toLowerCase())
-        .map((item: any) => item.item_group);
-      
-      // Group FILTERED packages by item group (use sortedPackages instead of allPackages)
+      // Group ALL filtered packages by item group (sortedPackages is already filtered)
+      // No need to filter again - just group them
       sortedPackages.forEach((pkg: any) => {
-        if (dropdownItemGroups.includes(pkg.item_group)) {
+        if (pkg.item_group) {
           if (!grouped[pkg.item_group]) {
             grouped[pkg.item_group] = [];
           }
@@ -187,7 +189,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     }
     
     return grouped;
-  }, [isDropdownView, dropdownName, navigationDropdownItems, sortedPackages]);
+  }, [isDropdownView, dropdownName, sortedPackages]);
 
   // Show loading state if data is still loading
   if (isLoading) {
@@ -281,7 +283,24 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
               <div className="space-y-6">
                 {/* Dropdown Categories Filter */}
-               
+                {availableDropdowns.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {availableDropdowns.map(dropdown => (
+                        <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={selectedDropdowns.includes(dropdown)}
+                            onChange={() => handleDropdownToggle(dropdown)}
+                            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                          />
+                          <span className="text-sm text-gray-700">{dropdown}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )} */
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
@@ -556,7 +575,24 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                 {/* Mobile Filter Content - Same as desktop sidebar */}
                 <div className="space-y-6">
                   {/* Dropdown Categories Filter */}
-                  
+                  {availableDropdowns.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableDropdowns.map(dropdown => (
+                          <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={selectedDropdowns.includes(dropdown)}
+                              onChange={() => handleDropdownToggle(dropdown)}
+                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                            />
+                            <span className="text-sm text-gray-700">{dropdown}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Item Groups Filter */}
                   {availableItemGroups.length > 0 && (
