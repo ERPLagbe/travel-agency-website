@@ -281,24 +281,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
               <div className="space-y-6">
                 {/* Dropdown Categories Filter */}
-                /* {availableDropdowns.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {availableDropdowns.map(dropdown => (
-                        <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
-                          <input
-                            type="checkbox"
-                            checked={selectedDropdowns.includes(dropdown)}
-                            onChange={() => handleDropdownToggle(dropdown)}
-                            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
-                          />
-                          <span className="text-sm text-gray-700">{dropdown}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )} */
+               
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
@@ -573,24 +556,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                 {/* Mobile Filter Content - Same as desktop sidebar */}
                 <div className="space-y-6">
                   {/* Dropdown Categories Filter */}
-                  /* {availableDropdowns.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
-                      <div className="space-y-2 max-h-60 overflow-y-auto">
-                        {availableDropdowns.map(dropdown => (
-                          <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
-                            <input
-                              type="checkbox"
-                              checked={selectedDropdowns.includes(dropdown)}
-                              onChange={() => handleDropdownToggle(dropdown)}
-                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
-                            />
-                            <span className="text-sm text-gray-700">{dropdown}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )} */
+                  
 
                   {/* Item Groups Filter */}
                   {availableItemGroups.length > 0 && (
