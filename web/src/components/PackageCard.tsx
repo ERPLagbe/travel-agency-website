@@ -123,7 +123,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Plane className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
-              <span className="text-base font-bold text-gray-800">Direct Flight: </span>
+              <span className="text-base font-bold text-gray-800">Flight: </span>
               <span className="text-base text-gray-600">{airInfo}</span>
             </div>
           </div>
@@ -131,7 +131,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
-              <span className="text-base font-bold text-gray-800">Hotel Makkah: </span>
+              <span className="text-base font-bold text-gray-800">Hotel: </span>
               <span className="text-base text-gray-600">{hotelMakkah}</span>
             </div>
           </div>
