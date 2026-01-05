@@ -300,7 +300,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                       ))}
                     </div>
                   </div>
-                )} */
+                )}
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
