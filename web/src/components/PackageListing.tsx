@@ -74,7 +74,8 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // for below comment used word slash instead of icon to fix an bug.
+    // eslint-disable-next-line react-hooks slash exhaustive-deps
   }, [dropdownName, itemGroup]);
   
   // Show loading state if either packages or CMS data (for dropdown view) is loading
