@@ -102,13 +102,27 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
   const availableItemGroups = React.useMemo(() => {
     const groups = new Set<string>();
-    allPackages.forEach((pkg: any) => {
-      if (pkg.item_group) {
-        groups.add(pkg.item_group);
-      }
-    });
+
+    if (selectedDropdowns.length === 0) {
+      // No category selected: show all item groups from packages
+      allPackages.forEach((pkg: any) => {
+        if (pkg.item_group) {
+          groups.add(pkg.item_group);
+        }
+      });
+    } else {
+      // Category selected: show only item groups that belong to selected dropdowns
+      navigationDropdownItems
+        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+        .forEach((item: any) => {
+          if (item.item_group) {
+            groups.add(item.item_group);
+          }
+        });
+    }
+
     return Array.from(groups).sort();
-  }, [allPackages]);
+  }, [allPackages, selectedDropdowns, navigationDropdownItems]);
 
   // Apply filters and sort packages
   const sortedPackages = React.useMemo(() => {
@@ -120,17 +134,17 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       const itemGroupsToInclude = new Set<string>();
       
       // Add item groups from selected dropdowns
-      if (selectedDropdowns.length > 0) {
+    if (selectedDropdowns.length > 0) {
         navigationDropdownItems
-          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
       }
       
       // Add explicitly selected item groups
       if (selectedItemGroups.length > 0) {
         selectedItemGroups.forEach((group: string) => itemGroupsToInclude.add(group));
-      }
-      
+    }
+    
       // Filter packages by the combined item groups (OR logic)
       filtered = filtered.filter(pkg => itemGroupsToInclude.has(pkg.item_group));
     }
@@ -246,22 +260,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     <div className="min-h-screen bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary mb-4">
-            {isDropdownView && dropdownName
-              ? dropdownName.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-              : !itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups' 
-              ? 'All Packages' 
-                : `${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {isDropdownView && dropdownName
-              ? `Explore our comprehensive range of ${dropdownName.toLowerCase()} packages, carefully organized by categories to help you find the perfect journey.`
-              : !itemGroup || itemGroup.toLowerCase() === 'all' || itemGroup.toLowerCase() === 'all item groups'
-              ? 'Discover our comprehensive range of spiritual and cultural journey packages designed to provide you with the best travel experience.'
-                : `Discover our carefully curated ${itemGroup.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ').toLowerCase()} packages designed to provide you with the best travel experience.`}
-          </p>
-        </div>
+    
 
         {/* Main Content with Sidebar */}
         <div className="flex flex-col lg:flex-row gap-8">
