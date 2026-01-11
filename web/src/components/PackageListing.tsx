@@ -113,11 +113,11 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
     if (selectedDropdowns.length === 0) {
       // No category selected: show all item groups from packages
-      allPackages.forEach((pkg: any) => {
-        if (pkg.item_group) {
-          groups.add(pkg.item_group);
-        }
-      });
+    allPackages.forEach((pkg: any) => {
+      if (pkg.item_group) {
+        groups.add(pkg.item_group);
+      }
+    });
     } else {
       // Category selected: show only item groups that belong to selected dropdowns
       navigationDropdownItems
@@ -149,10 +149,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       } else if (selectedDropdowns.length > 0) {
         // No subcategories selected, use all item groups from selected categories
         navigationDropdownItems
-          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
-      }
-      
+    }
+    
       // Filter packages by the determined item groups
       filtered = filtered.filter(pkg => itemGroupsToInclude.has(pkg.item_group));
     }
