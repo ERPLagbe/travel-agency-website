@@ -86,7 +86,7 @@ const HeroSection = () => {
                 <img
                   src={slide.image}
                   alt={slide.title || 'Hero slide'}
-                  className="block w-full h-full object-cover"
+                  className="block w-full h-full object-contain md:object-cover"
                 />
               )}
             </div>
