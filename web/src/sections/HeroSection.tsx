@@ -71,7 +71,7 @@ const HeroSection = () => {
   }
 
   return (
-    <div className="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[80vh] flex items-center">
+    <div className="relative w-full aspect-video lg:aspect-auto h-auto overflow-hidden lg:min-h-[80vh] flex items-center">
       {/* Background Image Slider */}
       <div className="absolute inset-0 w-full h-full">
         {slides.length > 0 ? (
@@ -106,7 +106,7 @@ const HeroSection = () => {
             }`}>
             {/* Badge */}
             {heroData.trustedText && (
-              <div className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary">
+              <div className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 shadow-lg bg-secondary">
                 <Award className="w-4 h-4 text-white" />
                 <span className="text-sm font-bold text-white">{heroData.trustedText}</span>
               </div>
@@ -138,7 +138,7 @@ const HeroSection = () => {
             </div>
 
             {/* Description - Animated with fade effect */}
-            <div className="mb-6 relative">
+            <div className="hidden md:block mb-6 relative">
               {slides.length > 0 ? (
                 slides.map((slide: any, index: number) => (
                   <div
@@ -163,7 +163,7 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             {(heroData.primaryButtonText || heroData.secondaryButtonText) && (
-              <div className="flex-row  gap-4 sm:gap-4 mb-6 sm:mb-8">
+              <div className="hidden md:flex flex-row  gap-4 sm:gap-4 mb-6 sm:mb-8">
                 {heroData.primaryButtonText && (
                   <button 
                     onClick={() => navigate('/category/all')}
@@ -193,7 +193,7 @@ const HeroSection = () => {
 
             {/* Stats */}
             {(heroData.yearsExperience || heroData.happyPilgrims) && (
-              <div className="grid grid-cols-2 xs:grid-cols-3 gap-2 xs:gap-3 sm:gap-4 md:gap-6 max-w-2xl">
+              <div className="hidden md:grid grid-cols-2 xs:grid-cols-3 gap-2 xs:gap-3 sm:gap-4 md:gap-6 max-w-2xl">
                 {heroData.yearsExperience && (
                   <div className="backdrop-blur-md rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 md:p-5 border border-white/20 hover:bg-white/10 transition-all duration-300">
                     <div className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-secondary">{heroData.yearsExperience}</div>
