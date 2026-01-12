@@ -182,7 +182,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           <Link to="/" className="no-underline">
             <div className="text-white">
               <div className="text-2xl font-bold">
-                {cmsData?.logo && <img className='w-[150px] lg:w-full h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
+                {cmsData?.logo && <img className='w-[150px] lg:w-full h-auto object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
                 {!cmsData?.logo && <div className="text-2xl font-bold">{cmsData?.logo_text }</div> }
               </div>
             </div>
