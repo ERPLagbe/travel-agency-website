@@ -51,6 +51,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       
       if (properDropdownName) {
         setSelectedDropdowns([properDropdownName]);
+        // Clear item groups when viewing dropdown (show all items in dropdown)
+        if (!itemGroup) {
+          setSelectedItemGroups([]);
+        }
       }
     }
     
@@ -73,6 +77,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
           setSelectedDropdowns([parentDropdown]);
         }
       }
+    } else if (!dropdownName && !itemGroup) {
+      // Clear filters when no dropdown or item group is selected
+      setSelectedDropdowns([]);
+      setSelectedItemGroups([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dropdownName, itemGroup]);
@@ -105,11 +113,11 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
     if (selectedDropdowns.length === 0) {
       // No category selected: show all item groups from packages
-      allPackages.forEach((pkg: any) => {
-        if (pkg.item_group) {
-          groups.add(pkg.item_group);
-        }
-      });
+    allPackages.forEach((pkg: any) => {
+      if (pkg.item_group) {
+        groups.add(pkg.item_group);
+      }
+    });
     } else {
       // Category selected: show only item groups that belong to selected dropdowns
       navigationDropdownItems
@@ -129,23 +137,23 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     // Start with all packages
     let filtered = [...allPackages];
     
-    // Apply dropdown filter OR item group filter (combined with OR logic)
+    // Apply dropdown filter OR item group filter with priority logic
     if (selectedDropdowns.length > 0 || selectedItemGroups.length > 0) {
       const itemGroupsToInclude = new Set<string>();
       
-      // Add item groups from selected dropdowns
-    if (selectedDropdowns.length > 0) {
+      // Priority logic: If subcategories (item groups) are selected, use only those
+      // Otherwise, use item groups from selected categories (dropdowns)
+      if (selectedItemGroups.length > 0) {
+        // User has selected specific subcategories - use only those
+        selectedItemGroups.forEach((group: string) => itemGroupsToInclude.add(group));
+      } else if (selectedDropdowns.length > 0) {
+        // No subcategories selected, use all item groups from selected categories
         navigationDropdownItems
         .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
-      }
-      
-      // Add explicitly selected item groups
-      if (selectedItemGroups.length > 0) {
-        selectedItemGroups.forEach((group: string) => itemGroupsToInclude.add(group));
     }
     
-      // Filter packages by the combined item groups (OR logic)
+      // Filter packages by the determined item groups
       filtered = filtered.filter(pkg => itemGroupsToInclude.has(pkg.item_group));
     }
     
@@ -299,7 +307,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                       ))}
                     </div>
                   </div>
-                )} */
+                )}
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
