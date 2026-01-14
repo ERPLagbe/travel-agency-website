@@ -74,7 +74,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   hasInitializedFromURL.current = true;
 }, [dropdownName, itemGroup, navigationDropdownItems]);
 
-  
+  React.useEffect(() => {
+  hasInitializedFromURL.current = false;
+}, [location.pathname]);
+
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
   
