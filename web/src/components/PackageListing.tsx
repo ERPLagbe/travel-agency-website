@@ -1,284 +1,190 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PackageCard from './PackageCard';
-import { useFrappeGetCall } from 'frappe-react-sdk';
-import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
-interface PackageListingProps {
-  itemGroup?: string;
-}
+/* ----------------------------------------
+   TYPES (safe defaults)
+----------------------------------------- */
+type PackageItem = {
+  name?: string;
+  item_name?: string;
+  item_group?: string;
+  dropdown_name?: string;
+  standard_rate?: number;
+};
 
-const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGroup }) => {
-  /**
-   * ROUTE PARAMS
-   * /dropdown/:dropdown_name
-   * /category/:item_group
-   */
+type DropdownItem = {
+  dropdown_name: string;
+  item_group?: string;
+};
+
+type Props = {
+  allPackages: PackageItem[];
+  navigationDropdownItems: DropdownItem[];
+};
+
+/* ----------------------------------------
+   COMPONENT
+----------------------------------------- */
+export default function PackageListing({
+  allPackages = [],
+  navigationDropdownItems = [],
+}: Props) {
+  /* ----------------------------------------
+     ROUTE PARAMS
+  ----------------------------------------- */
   const params = useParams();
+
   const dropdownName = params.dropdown_name;
   const itemGroupParam = params.item_group;
 
-  const normalizedItemGroup =
-    itemGroupParam
-      ? itemGroupParam
-          .split('-')
-          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(' ')
-      : propItemGroup || null;
+  const normalizedItemGroup = itemGroupParam
+    ? itemGroupParam
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ')
+    : null;
 
-  /**
-   * STATE
-   */
-  const [sortBy, setSortBy] = useState<'price-low' | 'price-high' | 'name'>('name');
-  const [filterPrice, setFilterPrice] = useState<{ min: number; max: number } | null>(null);
+  /* ----------------------------------------
+     STATE
+  ----------------------------------------- */
   const [selectedDropdowns, setSelectedDropdowns] = useState<string[]>([]);
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
-  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>(
+    'name'
+  );
 
-  /**
-   * DATA FETCH
-   */
-  const { data: apiResponse, error, isValidating } =
-    useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
+  const safePackages: PackageItem[] = Array.isArray(allPackages)
+    ? allPackages
+    : [];
 
-  const allPackages = apiResponse?.message?.data || [];
-
-  const { data: cmsData, isValidating: cmsValidating } = useWebsiteCMS();
-  const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
-
-  /**
-   * VIEW MODE
-   */
-  const isDropdownView = Boolean(dropdownName);
-
-  /**
-   * 🔥 URL → FILTER SYNC (THE IMPORTANT PART)
-   */
+  /* ----------------------------------------
+     URL → FILTER SYNC (NO LOOP)
+  ----------------------------------------- */
   useEffect(() => {
-    if (!navigationDropdownItems.length || !allPackages.length) return;
+    if (!navigationDropdownItems.length) return;
 
-    // Reset first to avoid stale state
-    setSelectedDropdowns([]);
-    setSelectedItemGroups([]);
+    let nextDropdowns: string[] = [];
+    let nextGroups: string[] = [];
 
-    // Dropdown page
     if (dropdownName) {
-      const dropdown = navigationDropdownItems.find(
-        (d: any) => d.dropdown_name.toLowerCase() === dropdownName.toLowerCase()
+      const match = navigationDropdownItems.find(
+        d => d.dropdown_name?.toLowerCase() === dropdownName.toLowerCase()
       );
-
-      if (dropdown) {
-        setSelectedDropdowns([dropdown.dropdown_name]);
-      }
+      if (match) nextDropdowns = [match.dropdown_name];
     }
 
-    // Item group page
     if (normalizedItemGroup) {
-      setSelectedItemGroups([normalizedItemGroup]);
+      nextGroups = [normalizedItemGroup];
 
-      const parentDropdown = navigationDropdownItems.find(
-        (i: any) => i.item_group === normalizedItemGroup
+      const parent = navigationDropdownItems.find(
+        d => d.item_group === normalizedItemGroup
       );
-
-      if (parentDropdown) {
-        setSelectedDropdowns([parentDropdown.dropdown_name]);
-      }
-    }
-  }, [dropdownName, normalizedItemGroup, navigationDropdownItems, allPackages]);
-
-  /**
-   * LOADING
-   */
-  const isLoading = isValidating || (isDropdownView && cmsValidating);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-red-600">
-        Failed to load packages
-      </div>
-    );
-  }
-
-  /**
-   * AVAILABLE FILTER OPTIONS
-   */
-  const availableDropdowns = useMemo(() => {
-    return Array.from(
-      new Set(navigationDropdownItems.map((i: any) => i.dropdown_name))
-    ).sort();
-  }, [navigationDropdownItems]);
-
-  const availableItemGroups = useMemo(() => {
-    if (!selectedDropdowns.length) {
-      return Array.from(
-        new Set(allPackages.map((p: any) => p.item_group))
-      ).sort();
+      if (parent) nextDropdowns = [parent.dropdown_name];
     }
 
-    return Array.from(
-      new Set(
-        navigationDropdownItems
-          .filter((i: any) => selectedDropdowns.includes(i.dropdown_name))
-          .map((i: any) => i.item_group)
-      )
-    ).sort();
-  }, [selectedDropdowns, navigationDropdownItems, allPackages]);
+    if (
+      JSON.stringify(nextDropdowns) !==
+      JSON.stringify(selectedDropdowns)
+    ) {
+      setSelectedDropdowns(nextDropdowns);
+    }
 
-  /**
-   * FILTER + SORT
-   */
+    if (
+      JSON.stringify(nextGroups) !==
+      JSON.stringify(selectedItemGroups)
+    ) {
+      setSelectedItemGroups(nextGroups);
+    }
+  }, [
+    dropdownName,
+    normalizedItemGroup,
+    navigationDropdownItems,
+    selectedDropdowns,
+    selectedItemGroups,
+  ]);
+
+  /* ----------------------------------------
+     FILTER + SORT
+  ----------------------------------------- */
   const filteredPackages = useMemo(() => {
-    let result = [...allPackages];
+    let result = [...safePackages];
+
+    if (selectedDropdowns.length) {
+      result = result.filter(p =>
+        selectedDropdowns.includes(p.dropdown_name || '')
+      );
+    }
 
     if (selectedItemGroups.length) {
-      result = result.filter(p => selectedItemGroups.includes(p.item_group));
-    } else if (selectedDropdowns.length) {
-      const allowedGroups = navigationDropdownItems
-        .filter((i: any) => selectedDropdowns.includes(i.dropdown_name))
-        .map((i: any) => i.item_group);
-
-      result = result.filter(p => allowedGroups.includes(p.item_group));
-    }
-
-    if (filterPrice) {
-      result = result.filter(p => {
-        const price = p.standard_rate || 0;
-        return price >= filterPrice.min && price <= filterPrice.max;
-      });
-    }
-
-    if (selectedRatings.length) {
-      result = result.filter(p => {
-        const rating = p.custom_package_rating || 0;
-        const stars = Math.round(rating <= 1 ? rating * 5 : rating);
-        return selectedRatings.includes(stars);
-      });
+      result = result.filter(p =>
+        selectedItemGroups.includes(p.item_group || '')
+      );
     }
 
     switch (sortBy) {
-  case 'price-low':
-    result.sort((a, b) => (a.standard_rate || 0) - (b.standard_rate || 0));
-    break;
+      case 'price-low':
+        result.sort(
+          (a, b) => (a.standard_rate || 0) - (b.standard_rate || 0)
+        );
+        break;
 
-  case 'price-high':
-    result.sort((a, b) => (b.standard_rate || 0) - (a.standard_rate || 0));
-    break;
+      case 'price-high':
+        result.sort(
+          (a, b) => (b.standard_rate || 0) - (a.standard_rate || 0)
+        );
+        break;
 
-  case 'name':
-    result.sort((a, b) =>
-      (a.item_name || '').localeCompare(b.item_name || '')
-    );
-    break;
-}
-
+      case 'name':
+      default:
+        result.sort((a, b) =>
+          (a.item_name || '').localeCompare(b.item_name || '')
+        );
+        break;
+    }
 
     return result;
-  }, [
-    allPackages,
-    selectedDropdowns,
-    selectedItemGroups,
-    filterPrice,
-    selectedRatings,
-    sortBy,
-    navigationDropdownItems
-  ]);
+  }, [safePackages, selectedDropdowns, selectedItemGroups, sortBy]);
 
-  /**
-   * GROUPED VIEW (DROPDOWN)
-   */
-  const groupedPackages = useMemo(() => {
-    if (!isDropdownView) return {};
+  const isDropdownView = Boolean(dropdownName);
 
-    return filteredPackages.reduce((acc: any, pkg: any) => {
-      acc[pkg.item_group] = acc[pkg.item_group] || [];
-      acc[pkg.item_group].push(pkg);
-      return acc;
-    }, {});
-  }, [filteredPackages, isDropdownView]);
-
-  /**
-   * CLEAR
-   */
-  const clearAllFilters = () => {
-    setSelectedDropdowns([]);
-    setSelectedItemGroups([]);
-    setFilterPrice(null);
-    setSelectedRatings([]);
-  };
-
-  /**
-   * RENDER
-   */
+  /* ----------------------------------------
+     RENDER
+  ----------------------------------------- */
   return (
-    <div className="min-h-screen bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="package-listing">
+      {/* SORT */}
+      <div className="sort-bar">
+        <select
+          value={sortBy}
+          onChange={e =>
+            setSortBy(e.target.value as 'name' | 'price-low' | 'price-high')
+          }
+        >
+          <option value="name">Name</option>
+          <option value="price-low">Price: Low → High</option>
+          <option value="price-high">Price: High → Low</option>
+        </select>
+      </div>
 
-        {/* RESULTS */}
-        {isDropdownView ? (
-          Object.entries(groupedPackages).map(([group, pkgs]: any) => (
-            <div key={group} className="mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-6 text-center">
-                {group}
-              </h2>
+      {/* EMPTY STATE */}
+      {filteredPackages.length === 0 && (
+        <p>No packages found.</p>
+      )}
 
-              <div className="grid md:grid-cols-2 gap-8">
-                {pkgs.map((pkg: any) => (
-                  <PackageCard
-                    key={pkg.name}
-                    id={pkg.name}
-                    title={pkg.item_name}
-                    duration={pkg.custom_duration}
-                    rating={pkg.custom_package_rating}
-                    price={pkg.standard_rate}
-                    image={pkg.image}
-                    itemGroup={pkg.item_group}
-                    accommodationList={pkg.custom_accommodation_list || []}
-                    specialServicesList={pkg.custom_special_services || []}
-                    primaryButtonText="View Details"
-                    secondaryButtonText="Enquire Now"
-                  />
-                ))}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="grid md:grid-cols-2 gap-8">
-            {filteredPackages.map((pkg: any) => (
-              <PackageCard
-                key={pkg.name}
-                id={pkg.name}
-                title={pkg.item_name}
-                duration={pkg.custom_duration}
-                rating={pkg.custom_package_rating}
-                price={pkg.standard_rate}
-                image={pkg.image}
-                itemGroup={pkg.item_group}
-                accommodationList={pkg.custom_accommodation_list || []}
-                specialServicesList={pkg.custom_special_services || []}
-                primaryButtonText="View Details"
-                secondaryButtonText="Enquire Now"
-              />
-            ))}
+      {/* LIST */}
+      <div className="package-grid">
+        {filteredPackages.map((pkg, index) => (
+          <div className="package-card" key={index}>
+            <h3>{pkg.item_name || 'Untitled Package'}</h3>
+            <p>{pkg.item_group || 'Uncategorized'}</p>
+            <strong>
+              {pkg.standard_rate
+                ? `৳${pkg.standard_rate}`
+                : 'Price on request'}
+            </strong>
           </div>
-        )}
-
-        {!filteredPackages.length && (
-          <div className="text-center py-20 text-gray-500">
-            No packages found
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );
-};
-
-export default PackageListing;
+}
