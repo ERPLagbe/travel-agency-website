@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import PackageCard from './PackageCard';
 import { useFrappeGetCall } from 'frappe-react-sdk';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import { useLocation } from 'react-router-dom';
+
 
 interface PackageListingProps {
   itemGroup?: string;
@@ -19,6 +21,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const location = useLocation();
   
   // Fetch all packages with accommodation data using custom API
   const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -37,8 +40,8 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
   // Auto-select filters based on URL (runs once when component mounts or URL changes)
  React.useEffect(() => {
+     if (!navigationDropdownItems.length) return;
   if (hasInitializedFromURL.current) return;
-  if (!navigationDropdownItems.length) return;
 
   // Reset everything first
   let nextDropdowns: string[] = [];
