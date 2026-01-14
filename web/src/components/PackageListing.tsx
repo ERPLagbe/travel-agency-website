@@ -35,55 +35,44 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const isDropdownView = Boolean(dropdownName && !itemGroup);
   
   // Auto-select filters based on URL (runs once when component mounts or URL changes)
-  React.useEffect(() => {
-    // Skip if viewing "all" category
-    if (itemGroup === 'all') {
-      setSelectedDropdowns([]);
-      setSelectedItemGroups([]);
-      return;
-    }
+ React.useEffect(() => {
+  if (hasInitializedFromURL.current) return;
+  if (!navigationDropdownItems.length) return;
 
-    if (dropdownName && navigationDropdownItems.length > 0) {
-      // Find the proper dropdown name (case-insensitive)
-      const properDropdownName = navigationDropdownItems.find(
-        (item: any) => item.dropdown_name.toLowerCase() === dropdownName.toLowerCase()
-      )?.dropdown_name;
-      
-      if (properDropdownName) {
-        setSelectedDropdowns([properDropdownName]);
-        // Clear item groups when viewing dropdown (show all items in dropdown)
-        if (!itemGroup) {
-          setSelectedItemGroups([]);
-        }
-      }
-    }
-    
-    if (itemGroup && itemGroup !== 'all' && allPackages.length > 0) {
-      // Convert URL format to proper Item Group name
+  // Reset everything first
+  let nextDropdowns: string[] = [];
+  let nextItemGroups: string[] = [];
+
+  if (itemGroup && itemGroup !== 'all') {
     const properItemGroup = itemGroup
       .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
-      
-      if (properItemGroup) {
-        setSelectedItemGroups([properItemGroup]);
-        
-        // Also select the parent dropdown if viewing item group
-        const parentDropdown = navigationDropdownItems.find(
-          (item: any) => item.item_group === properItemGroup
-        )?.dropdown_name;
-        
-        if (parentDropdown) {
-          setSelectedDropdowns([parentDropdown]);
-        }
-      }
-    } else if (!dropdownName && !itemGroup) {
-      // Clear filters when no dropdown or item group is selected
-      setSelectedDropdowns([]);
-      setSelectedItemGroups([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dropdownName, itemGroup]);
+
+    nextItemGroups = [properItemGroup];
+
+    const parent = navigationDropdownItems.find(
+      (i: any) => i.item_group === properItemGroup
+    );
+
+    if (parent) nextDropdowns = [parent.dropdown_name];
+  }
+
+  if (dropdownName && !itemGroup) {
+    const match = navigationDropdownItems.find(
+      (i: any) =>
+        i.dropdown_name.toLowerCase() === dropdownName.toLowerCase()
+    );
+
+    if (match) nextDropdowns = [match.dropdown_name];
+  }
+
+  setSelectedDropdowns(nextDropdowns);
+  setSelectedItemGroups(nextItemGroups);
+
+  hasInitializedFromURL.current = true;
+}, [dropdownName, itemGroup, navigationDropdownItems]);
+
   
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
