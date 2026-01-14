@@ -165,16 +165,21 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     }
 
     switch (sortBy) {
-      case 'price-low':
-        result.sort((a, b) => (a.standard_rate || 0) - (b.standard_rate || 0));
-        break;
-      case 'price-high':
-        result.sort((a, b) => (b.standard_rate || 0) - (a.standard_rate || 0));
-        break;
-      case 'name':
-        result.sort((a, b) => a.item_name.localeCompare(b.item_name));
-        break;
-    }
+  case 'price-low':
+    result.sort((a, b) => (a.standard_rate || 0) - (b.standard_rate || 0));
+    break;
+
+  case 'price-high':
+    result.sort((a, b) => (b.standard_rate || 0) - (a.standard_rate || 0));
+    break;
+
+  case 'name':
+    result.sort((a, b) =>
+      (a.item_name || '').localeCompare(b.item_name || '')
+    );
+    break;
+}
+
 
     return result;
   }, [
