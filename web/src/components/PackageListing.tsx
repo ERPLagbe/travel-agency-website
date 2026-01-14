@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import PackageCard from './PackageCard';
 import { useFrappeGetCall } from 'frappe-react-sdk';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
-import { useLocation } from 'react-router-dom';
-
 
 interface PackageListingProps {
   itemGroup?: string;
@@ -21,7 +19,6 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const location = useLocation();
   
   // Fetch all packages with accommodation data using custom API
   const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
@@ -36,51 +33,57 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   
   // Determine if we're viewing a dropdown or specific item group
   const isDropdownView = Boolean(dropdownName && !itemGroup);
-  const hasInitializedFromURL = React.useRef(false);
-
+  
   // Auto-select filters based on URL (runs once when component mounts or URL changes)
- React.useEffect(() => {
-     if (!navigationDropdownItems.length) return;
-  if (hasInitializedFromURL.current) return;
-
-  // Reset everything first
-  let nextDropdowns: string[] = [];
-  let nextItemGroups: string[] = [];
-
-  if (itemGroup && itemGroup !== 'all') {
-    const properItemGroup = itemGroup
-      .split('-')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
-
-    nextItemGroups = [properItemGroup];
-
-    const parent = navigationDropdownItems.find(
-      (i: any) => i.item_group === properItemGroup
-    );
-
-    if (parent) nextDropdowns = [parent.dropdown_name];
-  }
-
-  if (dropdownName && !itemGroup) {
-    const match = navigationDropdownItems.find(
-      (i: any) =>
-        i.dropdown_name.toLowerCase() === dropdownName.toLowerCase()
-    );
-
-    if (match) nextDropdowns = [match.dropdown_name];
-  }
-
-  setSelectedDropdowns(nextDropdowns);
-  setSelectedItemGroups(nextItemGroups);
-
-  hasInitializedFromURL.current = true;
-}, [dropdownName, itemGroup, navigationDropdownItems]);
-
   React.useEffect(() => {
-  hasInitializedFromURL.current = false;
-}, [location.pathname]);
+    // Skip if viewing "all" category
+    if (itemGroup === 'all') {
+      setSelectedDropdowns([]);
+      setSelectedItemGroups([]);
+      return;
+    }
 
+    if (dropdownName && navigationDropdownItems.length > 0) {
+      // Find the proper dropdown name (case-insensitive)
+      const properDropdownName = navigationDropdownItems.find(
+        (item: any) => item.dropdown_name.toLowerCase() === dropdownName.toLowerCase()
+      )?.dropdown_name;
+      
+      if (properDropdownName) {
+        setSelectedDropdowns([properDropdownName]);
+        // Clear item groups when viewing dropdown (show all items in dropdown)
+        if (!itemGroup) {
+          setSelectedItemGroups([]);
+        }
+      }
+    }
+    
+    if (itemGroup && itemGroup !== 'all' && allPackages.length > 0 && navigationDropdownItems.length > 0) {
+      // Convert URL format to proper Item Group name
+      const properItemGroup = itemGroup
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      
+      if (properItemGroup) {
+        setSelectedItemGroups([properItemGroup]);
+        
+        // Also select the parent dropdown if viewing item group
+        const parentDropdown = navigationDropdownItems.find(
+          (item: any) => item.item_group === properItemGroup
+        )?.dropdown_name;
+        
+        if (parentDropdown) {
+          setSelectedDropdowns([parentDropdown]);
+        }
+      }
+    } else if (!dropdownName && !itemGroup) {
+      // Clear filters when no dropdown or item group is selected
+      setSelectedDropdowns([]);
+      setSelectedItemGroups([]);
+    }
+  }, [dropdownName, itemGroup, navigationDropdownItems, allPackages]);
+  
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
   
