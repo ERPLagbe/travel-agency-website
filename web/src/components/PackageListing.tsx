@@ -59,22 +59,19 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     }
     
     if (itemGroup && itemGroup !== 'all' && allPackages.length > 0 && navigationDropdownItems.length > 0) {
-      // Convert URL format to proper Item Group name
-      const properItemGroup = itemGroup
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+      // Look up the actual item_group from navigationDropdownItems by matching URL format
+      // This ensures we use the exact database value instead of trying to normalize
+      const matchedItem = navigationDropdownItems.find(
+        (item: any) => item.item_group.toLowerCase().replace(/\s+/g, '-') === itemGroup
+      );
       
-      if (properItemGroup) {
+      if (matchedItem && matchedItem.item_group) {
+        const properItemGroup = matchedItem.item_group;
         setSelectedItemGroups([properItemGroup]);
         
         // Also select the parent dropdown if viewing item group
-        const parentDropdown = navigationDropdownItems.find(
-          (item: any) => item.item_group === properItemGroup
-        )?.dropdown_name;
-        
-        if (parentDropdown) {
-          setSelectedDropdowns([parentDropdown]);
+        if (matchedItem.dropdown_name) {
+          setSelectedDropdowns([matchedItem.dropdown_name]);
         }
       }
     } else if (!dropdownName && !itemGroup) {
