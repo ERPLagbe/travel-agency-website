@@ -33,7 +33,8 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   
   // Determine if we're viewing a dropdown or specific item group
   const isDropdownView = Boolean(dropdownName && !itemGroup);
-  
+  const hasInitializedFromURL = React.useRef(false);
+
   // Auto-select filters based on URL (runs once when component mounts or URL changes)
  React.useEffect(() => {
   if (hasInitializedFromURL.current) return;
