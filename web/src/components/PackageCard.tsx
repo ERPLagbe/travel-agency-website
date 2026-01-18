@@ -205,7 +205,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           variant="primary"
           className="w-full"
         >
-          SELECT PACKAGE
+          Details Information
         </Button>
       </div>
     </div>

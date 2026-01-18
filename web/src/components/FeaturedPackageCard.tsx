@@ -104,7 +104,7 @@ const FeaturedPackageCard: React.FC<FeaturedPackageCardProps> = ({
           )}
         </div>
 
-        {/* Select Package Button */}
+        {/* Details Information Button */}
         <div className="mt-auto">
           <Button
             onClick={(e) => {
@@ -114,7 +114,7 @@ const FeaturedPackageCard: React.FC<FeaturedPackageCardProps> = ({
             variant="primary"
             className="w-full"
           >
-            SELECT PACKAGE
+            Details Information
           </Button>
         </div>
       </div>
