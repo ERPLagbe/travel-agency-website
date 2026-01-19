@@ -251,7 +251,7 @@ const PackageDetails: React.FC = () => {
                         <Check className="w-6 h-6 text-primary" />
                         <h3 className="text-lg font-bold text-primary">{inclusion.title}</h3>
                       </div>
-                      <p className="text-gray-700">{inclusion.description}</p>
+                      <p className="text-gray-700 whitespace-pre-line">{inclusion.description}</p>
                     </div>
                   ))
                 )}
@@ -344,7 +344,9 @@ const PackageDetails: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-primary mb-2 text-base sm:text-lg leading-tight">{day.title}</h3>
-                        <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{day.description}</p>
+                        <p className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                          {day.description}
+                        </p>
                       </div>
                     </div>
                   ))
