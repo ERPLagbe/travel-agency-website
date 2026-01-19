@@ -125,8 +125,10 @@ const Footer: React.FC = () => {
               {/* Address */}
               {cmsData?.business_address && (
                 <div className="text-gray-300 text-sm leading-relaxed mb-3">
-                  <strong>Address:</strong>{' '}
-                  <span dangerouslySetInnerHTML={{ __html: cmsData.business_address.replace(/\n/g, ', ') }} />
+                  {/* <strong>Address:</strong>{' '}
+                  <span dangerouslySetInnerHTML={{ __html: cmsData.business_address.replace(/\n/g, ', ') }} /> */}
+                  <strong>Address:</strong>
+                  <div className="mt-1 whitespace-pre-line">{cmsData.business_address}</div>
                 </div>
               )}
               
