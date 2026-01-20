@@ -14,6 +14,7 @@ const AllPackages: React.FC = () => {
   const allPackages = apiResponse?.message?.data || [];
 
   // Use all packages from ERPNext with dynamic data (limit to first 9 for slider)
+  // const packages = allPackages?.slice(0, 9).map((pkg: any) => {
   const packages = allPackages?.map((pkg: any) => {
     // Process accommodation list to get hotel names and distances
     const accommodationList = pkg.custom_accommodation_list || [];
