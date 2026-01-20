@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, Star } from 'lucide-react';
+import { Phone, Mail, MapPin, Copy, Clock, Plane, Hotel, Car, Utensils, Tag, Star } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
@@ -183,7 +183,7 @@ const PackageDetails: React.FC = () => {
                 {packageData.custom_features && packageData.custom_features.length > 0 ? (
                   packageData.custom_features.map((feature: any, index: number) => (
                     <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                      <Check className="w-5 h-5 text-green-500" />
+                      <Copy className="w-5 h-5 text-green-500" />
                       <span className="text-sm font-medium">{feature.title}</span>
                     </div>
                   ))
@@ -248,7 +248,7 @@ const PackageDetails: React.FC = () => {
                   packageData.custom_inclusions.map((inclusion: any, index: number) => (
                     <div key={index} className="p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center gap-3 mb-3">
-                        <Check className="w-6 h-6 text-primary" />
+                        <Copy className="w-6 h-6 text-primary" />
                         <h3 className="text-lg font-bold text-primary">{inclusion.title}</h3>
                       </div>
                       <p className="text-gray-700 whitespace-pre-line">{inclusion.description}</p>
