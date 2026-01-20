@@ -473,7 +473,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                           hotelMakkah={hotelInfo}
                           hotelMadinah={hotelInfo}
                           foodInfo={pkg.custom_food_information}
-                          specialServices={pkg.custom_bustaxi_information}
+                          specialServices={pkg.specialServices}
                           // Pass dynamic lists for rendering
                           accommodationList={accommodationList}
                           specialServicesList={pkg.custom_special_services || []}
@@ -522,7 +522,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                     hotelMakkah={hotelInfo}
                     hotelMadinah={hotelInfo}
                     foodInfo={pkg.custom_food_information}
-                    specialServices={pkg.custom_bustaxi_information}
+                    specialServices={pkg.specialServices}
                   // Pass dynamic lists for rendering
                   accommodationList={accommodationList}
                   specialServicesList={pkg.custom_special_services || []}

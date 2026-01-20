@@ -94,7 +94,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
         hotelMakkah: hotelInfo,
         hotelMadinah: hotelInfo,
         foodInfo: item.custom_food_information || 'N/A',
-        specialServices: item.custom_bustaxi_information || '',
+        specialServices: item.specialServices || '',
         // Pass accommodation list for dynamic rendering
         accommodationList: accommodationList,
         // Pass special services list for dynamic rendering

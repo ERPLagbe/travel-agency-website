@@ -42,7 +42,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   airInfo = "SA/Biman/Flynas",
   hotelMakkah = "1200/1500M",
   foodInfo = "Breakfast, Lunch & Dinner",
-  specialServices = "Ziyarah Tour, Transportation & Guide",
+  specialServices,
   specialServicesList = []
 }) => {
   const navigate = useNavigate();
@@ -160,15 +160,20 @@ const PackageCard: React.FC<PackageCardProps> = ({
                     {service.title}
                   </span>
                 ))
-              ) : (
-                specialServices ? specialServices.split(',').map((service, index) => (
+              ) : specialServices && 
+                specialServices.trim() !== '' ? (
+                specialServices.split(',').map((service, index) => (
                   <span
                     key={index}
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
                   >
                     {service.trim()}
                   </span>
-                )) : null
+                ))
+              ) : (
+                <span className="text-sm text-gray-500 italic">
+                  Standard services included
+                </span>
               )}
             </div>
           </div>

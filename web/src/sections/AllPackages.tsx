@@ -34,7 +34,7 @@ const AllPackages: React.FC = () => {
       hotelMakkah: hotelInfo,
       hotelMadinah: hotelInfo,
       foodInfo: pkg.custom_food_information || 'N/A',
-      specialServices: pkg.custom_bustaxi_information || '',
+      specialServices: pkg.specialServices || '',
       accommodationList: accommodationList,
       specialServicesList: pkg.custom_special_services || []
     };
