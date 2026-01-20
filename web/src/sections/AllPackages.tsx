@@ -244,24 +244,43 @@ const AllPackages: React.FC = () => {
         </div>
 
         {/* Dots Indicator - Always centered */}
-        {showNavigation && (
+        {showNavigation && packages.length > 0 && (
           <div className="mt-8 flex items-center justify-center">
             <div className="flex items-center justify-center gap-2">
-              {Array.from({ length: totalPositions }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setIsAutoPlaying(false);
-                    setCurrentIndex(index);
-                  }}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? 'bg-primary w-8'
-                      : 'w-2 bg-gray-300 hover:bg-gray-400'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
+              {Array.from({ length: Math.min(7, totalPositions) }).map((_, index) => {
+                // Calculate which section each dot represents
+                const sectionIndex = Math.floor(
+                  (index * Math.max(1, totalPositions - 1)) / 
+                  Math.max(1, Math.min(7, totalPositions) - 1)
+                );
+                
+                // Calculate current section based on currentIndex
+                const currentSection = Math.floor(
+                  (currentIndex * (Math.min(7, totalPositions) - 1)) / 
+                  Math.max(1, totalPositions - 1)
+                );
+
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setIsAutoPlaying(false);
+                      // Calculate actual index to jump to
+                      const targetIndex = Math.floor(
+                        (sectionIndex * (totalPositions - 1)) / 
+                        Math.max(1, (Math.min(7, totalPositions) - 1))
+                      );
+                      setCurrentIndex(Math.min(targetIndex, maxStartIndex));
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentSection
+                        ? 'bg-primary w-8'
+                        : 'w-2 bg-gray-300 hover:bg-gray-400'
+                    }`}
+                    aria-label={`Go to section ${index + 1}`}
+                  />
+                );
+              })}
             </div>
           </div>
         )}
