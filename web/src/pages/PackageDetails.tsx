@@ -200,7 +200,7 @@ const PackageDetails: React.FC = () => {
               <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Package Inclusions</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Flight Information - Only show if custom_air is 1 and has information */}
-                {packageData.custom_air === 1 && packageData.custom_air_information && (
+                {/* {packageData.custom_air === 1 && packageData.custom_air_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Plane className="w-6 h-6 text-primary" />
@@ -208,10 +208,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_air_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Hotel Information - Only show if custom_hotel is 1 and has information */}
-                {packageData.custom_hotel === 1 && packageData.custom_hotel_information && (
+                {/* {packageData.custom_hotel === 1 && packageData.custom_hotel_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Hotel className="w-6 h-6 text-primary" />
@@ -219,10 +219,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_hotel_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Transportation - Only show if custom_bustaxi is 1 and has information */}
-                {packageData.custom_bustaxi === 1 && packageData.custom_bustaxi_information && (
+                {/* {packageData.custom_bustaxi === 1 && packageData.custom_bustaxi_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Car className="w-6 h-6 text-primary" />
@@ -230,10 +230,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_bustaxi_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Meal Information - Only show if custom_food_child_food_except is 1 and has information */}
-                {packageData.custom_food_child_food_except === 1 && packageData.custom_food_information && (
+                {/* {packageData.custom_food_child_food_except === 1 && packageData.custom_food_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Utensils className="w-6 h-6 text-primary" />
@@ -241,7 +241,7 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_food_information}</p>
                   </div>
-                )}
+                )} */}
 
                 {/* Show custom inclusions from table */}
                 {packageData.custom_inclusions && packageData.custom_inclusions.length > 0 && (
