@@ -183,10 +183,10 @@ const PackageCard: React.FC<PackageCardProps> = ({
       {/* Price Section */}
       <div className="px-4 sm:px-6 py-3 text-center bg-white group cursor-default">
         <div className="inline-block">
-          {price && price > 0 ? (
+          {price && parseFloat(price.replace(/[^\d.]/g, '')) > 0 ? (
             <>
               <span className="text-3xl sm:text-5xl font-bold text-primary animate-countUp transition-all duration-300 group-hover:text-primary group-hover:scale-110 inline-block">
-                £{price.toLocaleString()}
+                {price} {/* Show original value like "1000 BDT" */}
               </span>
               <span className="ml-2 sm:ml-3 text-gray-500 text-xs sm:text-sm font-medium animate-fadeIn transition-colors duration-300 group-hover:text-gray-700" style={{ animationDelay: '0.3s' }}>
                 STARTS FROM

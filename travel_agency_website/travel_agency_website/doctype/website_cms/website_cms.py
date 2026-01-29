@@ -152,7 +152,7 @@ class WebsiteCMS(Document):
 				"name": pkg.package_name,
 				"title": item.item_name,
 				"description": item.description,
-				"price": item.standard_rate,
+				"price": item.custom_website_price_to_show,
 				"image": item.image,
 				"display_order": pkg.display_order
 			})
@@ -168,7 +168,7 @@ class WebsiteCMS(Document):
 				"name": pkg.package_name,
 				"title": item.item_name,
 				"description": item.description,
-				"price": item.standard_rate,
+				"price": item.custom_website_price_to_show,
 				"image": item.image,
 				"display_order": pkg.display_order
 			})

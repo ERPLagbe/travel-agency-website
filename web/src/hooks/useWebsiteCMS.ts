@@ -141,7 +141,7 @@ export const usePackagesByItemGroup = (itemGroup: string) => {
 
   // Use useFrappeGetDocList with proper configuration
   const { data: packages, error, isValidating } = useFrappeGetDocList('Item', {
-    fields: ['name', 'item_name', 'item_group', 'description', 'image', 'standard_rate'],
+    fields: ['name', 'item_name', 'item_group', 'description', 'image', 'standard_rate', 'custom_website_price_to_show'],
     filters: [['item_group', '=', properItemGroup]],
     orderBy: { field: 'creation', order: 'desc' }
   });

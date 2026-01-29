@@ -81,7 +81,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
         title: item.item_name,
         category: "Featured",
         image: item.image,
-        price: item.standard_rate,
+        price: item.custom_website_price_to_show,
         nights: "7 Nights", // Keep for compatibility
         duration: item.custom_duration || 'N/A',
         destination: "Makkah & Madinah",

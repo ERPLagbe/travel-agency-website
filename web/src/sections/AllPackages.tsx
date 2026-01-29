@@ -28,7 +28,7 @@ const AllPackages: React.FC = () => {
       nights: "7 Nights",
       duration: pkg.custom_duration || 'N/A',
       rating: pkg.custom_package_rating,
-      price: pkg.standard_rate || 0,
+      price: pkg.custom_website_price_to_show || 0,
       image: pkg.image || '',
       itemGroup: pkg.item_group || '',
       airInfo: pkg.custom_air_information || 'N/A',

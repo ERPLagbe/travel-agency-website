@@ -67,9 +67,9 @@ const PackageDetails: React.FC = () => {
       image: packageData.image,
       custom_duration: packageData.custom_duration,
       description: packageData.description,
-      standard_rate: packageData.standard_rate,
-      standard_rate_type: typeof packageData.standard_rate,
-      standard_rate_value: packageData.standard_rate,
+      custom_website_price_to_show: packageData.custom_website_price_to_show,
+      standard_rate_type: typeof packageData.custom_website_price_to_show,
+      standard_rate_value: packageData.custom_website_price_to_show,
       item_group: packageData.item_group
     } : null,
     error,
@@ -162,7 +162,9 @@ const PackageDetails: React.FC = () => {
                 )}
                 <span className="bg-amber-400 px-3 py-1.5 rounded-lg text-purple-900 text-sm font-bold flex items-center gap-1.5">
                   <Tag className="w-4 h-4" />
-                  {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                  {packageData.custom_website_price_to_show && parseFloat(packageData.custom_website_price_to_show) !== 0 
+                  ? packageData.custom_website_price_to_show 
+                  : 'Price on request'}
                 </span>
               </div>
             </div>
@@ -382,7 +384,9 @@ const PackageDetails: React.FC = () => {
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                   <div className="text-2xl sm:text-3xl font-bold text-primary">
-                    {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                    {packageData.custom_website_price_to_show && parseFloat(packageData.custom_website_price_to_show) !== 0 
+                    ? packageData.custom_website_price_to_show 
+                    : 'Price on request'}
                   </div>
                   {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
                     <div className="flex items-center gap-1" title="Rating">
