@@ -367,7 +367,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           {/* Content */}
           <div className="flex flex-col h-full">
             {/* Navigation Links */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6 pb-18">
               <div className="space-y-2">
                 {navItems.map((item) => (
                   <div key={item.path} className="border-b border-gray-100 last:border-b-0">
@@ -474,6 +474,9 @@ const Navigation: React.FC<NavigationProps> = () => {
                     </a>
                   )}
                 </div>
+                
+                {/* Extra spacing at the bottom for mobile browsers */}
+                <div className="h-20"></div>
               </div>
             </div>
           </div>
