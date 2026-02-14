@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionContainer, Typography, PageLayout } from '../components';
+import { SectionContainer, Typography, PageLayout, SEO } from '../components';
 import { useWebsiteCMS, useGalleryImages } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -80,6 +80,9 @@ const GalleryPage: React.FC = () => {
     );
   }
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+  const galleryDescription = cmsData?.gallery_subtitle || `Explore our travel memories and experiences from ${siteName}. View photos from our amazing journeys.`;
+
   return (
     <PageLayout 
       breadcrumbItems={[
@@ -87,6 +90,12 @@ const GalleryPage: React.FC = () => {
         { label: 'Gallery' }
       ]}
     >
+      <SEO
+        title={`Gallery - ${siteName}`}
+        description={galleryDescription}
+        keywords={`gallery, travel photos, ${siteName}, travel memories`}
+        url="/gallery"
+      />
       {/* Hero Section */}
       <SectionContainer size="lg" className="text-center bg-primary text-white py-16">
         <Typography variant="h1" color="white" align="center" style={{ marginBottom: 'var(--spacing-4)' }}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SectionContainer, Typography, Button, Card, PageLayout } from '../components';
+import { SectionContainer, Typography, Button, Card, PageLayout, SEO } from '../components';
 import { Clock, Shield, Star, Phone, Mail, MapPin } from 'lucide-react';
 import { useCreateLead } from '../hooks/useCreateLead';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
@@ -99,6 +99,24 @@ const CompleteContactPage: React.FC = () => {
     }
   };
 
+  const siteName = contactData?.business_name || 'Travel Agency';
+  const contactDescription = `Contact ${siteName} for travel packages, visa services, and booking inquiries. Get in touch with our team today.`;
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: `Contact ${siteName}`,
+    description: contactDescription,
+    ...(contactData?.business_phone && { telephone: contactData.business_phone }),
+    ...(contactData?.business_email && { email: contactData.business_email }),
+    ...(contactData?.business_address && {
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: contactData.business_address
+      }
+    })
+  };
+
   return (
     <PageLayout 
       breadcrumbItems={[
@@ -106,6 +124,13 @@ const CompleteContactPage: React.FC = () => {
         { label: 'Contact Us' }
       ]}
     >
+      <SEO
+        title={`Contact Us - ${siteName}`}
+        description={contactDescription}
+        keywords={`contact, ${siteName}, travel agency, booking, inquiry`}
+        url="/contact"
+        structuredData={structuredData}
+      />
       {/* Hero Section - Clean Design */}
       <SectionContainer size="lg" className="text-center relative h-[20vh] flex items-center bg-primary text-white contact-hero">
         <div style={{ paddingTop: 'var(--spacing-8)', paddingBottom: 'var(--spacing-8)' }}>

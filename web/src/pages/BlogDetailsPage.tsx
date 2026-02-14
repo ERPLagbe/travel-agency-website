@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { SectionContainer, Typography, Button } from '../components';
+import { SectionContainer, Typography, Button, SEO } from '../components';
 import { useBlogBySlug } from '../hooks/useBlogs';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-react';
@@ -41,8 +41,43 @@ const BlogDetailsPage: React.FC = () => {
     );
   }
 
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const blogUrl = `/blog/${slug}`;
+  const blogImage = blog.featured_image ? getFileUrlWithFallback(blog.featured_image) : '';
+  const blogDescription = blog.content 
+    ? blog.content.replace(/<[^>]*>/g, '').substring(0, 160) 
+    : blog.title;
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blogDescription,
+    image: blogImage,
+    url: `${siteUrl}${blogUrl}`,
+    author: {
+      '@type': 'Person',
+      name: blog.author || 'Admin'
+    },
+    datePublished: blog.published_on || blog.creation,
+    dateModified: blog.modified || blog.creation,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Travel Agency'
+    }
+  };
+
   return (
     <div>
+      <SEO
+        title={`${blog.title} | Travel Blog`}
+        description={blogDescription}
+        keywords={`travel blog, ${blog.title}, travel tips, travel guide`}
+        image={blogImage}
+        url={blogUrl}
+        type="article"
+        structuredData={structuredData}
+      />
       {/* Back Button */}
 
 

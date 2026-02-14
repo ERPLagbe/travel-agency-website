@@ -1,0 +1,233 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:page_route",
+ "creation": "2025-01-27 10:00:00",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "page_route",
+  "page_name",
+  "section_break_basic",
+  "meta_title",
+  "meta_description",
+  "meta_keywords",
+  "section_break_og",
+  "og_title",
+  "og_description",
+  "og_image",
+  "og_type",
+  "section_break_twitter",
+  "twitter_card",
+  "twitter_title",
+  "twitter_description",
+  "twitter_image",
+  "section_break_advanced",
+  "canonical_url",
+  "robots_index",
+  "robots_follow",
+  "section_break_structured_data",
+  "enable_structured_data",
+  "structured_data_type",
+  "structured_data_json"
+ ],
+ "fields": [
+  {
+   "fieldname": "page_route",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Page Route",
+   "reqd": 1,
+   "description": "The route/path for this page (e.g., /, /about, /contact)"
+  },
+  {
+   "fieldname": "page_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Page Name",
+   "reqd": 1,
+   "description": "Human-readable name for this page (e.g., Home Page, About Us)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_basic",
+   "fieldtype": "Section Break",
+   "label": "Basic SEO"
+  },
+  {
+   "fieldname": "meta_title",
+   "fieldtype": "Data",
+   "label": "Meta Title",
+   "description": "Page title (50-60 characters recommended)",
+   "max_length": 70
+  },
+  {
+   "fieldname": "meta_description",
+   "fieldtype": "Text",
+   "label": "Meta Description",
+   "description": "Page description (150-160 characters recommended)",
+   "max_length": 320
+  },
+  {
+   "fieldname": "meta_keywords",
+   "fieldtype": "Text",
+   "label": "Meta Keywords",
+   "description": "Comma-separated keywords for this page"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_og",
+   "fieldtype": "Section Break",
+   "label": "Open Graph (Social Media)"
+  },
+  {
+   "fieldname": "og_title",
+   "fieldtype": "Data",
+   "label": "OG Title",
+   "description": "Title for social media sharing (defaults to meta title if empty)"
+  },
+  {
+   "fieldname": "og_description",
+   "fieldtype": "Text",
+   "label": "OG Description",
+   "description": "Description for social media sharing (defaults to meta description if empty)"
+  },
+  {
+   "fieldname": "og_image",
+   "fieldtype": "Attach Image",
+   "label": "OG Image",
+   "description": "Image for social media sharing (recommended: 1200x630px)"
+  },
+  {
+   "default": "website",
+   "fieldname": "og_type",
+   "fieldtype": "Select",
+   "label": "OG Type",
+   "options": "website\narticle\nproduct\nprofile"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_twitter",
+   "fieldtype": "Section Break",
+   "label": "Twitter Card"
+  },
+  {
+   "default": "summary_large_image",
+   "fieldname": "twitter_card",
+   "fieldtype": "Select",
+   "label": "Twitter Card Type",
+   "options": "summary\nsummary_large_image"
+  },
+  {
+   "fieldname": "twitter_title",
+   "fieldtype": "Data",
+   "label": "Twitter Title",
+   "description": "Title for Twitter sharing (defaults to meta title if empty)"
+  },
+  {
+   "fieldname": "twitter_description",
+   "fieldtype": "Text",
+   "label": "Twitter Description",
+   "description": "Description for Twitter sharing (defaults to meta description if empty)"
+  },
+  {
+   "fieldname": "twitter_image",
+   "fieldtype": "Attach Image",
+   "label": "Twitter Image",
+   "description": "Image for Twitter sharing (recommended: 1200x600px)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_advanced",
+   "fieldtype": "Section Break",
+   "label": "Advanced Settings"
+  },
+  {
+   "fieldname": "canonical_url",
+   "fieldtype": "Data",
+   "label": "Canonical URL",
+   "description": "Canonical URL for this page (defaults to page route if empty)"
+  },
+  {
+   "default": 1,
+   "fieldname": "robots_index",
+   "fieldtype": "Check",
+   "label": "Allow Indexing",
+   "description": "Allow search engines to index this page"
+  },
+  {
+   "default": 1,
+   "fieldname": "robots_follow",
+   "fieldtype": "Check",
+   "label": "Allow Following Links",
+   "description": "Allow search engines to follow links on this page"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_structured_data",
+   "fieldtype": "Section Break",
+   "label": "Structured Data (JSON-LD)"
+  },
+  {
+   "default": 0,
+   "fieldname": "enable_structured_data",
+   "fieldtype": "Check",
+   "label": "Enable Structured Data"
+  },
+  {
+   "depends_on": "enable_structured_data",
+   "fieldname": "structured_data_type",
+   "fieldtype": "Select",
+   "label": "Structured Data Type",
+   "options": "Organization\nWebSite\nWebPage\nArticle\nBlogPosting\nProduct\nTouristTrip\nTravelAgency\nContactPage\nBreadcrumbList"
+  },
+  {
+   "depends_on": "enable_structured_data",
+   "fieldname": "structured_data_json",
+   "fieldtype": "Code",
+   "label": "Structured Data JSON",
+   "options": "JSON",
+   "description": "JSON-LD structured data. Use {page_route}, {meta_title}, {meta_description} as placeholders"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-27 10:00:00",
+ "modified_by": "Administrator",
+ "module": "Travel Agency Website",
+ "name": "SEO Settings",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

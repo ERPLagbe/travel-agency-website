@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, St
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
-import { Button, PageLayout } from '../components';
+import { Button, PageLayout, SEO } from '../components';
 
 interface PackageDetails {
   id: string;
@@ -116,6 +116,41 @@ const PackageDetails: React.FC = () => {
   }
 
 
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const packageUrl = `/packages/${id}`;
+  const packageImage = packageData.image ? getFileUrlWithFallback(packageData.image) : '';
+  const packageDescription = packageData.description 
+    ? packageData.description.replace(/<[^>]*>/g, '').substring(0, 160) 
+    : `Book ${packageData.item_name} - ${packageData.item_group} package. ${packageData.custom_duration || ''} duration. Price: ${packageData.standard_rate ? `£${packageData.standard_rate}` : 'On request'}`;
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: packageData.item_name,
+    description: packageDescription,
+    image: packageImage,
+    url: `${siteUrl}${packageUrl}`,
+    ...(packageData.standard_rate && {
+      offers: {
+        '@type': 'Offer',
+        price: packageData.standard_rate,
+        priceCurrency: 'GBP',
+        availability: 'https://schema.org/InStock'
+      }
+    }),
+    ...(packageData.custom_duration && {
+      duration: `P${packageData.custom_duration.replace(/[^0-9]/g, '')}D`
+    }),
+    ...(packageData.custom_package_rating && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: packageData.custom_package_rating <= 1 ? packageData.custom_package_rating * 5 : packageData.custom_package_rating,
+        bestRating: 5,
+        worstRating: 1
+      }
+    })
+  };
+
   return (
     <PageLayout 
       breadcrumbItems={[
@@ -124,6 +159,15 @@ const PackageDetails: React.FC = () => {
         { label: packageData.item_name || 'Package Details' }
       ]}
     >
+      <SEO
+        title={`${packageData.item_name} - Travel Package | ${cmsData?.business_name || 'Travel Agency'}`}
+        description={packageDescription}
+        keywords={`${packageData.item_name}, ${packageData.item_group}, travel package, tour, ${cmsData?.meta_keywords || 'travel, tours, packages'}`}
+        image={packageImage}
+        url={packageUrl}
+        type="product"
+        structuredData={structuredData}
+      />
       {/* Hero Banner Section */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         <div className="relative h-full py-4 md:h-40 rounded-lg sm:rounded-xl overflow-hidden shadow-lg">

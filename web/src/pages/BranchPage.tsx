@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography } from '../components';
+import { SectionContainer, Typography, SEO } from '../components';
 import { useBranches } from '../hooks/useBranches';
 import { MapPin, Phone, Mail, Building, Star, ExternalLink } from 'lucide-react';
 
@@ -70,6 +70,12 @@ const BranchPage: React.FC = () => {
 
   return (
     <div>
+      <SEO
+        title="Our Branches - Find Us Near You"
+        description="Visit us at any of our convenient branch locations. Find our offices, contact information, and directions."
+        keywords="branches, locations, offices, contact, travel agency branches"
+        url="/branches"
+      />
       {/* Page Header */}
       <div className="bg-primary py-16 text-center">
         <SectionContainer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography } from '../components';
+import { SectionContainer, Typography, SEO } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const TermsPage: React.FC = () => {
@@ -46,8 +46,16 @@ const TermsPage: React.FC = () => {
     );
   }
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+
   return (
     <div>
+      <SEO
+        title={`Terms and Conditions - ${siteName}`}
+        description={`Read the terms and conditions for ${siteName}. Understand our policies and guidelines.`}
+        keywords={`terms, conditions, ${siteName}, legal, policy`}
+        url="/terms"
+      />
       {/* Page Header */}
       <SectionContainer>
         <div >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography } from '../components';
+import { SectionContainer, Typography, SEO } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const PrivacyPage: React.FC = () => {
@@ -46,8 +46,16 @@ const PrivacyPage: React.FC = () => {
     );
   }
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+
   return (
     <div>
+      <SEO
+        title={`Privacy Policy - ${siteName}`}
+        description={`Read the privacy policy for ${siteName}. Learn how we protect and handle your personal information.`}
+        keywords={`privacy, policy, ${siteName}, data protection, privacy policy`}
+        url="/privacy"
+      />
       {/* Page Header */}
       <SectionContainer>
         <div >

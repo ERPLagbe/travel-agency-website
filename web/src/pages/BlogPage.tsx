@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SectionContainer, Typography, Card, PageLayout } from '../components';
+import { SectionContainer, Typography, Card, PageLayout, SEO } from '../components';
 import { useBlogs } from '../hooks/useBlogs';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { Calendar, User, ArrowRight } from 'lucide-react';
@@ -48,6 +48,29 @@ const BlogPage: React.FC = () => {
     );
   }
 
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const blogDescription = 'Discover travel tips, insights, and stories from our experts. Read about destinations, travel guides, and more.';
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Travel Blog',
+    description: blogDescription,
+    url: `${siteUrl}/blog`,
+    ...(blogs && blogs.length > 0 && {
+      blogPost: blogs.slice(0, 10).map((blog: any) => ({
+        '@type': 'BlogPosting',
+        headline: blog.title,
+        url: `${siteUrl}/blog/${blog.slug}`,
+        datePublished: blog.published_on || blog.creation,
+        author: {
+          '@type': 'Person',
+          name: blog.author || 'Admin'
+        }
+      }))
+    })
+  };
+
   return (
     <PageLayout 
       breadcrumbItems={[
@@ -55,6 +78,13 @@ const BlogPage: React.FC = () => {
         { label: 'Blog' }
       ]}
     >
+      <SEO
+        title="Travel Blog - Travel Tips & Insights"
+        description={blogDescription}
+        keywords="travel blog, travel tips, travel guides, destination guides, travel insights"
+        url="/blog"
+        structuredData={structuredData}
+      />
       {/* Page Header */}
       <SectionContainer>
         <div className="" style={{ paddingTop: 'var(--spacing-6)', }}>

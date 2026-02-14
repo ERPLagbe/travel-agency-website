@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography } from '../components';
+import { SectionContainer, Typography, SEO } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
 const RefundPage: React.FC = () => {
@@ -46,8 +46,16 @@ const RefundPage: React.FC = () => {
     );
   }
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+
   return (
     <div>
+      <SEO
+        title={`Refund Policy - ${siteName}`}
+        description={`Read the refund policy for ${siteName}. Understand our cancellation and refund procedures.`}
+        keywords={`refund, policy, cancellation, ${siteName}, refund policy`}
+        url="/refund-policy"
+      />
       {/* Page Header */}
       <SectionContainer>
         <div >

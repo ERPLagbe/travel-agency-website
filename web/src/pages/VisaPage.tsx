@@ -1,16 +1,25 @@
 import React from 'react';
-import { SectionContainer, Typography, PageLayout } from '../components';
+import { SectionContainer, Typography, PageLayout, SEO } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
 const VisaPage: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+  const visaDescription = cmsData?.visa_subtitle || `Professional visa services for all your travel needs. Expert assistance with visa applications and processing.`;
+
   return (
     <PageLayout breadcrumbItems={[
       { label: 'Home', path: '/' },
       { label: 'Visa Services' }
     ]}>
+      <SEO
+        title={`Visa Services - ${siteName}`}
+        description={visaDescription}
+        keywords={`visa services, visa application, travel visa, ${siteName}`}
+        url="/visa"
+      />
       {/* Hero Section */}
       <SectionContainer size="lg" className="text-center  " style={{
         backgroundImage: cmsData?.visa_background_image 

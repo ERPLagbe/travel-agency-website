@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionContainer, Typography, PageLayout } from '../components';
+import { SectionContainer, Typography, PageLayout, SEO } from '../components';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 
@@ -12,6 +12,9 @@ const AboutPage: React.FC = () => {
   console.log('About Sections:', cmsData?.about_subtitle);
   console.log('About Background Image:', cmsData?.about_background_image);
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+  const aboutDescription = cmsData?.about_subtitle || `Learn more about ${siteName} - your trusted travel partner for amazing journeys.`;
+
   return (
     <PageLayout 
       breadcrumbItems={[
@@ -19,6 +22,12 @@ const AboutPage: React.FC = () => {
         { label: 'About Us' }
       ]}
     >
+      <SEO
+        title={`About Us - ${siteName}`}
+        description={aboutDescription}
+        keywords={`about, ${siteName}, travel agency, company information`}
+        url="/about"
+      />
       {/* Hero Section */}
       <SectionContainer size="lg" className="text-center " style={{
         backgroundImage: cmsData?.about_background_image 

@@ -16,6 +16,7 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ScrollToTop } from './ScrollToTop';
 export { default as Breadcrumb } from './Breadcrumb';
 export { default as PageLayout } from './PageLayout';
+export { default as SEO } from './SEO';
 
 // New sections
 export { default as CTASection } from '../sections/CTASection';

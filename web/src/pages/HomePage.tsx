@@ -1,5 +1,5 @@
 import React from 'react';
-import { FAQ, PackageShowcase, Testimonials, WelcomeSection, PackagesDescription } from '../components';
+import { FAQ, PackageShowcase, Testimonials, WelcomeSection, PackagesDescription, SEO } from '../components';
 import AllPackages from '../sections/AllPackages';
 import HeroSection from '../sections/HeroSection';
 import CTASection from '../sections/CTASection';
@@ -19,8 +19,35 @@ const HomePage: React.FC = () => {
   const faqTitle = cmsData?.faq_title;
   const faqSubtitle = cmsData?.faq_subtitle;
 
+  const siteName = cmsData?.business_name || 'Travel Agency';
+  const siteDescription = cmsData?.meta_description || 'Discover amazing travel packages, tours, and visa services. Book your dream vacation with our trusted travel agency.';
+  const siteKeywords = cmsData?.meta_keywords || 'travel, tours, packages, visa, hajj, umrah, travel agency';
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'TravelAgency',
+    name: siteName,
+    description: siteDescription,
+    url: typeof window !== 'undefined' ? window.location.origin : '',
+    ...(cmsData?.business_phone && { telephone: cmsData.business_phone }),
+    ...(cmsData?.business_email && { email: cmsData.business_email }),
+    ...(cmsData?.business_address && {
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: cmsData.business_address
+      }
+    })
+  };
+
   return (
     <div>
+      <SEO
+        title={`${siteName} - Best Travel Packages & Tours`}
+        description={siteDescription}
+        keywords={siteKeywords}
+        url="/"
+        structuredData={structuredData}
+      />
       {/* Hero Section */}
       <HeroSection />
 
