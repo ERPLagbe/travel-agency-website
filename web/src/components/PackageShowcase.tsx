@@ -81,7 +81,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
         title: item.item_name,
         category: "Featured",
         image: item.image,
-        price: item.standard_rate,
+        price: item.custom_website_price_to_show,
         nights: "7 Nights", // Keep for compatibility
         duration: item.custom_duration || 'N/A',
         destination: "Makkah & Madinah",
@@ -94,7 +94,7 @@ const PackageShowcase: React.FC<PackageShowcaseProps> = ({
         hotelMakkah: hotelInfo,
         hotelMadinah: hotelInfo,
         foodInfo: item.custom_food_information || 'N/A',
-        specialServices: item.custom_bustaxi_information || '',
+        specialServices: item.specialServices || '',
         // Pass accommodation list for dynamic rendering
         accommodationList: accommodationList,
         // Pass special services list for dynamic rendering

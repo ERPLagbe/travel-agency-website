@@ -182,7 +182,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           <Link to="/" className="no-underline">
             <div className="text-white">
               <div className="text-2xl font-bold">
-                {cmsData?.logo && <img className='w-[150px] lg:w-full h-full object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
+                {cmsData?.logo && <img className='w-[150px] lg:w-full h-4 lg:h-10 object-contain' src={getFileUrlWithFallback(cmsData?.logo)} alt="Logo" /> }
                 {!cmsData?.logo && <div className="text-2xl font-bold">{cmsData?.logo_text }</div> }
               </div>
             </div>
@@ -230,7 +230,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                     to={item.path}
                     className={`no-underline font-medium transition-colors duration-300 flex items-center gap-1 px-3 py-2 rounded-md ${
                       isActive(item.path) 
-                        ? 'bg-secondary text-white' 
+                        ? 'bg-secondary !text-white' 
                         : 'text-white hover:text-accent hover:bg-white/5'
                     }`}
                     onMouseEnter={() => setActiveDropdown(item.path)}
@@ -366,10 +366,8 @@ const Navigation: React.FC<NavigationProps> = () => {
 
           {/* Content */}
           <div className="flex flex-col h-full">
-            
-
             {/* Navigation Links */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6 pb-18">
               <div className="space-y-2">
                 {navItems.map((item) => (
                   <div key={item.path} className="border-b border-gray-100 last:border-b-0">
@@ -381,7 +379,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                             to={item.path}
                             className={`flex-1 py-4 px-4 text-left font-medium rounded-lg transition-colors duration-200 ${
                               isActive(item.path) 
-                                ? 'bg-secondary text-white' 
+                                ? 'bg-secondary !text-white' 
                                 : 'text-gray-900 hover:text-primary hover:bg-gray-50'
                             }`}
                           >
@@ -413,10 +411,10 @@ const Navigation: React.FC<NavigationProps> = () => {
                               <Link
                                 key={subItem.path}
                                 to={subItem.path}
-                                className={`block py-3 px-4 text-gray-600 rounded-lg transition-all duration-200 hover:bg-primary/5 hover:text-primary ${
+                                className={`block py-3 px-4 rounded-lg transition-all duration-200 hover:bg-primary/5 hover:text-primary ${
                                   isActive(subItem.path) 
-                                    ? 'bg-secondary text-white font-medium' 
-                                    : ''
+                                    ? 'bg-secondary !text-white font-medium' 
+                                    : 'text-gray-600'
                                 }`}
                                 onClick={closeMobileMenu}
                               >
@@ -432,7 +430,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                         to={item.path}
                         className={`block py-4 font-medium transition-colors duration-200 px-4 rounded-lg ${
                           isActive(item.path) 
-                            ? 'bg-secondary text-white' 
+                            ? 'bg-secondary !text-white' 
                             : 'text-gray-900 hover:text-primary hover:bg-gray-50'
                         }`}
                         onClick={closeMobileMenu}
@@ -443,41 +441,44 @@ const Navigation: React.FC<NavigationProps> = () => {
                   </div>
                 ))}
               </div>
+              
               {/* Action Buttons Section */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex flex-col gap-3">
-                <Link
-                  to="/contact"
-                  className="btn btn-primary w-full no-underline"
-                  onClick={closeMobileMenu}
-                  aria-label="Book an appointment"
-                >
-                  Get Appointment
-                </Link>
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex flex-col gap-3">
+                  <Link
+                    to="/contact"
+                    className="btn btn-primary w-full no-underline"
+                    onClick={closeMobileMenu}
+                    aria-label="Book an appointment"
+                  >
+                    Get Appointment
+                  </Link>
 
-                {isLoggedIn ? (
-                  <a
-                    href="/app/home"
-                    className="btn btn-secondary-fill w-full no-underline"
-                    onClick={closeMobileMenu}
-                    aria-label="Go to your dashboard"
-                  >
-                    Dashboard
-                  </a>
-                ) : (
-                  <a
-                    href="/login"
-                    className="btn btn-secondary-fill w-full no-underline"
-                    onClick={closeMobileMenu}
-                    aria-label="Login to your account"
-                  >
-                    Login
-                  </a>
-                )}
+                  {isLoggedIn ? (
+                    <a
+                      href="/app/home"
+                      className="btn btn-secondary-fill w-full no-underline"
+                      onClick={closeMobileMenu}
+                      aria-label="Go to your dashboard"
+                    >
+                      Dashboard
+                    </a>
+                  ) : (
+                    <a
+                      href="/login"
+                      className="btn btn-secondary-fill w-full no-underline"
+                      onClick={closeMobileMenu}
+                      aria-label="Login to your account"
+                    >
+                      Login
+                    </a>
+                  )}
+                </div>
+                
+                {/* Extra spacing at the bottom for mobile browsers */}
+                <div className="h-20"></div>
               </div>
             </div>
-            </div>
-            
           </div>
         </div>
       </div>

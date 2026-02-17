@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, ChevronUp, MapPin, ExternalLink } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Twitter, ChevronUp, MapPin, ExternalLink } from 'lucide-react';
 import { useWebsiteCMS, useFooterQuickLinks, useFooterTermsLinks, useSocialMediaLinks } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
 import { useCreateLead } from '../hooks/useCreateLead';
 import { useBranches } from '../hooks/useBranches';
+
+// Defining Whatsapp icon as lucide-react has no whatsapp icon.
+const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path d="M20.52 3.48A11.8 11.8 0 0 0 12 0C5.37 0 0 5.37 0 12a11.9 11.9 0 0 0 1.64 6l-1.1 6 6.16-1.6A12 12 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.23-3.48-8.52ZM12 22a9.7 9.7 0 0 1-4.9-1.32l-.35-.21-3.64.95.97-3.54-.24-.37A9.8 9.8 0 0 1 2.2 12C2.2 6.7 6.7 2.2 12 2.2c2.6 0 5.05 1 6.88 2.83A9.67 9.67 0 0 1 21.8 12c0 5.3-4.5 9.8-9.8 9.8Zm5.42-6.67c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.67.15-.2.3-.77.98-.94 1.18-.18.2-.35.23-.65.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.74-1.64-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.08-.8.38-.27.3-1.05 1-1.05 2.43 0 1.43 1.08 2.8 1.24 3 .15.2 2.13 3.28 5.2 4.46.73.32 1.3.5 1.75.65.74.24 1.42.2 1.95.12.6-.1 1.78-.73 2.03-1.44.25-.7.25-1.33.17-1.44-.08-.12-.27-.2-.57-.35Z"/>
+  </svg>
+);
 
 const Footer: React.FC = () => {
   const { data: cmsData } = useWebsiteCMS();
@@ -113,8 +125,10 @@ const Footer: React.FC = () => {
               {/* Address */}
               {cmsData?.business_address && (
                 <div className="text-gray-300 text-sm leading-relaxed mb-3">
-                  <strong>Address:</strong>{' '}
-                  <span dangerouslySetInnerHTML={{ __html: cmsData.business_address.replace(/\n/g, ', ') }} />
+                  {/* <strong>Address:</strong>{' '}
+                  <span dangerouslySetInnerHTML={{ __html: cmsData.business_address.replace(/\n/g, ', ') }} /> */}
+                  <strong>Address:</strong>
+                  <div className="mt-1 whitespace-pre-line">{cmsData.business_address}</div>
                 </div>
               )}
               
@@ -224,8 +238,9 @@ const Footer: React.FC = () => {
                   >
                     {social.platform_name === 'Facebook' && <Facebook className="w-5 h-5" />}
                     {social.platform_name === 'Instagram' && <Instagram className="w-5 h-5" />}
-                    {social.platform_name === 'Twitter' && <Facebook className="w-5 h-5" />}
-                    {social.platform_name === 'YouTube' && <Instagram className="w-5 h-5" />}
+                    {social.platform_name === 'Whatsapp' && <WhatsappIcon className="w-5 h-5" />}
+                    {social.platform_name === 'Youtube' && <Youtube className="w-5 h-5" />}
+                    {social.platform_name === 'Twitter' && <Twitter className="w-5 h-5" />}
                   </a>
                 ))}
               </div>

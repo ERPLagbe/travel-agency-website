@@ -129,7 +129,7 @@ const HeroSection = () => {
                         {slide.title}
                 </span>
               </h1>
-                    <p className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
+                    <p className="hidden md:block text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-secondary drop-shadow-lg">
                       {slide.subtitle}
                     </p>
                   </div>

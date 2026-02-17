@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Phone, Mail, MapPin, Check, Clock, Plane, Hotel, Car, Utensils, Tag, Star } from 'lucide-react';
+import { Phone, Mail, MapPin, Copy, Clock, Plane, Hotel, Car, Utensils, ArrowBigRightDash, Tag, Star } from 'lucide-react';
 import { usePackageDetails } from '../hooks/usePackageDetails';
 import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
@@ -67,9 +67,9 @@ const PackageDetails: React.FC = () => {
       image: packageData.image,
       custom_duration: packageData.custom_duration,
       description: packageData.description,
-      standard_rate: packageData.standard_rate,
-      standard_rate_type: typeof packageData.standard_rate,
-      standard_rate_value: packageData.standard_rate,
+      custom_website_price_to_show: packageData.custom_website_price_to_show,
+      standard_rate_type: typeof packageData.custom_website_price_to_show,
+      standard_rate_value: packageData.custom_website_price_to_show,
       item_group: packageData.item_group
     } : null,
     error,
@@ -222,7 +222,9 @@ const PackageDetails: React.FC = () => {
                 )}
                 <span className="bg-amber-400 px-3 py-1.5 rounded-lg text-purple-900 text-sm font-bold flex items-center gap-1.5">
                   <Tag className="w-4 h-4" />
-                  {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                  {packageData.custom_website_price_to_show && parseFloat(packageData.custom_website_price_to_show) !== 0 
+                  ? packageData.custom_website_price_to_show 
+                  : 'Price on request'}
                 </span>
               </div>
             </div>
@@ -243,7 +245,7 @@ const PackageDetails: React.FC = () => {
                 {packageData.custom_features && packageData.custom_features.length > 0 ? (
                   packageData.custom_features.map((feature: any, index: number) => (
                     <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                      <Check className="w-5 h-5 text-green-500" />
+                      <ArrowBigRightDash className="w-5 h-5 text-green-500" /> 
                       <span className="text-sm font-medium">{feature.title}</span>
                     </div>
                   ))
@@ -260,7 +262,7 @@ const PackageDetails: React.FC = () => {
               <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Package Inclusions</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Flight Information - Only show if custom_air is 1 and has information */}
-                {packageData.custom_air === 1 && packageData.custom_air_information && (
+                {/* {packageData.custom_air === 1 && packageData.custom_air_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Plane className="w-6 h-6 text-primary" />
@@ -268,10 +270,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_air_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Hotel Information - Only show if custom_hotel is 1 and has information */}
-                {packageData.custom_hotel === 1 && packageData.custom_hotel_information && (
+                {/* {packageData.custom_hotel === 1 && packageData.custom_hotel_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Hotel className="w-6 h-6 text-primary" />
@@ -279,10 +281,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_hotel_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Transportation - Only show if custom_bustaxi is 1 and has information */}
-                {packageData.custom_bustaxi === 1 && packageData.custom_bustaxi_information && (
+                {/* {packageData.custom_bustaxi === 1 && packageData.custom_bustaxi_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Car className="w-6 h-6 text-primary" />
@@ -290,10 +292,10 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_bustaxi_information}</p>
                   </div>
-                )}
+                )} */}
                 
                 {/* Meal Information - Only show if custom_food_child_food_except is 1 and has information */}
-                {packageData.custom_food_child_food_except === 1 && packageData.custom_food_information && (
+                {/* {packageData.custom_food_child_food_except === 1 && packageData.custom_food_information && (
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <Utensils className="w-6 h-6 text-primary" />
@@ -301,17 +303,17 @@ const PackageDetails: React.FC = () => {
                     </div>
                     <p className="text-gray-700">{packageData.custom_food_information}</p>
                   </div>
-                )}
+                )} */}
 
                 {/* Show custom inclusions from table */}
                 {packageData.custom_inclusions && packageData.custom_inclusions.length > 0 && (
                   packageData.custom_inclusions.map((inclusion: any, index: number) => (
                     <div key={index} className="p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center gap-3 mb-3">
-                        <Check className="w-6 h-6 text-primary" />
+                        <Copy className="w-6 h-6 text-primary" />
                         <h3 className="text-lg font-bold text-primary">{inclusion.title}</h3>
                       </div>
-                      <p className="text-gray-700">{inclusion.description}</p>
+                      <p className="text-gray-700 whitespace-pre-line">{inclusion.description}</p>
                     </div>
                   ))
                 )}
@@ -404,7 +406,9 @@ const PackageDetails: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-primary mb-2 text-base sm:text-lg leading-tight">{day.title}</h3>
-                        <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{day.description}</p>
+                        <p className="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                          {day.description}
+                        </p>
                       </div>
                     </div>
                   ))
@@ -440,7 +444,9 @@ const PackageDetails: React.FC = () => {
               <div className="mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                   <div className="text-2xl sm:text-3xl font-bold text-primary">
-                    {packageData.standard_rate && packageData.standard_rate > 0 ? `£${packageData.standard_rate.toLocaleString()}` : 'Price on request'}
+                    {packageData.custom_website_price_to_show && parseFloat(packageData.custom_website_price_to_show) !== 0 
+                    ? packageData.custom_website_price_to_show 
+                    : 'Price on request'}
                   </div>
                   {typeof packageData.custom_package_rating === 'number' && packageData.custom_package_rating > 0 && (
                     <div className="flex items-center gap-1" title="Rating">

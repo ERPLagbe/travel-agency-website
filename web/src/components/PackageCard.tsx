@@ -42,7 +42,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   airInfo = "SA/Biman/Flynas",
   hotelMakkah = "1200/1500M",
   foodInfo = "Breakfast, Lunch & Dinner",
-  specialServices = "Ziyarah Tour, Transportation & Guide",
+  specialServices,
   specialServicesList = []
 }) => {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Plane className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
-              <span className="text-base font-bold text-gray-800">Direct Flight: </span>
+              <span className="text-base font-bold text-gray-800">Flight: </span>
               <span className="text-base text-gray-600">{airInfo}</span>
             </div>
           </div>
@@ -131,7 +131,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="flex items-center gap-3 py-1 border-b border-gray-200">
             <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
             <div className="flex-1">
-              <span className="text-base font-bold text-gray-800">Hotel Makkah: </span>
+              <span className="text-base font-bold text-gray-800">Hotel: </span>
               <span className="text-base text-gray-600">{hotelMakkah}</span>
             </div>
           </div>
@@ -160,15 +160,20 @@ const PackageCard: React.FC<PackageCardProps> = ({
                     {service.title}
                   </span>
                 ))
-              ) : (
-                specialServices ? specialServices.split(',').map((service, index) => (
+              ) : specialServices && 
+                specialServices.trim() !== '' ? (
+                specialServices.split(',').map((service, index) => (
                   <span
                     key={index}
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white transition-all duration-300 hover:shadow-md hover:scale-105 cursor-pointer"
                   >
                     {service.trim()}
                   </span>
-                )) : null
+                ))
+              ) : (
+                <span className="text-sm text-gray-500 italic">
+                  Standard services included
+                </span>
               )}
             </div>
           </div>
@@ -178,10 +183,10 @@ const PackageCard: React.FC<PackageCardProps> = ({
       {/* Price Section */}
       <div className="px-4 sm:px-6 py-3 text-center bg-white group cursor-default">
         <div className="inline-block">
-          {price && price > 0 ? (
+          {price && parseFloat(price.replace(/[^\d.]/g, '')) > 0 ? (
             <>
               <span className="text-3xl sm:text-5xl font-bold text-primary animate-countUp transition-all duration-300 group-hover:text-primary group-hover:scale-110 inline-block">
-                £{price.toLocaleString()}
+                {price} {/* Show original value like "1000 BDT" */}
               </span>
               <span className="ml-2 sm:ml-3 text-gray-500 text-xs sm:text-sm font-medium animate-fadeIn transition-colors duration-300 group-hover:text-gray-700" style={{ animationDelay: '0.3s' }}>
                 STARTS FROM
@@ -205,7 +210,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           variant="primary"
           className="w-full"
         >
-          SELECT PACKAGE
+          Details Information
         </Button>
       </div>
     </div>

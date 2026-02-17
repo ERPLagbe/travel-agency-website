@@ -11,6 +11,7 @@ export const usePackageDetails = (itemName: string) => {
       'description',
       'image',
       'standard_rate',
+      'custom_website_price_to_show',
       'published_in_website',
       'custom_category',
       'custom_country',

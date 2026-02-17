@@ -86,10 +86,10 @@ const FeaturedPackageCard: React.FC<FeaturedPackageCardProps> = ({
 
         {/* Price */}
         <div className="mb-6">
-          {price && price > 0 ? (
+          {price && parseFloat(price.replace(/[^\d.]/g, '')) > 0 ? (
             <div className="text-center">
               <span className="text-3xl font-bold text-primary">
-                £{price.toLocaleString()}
+                {price}
               </span>
               <span className="block text-sm text-gray-500 mt-1">
                 STARTS FROM
@@ -104,7 +104,7 @@ const FeaturedPackageCard: React.FC<FeaturedPackageCardProps> = ({
           )}
         </div>
 
-        {/* Select Package Button */}
+        {/* Details Information Button */}
         <div className="mt-auto">
           <Button
             onClick={(e) => {
@@ -114,7 +114,7 @@ const FeaturedPackageCard: React.FC<FeaturedPackageCardProps> = ({
             variant="primary"
             className="w-full"
           >
-            SELECT PACKAGE
+            Details Information
           </Button>
         </div>
       </div>

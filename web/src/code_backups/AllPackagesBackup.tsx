@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PackageCard from '../components/PackageCard';
 import { useFrappeGetCall } from 'frappe-react-sdk';
+import { Button } from '../components/Button';
 
 const AllPackages: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,8 +15,7 @@ const AllPackages: React.FC = () => {
   const allPackages = apiResponse?.message?.data || [];
 
   // Use all packages from ERPNext with dynamic data (limit to first 9 for slider)
-  // const packages = allPackages?.slice(0, 9).map((pkg: any) => {
-  const packages = allPackages?.map((pkg: any) => {
+  const packages = allPackages?.slice(0, 9).map((pkg: any) => {
     // Process accommodation list to get hotel names and distances
     const accommodationList = pkg.custom_accommodation_list || [];
     const hotelInfo = accommodationList.length > 0 
@@ -35,7 +35,7 @@ const AllPackages: React.FC = () => {
       hotelMakkah: hotelInfo,
       hotelMadinah: hotelInfo,
       foodInfo: pkg.custom_food_information || 'N/A',
-      specialServices: pkg.specialServices || '',
+      specialServices: pkg.custom_bustaxi_information || '',
       accommodationList: accommodationList,
       specialServicesList: pkg.custom_special_services || []
     };
@@ -61,10 +61,7 @@ const AllPackages: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Calculate max start index for slider
-  const maxStartIndex = Math.max(0, packages.length - cardsPerView);
-  
-  // Calculate total positions for dots indicator
+  // Calculate total possible positions for single card movement
   const totalPositions = Math.max(1, packages.length - cardsPerView + 1);
 
   // Auto-play functionality for slider - slide one card at a time
@@ -74,13 +71,15 @@ const AllPackages: React.FC = () => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
         const nextIndex = prev + 1; // Move one card at a time
-        if (nextIndex > maxStartIndex) return 0; // loop to start
+        if (nextIndex >= packages.length - cardsPerView + 1) return 0; // loop to start
         return nextIndex;
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, packages.length, cardsPerView, maxStartIndex]);
+  }, [isAutoPlaying, packages.length, cardsPerView]);
+
+  const maxStartIndex = Math.max(0, packages.length - cardsPerView);
 
   const handlePrevious = () => {
     setIsAutoPlaying(false);
@@ -99,61 +98,25 @@ const AllPackages: React.FC = () => {
 
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Section Header - Title centered */}
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
         <div className="text-center mb-12">
           {/* Decorative Elements */}
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-6">
             <div className="w-3 h-3 bg-secondary rounded-full"></div>
             <div className="w-16 h-0.5 bg-secondary mx-4"></div>
             <div className="w-3 h-3 bg-secondary rounded-full"></div>
           </div>
           
-          <h2 className="text-primary text-3xl sm:text-4xl md:text-5xl font-bold uppercase mb-8">
+          <h2 className="text-primary text-4xl md:text-5xl font-bold uppercase mb-4">
             {title}
           </h2>
-        </div>
-
-        {/* View All link - Below title, right aligned */}
-        <div className="flex justify-end -mt-6 mb-0">
-          <button
-            onClick={() => navigate('/category/all')}
-            className="
-              inline-flex
-              items-center
-              text-primary
-              hover:text-primary-dark
-              hover:underline
-              font-medium
-              text-2xl
-              transition-colors
-              duration-200
-              group
-              mr-4 md:mr-0
-            "
-          >
-            View All
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M14 5l7 7m0 0l-7 7m7-7H3" 
-              />
-            </svg>
-          </button>
         </div>
 
         {/* Slider Container */}
         <div className="relative">
           {/* Package Cards Slider */}
-          <div className="overflow-hidden pb-2">
+          <div className="overflow-hidden pb-4">
             <div
               className="flex transition-transform duration-700 items-stretch"
               style={{ transform: `translateX(-${translatePercent}%)` }}
@@ -189,101 +152,75 @@ const AllPackages: React.FC = () => {
             </div>
           </div>
 
-          {/* Navigation Controls */}
+          {/* Navigation Controls with View All Button */}
           {showNavigation && (
-            <>
-              {/* Left Arrow Button */}
-              <button
-                onClick={handlePrevious}
-                aria-label="Previous packages"
-                className="
-                  absolute 
-                  left-1 
-                  top-1/2 
-                  -translate-x-1/2 
-                  -translate-y-1/2
-                  w-11 h-11
-                  rounded-full
-                  bg-white
-                  shadow-lg
-                  flex items-center justify-center
-                  text-primary
-                  hover:bg-gray-50
-                  transition
-                  z-20
-                "  /* Removed: hidden md:flex */
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
+            <div className="flex flex-col lg:flex-row gap-4 items-center justify-between mt-8">
+              {/* Left side - Navigation arrows and dots */}
+              <div className="flex items-center gap-4">
+                {/* Left Arrow */}
+                <button
+                  onClick={handlePrevious}
+                  className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
+                  aria-label="Previous packages"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
 
-              {/* Right Arrow Button */}
-              <button
-                onClick={handleNext}
-                aria-label="Next packages"
-                className="
-                  absolute 
-                  right-1 
-                  top-1/2 
-                  translate-x-1/2 
-                  -translate-y-1/2
-                  w-11 h-11
-                  rounded-full
-                  bg-white
-                  shadow-lg
-                  flex items-center justify-center
-                  text-primary
-                  hover:bg-gray-50
-                  transition
-                  z-20
-                "  /* Removed: hidden md:flex */
+                {/* Dots Indicator */}
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPositions }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setIsAutoPlaying(false);
+                        setCurrentIndex(index);
+                      }}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentIndex
+                          ? 'bg-primary w-8'
+                          : 'bg-gray-300 w-2 hover:bg-gray-400'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={handleNext}
+                  className="w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-primary hover:bg-gray-50 transition"
+                  aria-label="Next packages"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Right side - View All Packages Button */}
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/category/all')}
+                className="px-6 py-2"
               >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </>
+                View All Packages
+              </Button>
+            </div>
+          )}
+
+          {/* View All Packages Button for when navigation is hidden */}
+          {!showNavigation && (
+            <div className="text-center mt-8">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/category/all')}
+                className="px-8 py-3"
+              >
+                View All Packages
+              </Button>
+            </div>
           )}
         </div>
-
-        {/* Dots Indicator - Always centered */}
-        {showNavigation && packages.length > 0 && (
-          <div className="mt-8 flex items-center justify-center">
-            <div className="flex items-center justify-center gap-2">
-              {Array.from({ length: Math.min(7, totalPositions) }).map((_, index) => {
-                // Calculate which section each dot represents
-                const sectionIndex = Math.floor(
-                  (index * Math.max(1, totalPositions - 1)) / 
-                  Math.max(1, Math.min(7, totalPositions) - 1)
-                );
-                
-                // Calculate current section based on currentIndex
-                const currentSection = Math.floor(
-                  (currentIndex * (Math.min(7, totalPositions) - 1)) / 
-                  Math.max(1, totalPositions - 1)
-                );
-
-                return (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setIsAutoPlaying(false);
-                      // Calculate actual index to jump to
-                      const targetIndex = Math.floor(
-                        (sectionIndex * (totalPositions - 1)) / 
-                        Math.max(1, (Math.min(7, totalPositions) - 1))
-                      );
-                      setCurrentIndex(Math.min(targetIndex, maxStartIndex));
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentSection
-                        ? 'bg-primary w-8'
-                        : 'w-2 bg-gray-300 hover:bg-gray-400'
-                    }`}
-                    aria-label={`Go to section ${index + 1}`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

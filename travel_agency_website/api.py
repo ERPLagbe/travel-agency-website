@@ -147,12 +147,13 @@ def get_items_with_accommodation():
     try:
         # Get all items with basic fields
         items = frappe.get_all("Item",
-            filters={"disabled": 0},
+            filters={"disabled": 0, "custom_publish_on_website": 1}, # Only published & enabled items
             fields=[
                 "name", 
                 "item_name", 
                 "item_group", 
-                "standard_rate", 
+                "standard_rate",
+                "custom_website_price_to_show",
                 "image",
                 "custom_duration",
                 "custom_package_rating",
