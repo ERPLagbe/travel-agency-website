@@ -118,16 +118,30 @@ const PackageDetails: React.FC = () => {
 
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
   const packageUrl = `/packages/${id}`;
-  const packageImage = packageData.image ? getFileUrlWithFallback(packageData.image) : '';
-  const packageDescription = packageData.description 
-    ? packageData.description.replace(/<[^>]*>/g, '').substring(0, 160) 
-    : `Book ${packageData.item_name} - ${packageData.item_group} package. ${packageData.custom_duration || ''} duration. Price: ${packageData.standard_rate ? `£${packageData.standard_rate}` : 'On request'}`;
+  const packageImage = packageData.custom_og_image 
+    ? getFileUrlWithFallback(packageData.custom_og_image) 
+    : (packageData.image ? getFileUrlWithFallback(packageData.image) : '');
+  
+  const metaTitle = packageData.custom_meta_title 
+    || `${packageData.item_name} - Travel Package | ${cmsData?.business_name || 'Travel Agency'}`;
+  
+  const metaDescription = packageData.custom_meta_description 
+    || (packageData.description 
+      ? packageData.description.replace(/<[^>]*>/g, '').substring(0, 160) 
+      : `Book ${packageData.item_name} - ${packageData.item_group} package. ${packageData.custom_duration || ''} duration. Price: ${packageData.standard_rate ? `£${packageData.standard_rate}` : 'On request'}`);
+  
+  const metaKeywords = packageData.custom_meta_keywords 
+    || `${packageData.item_name}, ${packageData.item_group}, travel package, tour`;
+  
+  const ogType = packageData.custom_og_type || 'product';
+  const robotsIndex = packageData.custom_robots_index !== undefined ? packageData.custom_robots_index : true;
+  const robotsFollow = packageData.custom_robots_follow !== undefined ? packageData.custom_robots_follow : true;
 
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'TouristTrip',
     name: packageData.item_name,
-    description: packageDescription,
+    description: metaDescription,
     image: packageImage,
     url: `${siteUrl}${packageUrl}`,
     ...(packageData.standard_rate && {
@@ -160,12 +174,14 @@ const PackageDetails: React.FC = () => {
       ]}
     >
       <SEO
-        title={`${packageData.item_name} - Travel Package | ${cmsData?.business_name || 'Travel Agency'}`}
-        description={packageDescription}
-        keywords={`${packageData.item_name}, ${packageData.item_group}, travel package, tour, ${cmsData?.meta_keywords || 'travel, tours, packages'}`}
+        title={metaTitle}
+        description={metaDescription}
+        keywords={metaKeywords}
         image={packageImage}
         url={packageUrl}
-        type="product"
+        type={ogType}
+        noindex={!robotsIndex}
+        nofollow={!robotsFollow}
         structuredData={structuredData}
       />
       {/* Hero Banner Section */}

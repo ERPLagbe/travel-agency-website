@@ -38,7 +38,14 @@ export const usePackageDetails = (itemName: string) => {
       'custom_salary',
       'custom_features',
       'custom_inclusions',
-      'custom_itinerary'
+      'custom_itinerary',
+      'custom_meta_title',
+      'custom_meta_description',
+      'custom_meta_keywords',
+      'custom_og_image',
+      'custom_og_type',
+      'custom_robots_index',
+      'custom_robots_follow'
     ]
   })
 
