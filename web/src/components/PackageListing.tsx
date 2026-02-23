@@ -156,7 +156,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     // Apply price range filter
     if (filterPrice) {
       filtered = filtered.filter(pkg => {
-        const price = pkg.standard_rate || 0;
+        const price = pkg.custom_website_price_to_show || 0;
         return price >= filterPrice.min && price <= filterPrice.max;
       });
     }
@@ -176,10 +176,10 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     // Sort packages
     switch (sortBy) {
       case 'price-low':
-        filtered.sort((a, b) => (a.standard_rate || 0) - (b.standard_rate || 0));
+        filtered.sort((a, b) => (a.custom_website_price_to_show || 0) - (b.custom_website_price_to_show || 0));
         break;
       case 'price-high':
-        filtered.sort((a, b) => (b.standard_rate || 0) - (a.standard_rate || 0));
+        filtered.sort((a, b) => (b.custom_website_price_to_show || 0) - (a.custom_website_price_to_show || 0));
         break;
       case 'name':
         filtered.sort((a, b) => (a.item_name || '').localeCompare(b.item_name || ''));
@@ -465,7 +465,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                           nights="7 Nights" // Keep for compatibility
                           duration={pkg.custom_duration}
                           rating={pkg.custom_package_rating}
-                          price={pkg.standard_rate}
+                          price={pkg.custom_website_price_to_show}
                           image={pkg.image}
                           itemGroup={pkg.item_group}
                           // Dynamic data from Item custom fields
@@ -473,7 +473,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                           hotelMakkah={hotelInfo}
                           hotelMadinah={hotelInfo}
                           foodInfo={pkg.custom_food_information}
-                          specialServices={pkg.custom_bustaxi_information}
+                          specialServices={pkg.specialServices}
                           // Pass dynamic lists for rendering
                           accommodationList={accommodationList}
                           specialServicesList={pkg.custom_special_services || []}
@@ -514,7 +514,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                   nights="7 Nights" // Keep for compatibility
                     duration={pkg.custom_duration}
                     rating={pkg.custom_package_rating}
-                    price={pkg.standard_rate}
+                    price={pkg.custom_website_price_to_show}
                     image={pkg.image}
                     itemGroup={pkg.item_group}
                   // Dynamic data from Item custom fields
@@ -522,7 +522,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                     hotelMakkah={hotelInfo}
                     hotelMadinah={hotelInfo}
                     foodInfo={pkg.custom_food_information}
-                    specialServices={pkg.custom_bustaxi_information}
+                    specialServices={pkg.specialServices}
                   // Pass dynamic lists for rendering
                   accommodationList={accommodationList}
                   specialServicesList={pkg.custom_special_services || []}
