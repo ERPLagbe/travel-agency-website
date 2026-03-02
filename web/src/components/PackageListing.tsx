@@ -28,9 +28,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const { data: cmsData, isValidating: cmsValidating } = useWebsiteCMS();
   
   const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
-  
-  console.log('📦 CMS Data:', { cmsData, cmsValidating, navigationDropdownItems });
-  
+
   // Determine if we're viewing a dropdown or specific item group
   const isDropdownView = Boolean(dropdownName && !itemGroup);
   
@@ -83,17 +81,6 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
-  
-  // Debug logging
-  console.log('🔍 PackageListing Component Debug:', {
-    itemGroup,
-    allPackagesCount: allPackages.length,
-    error: error ? {
-      message: error.message,
-      httpStatus: error.httpStatus
-    } : null,
-    isValidating
-  });
 
   // Get unique dropdowns and item groups from CMS data
   const availableDropdowns = React.useMemo(() => {
@@ -109,11 +96,11 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
     if (selectedDropdowns.length === 0) {
       // No category selected: show all item groups from packages
-    allPackages.forEach((pkg: any) => {
-      if (pkg.item_group) {
-        groups.add(pkg.item_group);
-      }
-    });
+      allPackages.forEach((pkg: any) => {
+        if (pkg.item_group) {
+          groups.add(pkg.item_group);
+        }
+      });
     } else {
       // Category selected: show only item groups that belong to selected dropdowns
       navigationDropdownItems
@@ -145,7 +132,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       } else if (selectedDropdowns.length > 0) {
         // No subcategories selected, use all item groups from selected categories
         navigationDropdownItems
-        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name) && item.item_group)
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
     }
     
@@ -189,25 +176,16 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     return filtered;
   }, [allPackages, sortBy, filterPrice, selectedDropdowns, selectedItemGroups, selectedRatings, navigationDropdownItems]);
 
-  // Get packages based on view type (for grouped display only)
+  // Group filtered packages by item_group for title + grid display (all views)
   const groupedPackages = React.useMemo(() => {
     const grouped: { [key: string]: any[] } = {};
-    
-    if (isDropdownView && dropdownName) {
-      // Group ALL filtered packages by item group (sortedPackages is already filtered)
-      // No need to filter again - just group them
-      sortedPackages.forEach((pkg: any) => {
-        if (pkg.item_group) {
-          if (!grouped[pkg.item_group]) {
-            grouped[pkg.item_group] = [];
-          }
-          grouped[pkg.item_group].push(pkg);
-        }
-      });
-    }
-    
+    sortedPackages.forEach((pkg: any) => {
+      const key = pkg.item_group || 'Other';
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(pkg);
+    });
     return grouped;
-  }, [isDropdownView, dropdownName, sortedPackages]);
+  }, [sortedPackages]);
 
   // Show loading state if data is still loading
   if (isLoading) {
@@ -433,104 +411,49 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               </div>
             </div>
 
-        {/* Packages Display */}
-        {isDropdownView ? (
-          // Grouped display for dropdown view
-          Object.keys(groupedPackages).length > 0 ? (
-            <div className="space-y-12">
-              {Object.entries(groupedPackages).map(([itemGroupName, groupPackages]) => (
-                <div key={itemGroupName} className="space-y-6">
-                  {/* Section Header */}
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold text-primary mb-2">{itemGroupName}</h2>
-                    <p className="text-gray-600">
-                      {groupPackages.length} package{groupPackages.length !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
-                  
-                  {/* Packages Grid for this group */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-                    {groupPackages.map((pkg) => {
-                      // Process accommodation list to get hotel names and distances
-                      const accommodationList = pkg.custom_accommodation_list || [];
-                      const hotelInfo = accommodationList.length > 0 
-                        ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-                        : pkg.custom_hotel_information;
-
-                      return (
-                        <PackageCard
-                          key={pkg.name}
-                          id={pkg.name}
-                          title={pkg.item_name}
-                          nights="7 Nights" // Keep for compatibility
-                          duration={pkg.custom_duration}
-                          rating={pkg.custom_package_rating}
-                          price={pkg.custom_website_price_to_show}
-                          image={pkg.image}
-                          itemGroup={pkg.item_group}
-                          // Dynamic data from Item custom fields
-                          airInfo={pkg.custom_air_information}
-                          hotelMakkah={hotelInfo}
-                          hotelMadinah={hotelInfo}
-                          foodInfo={pkg.custom_food_information}
-                          specialServices={pkg.specialServices}
-                          // Pass dynamic lists for rendering
-                          accommodationList={accommodationList}
-                          specialServicesList={pkg.custom_special_services || []}
-                          primaryButtonText="View Details"
-                          secondaryButtonText="Enquire Now"
-                        />
-                      );
-                    })}
-                  </div>
+        {/* Packages Display: category title + grid per group */}
+        {Object.keys(groupedPackages).length > 0 ? (
+          <div className="space-y-12">
+            {Object.entries(groupedPackages).map(([itemGroupName, groupPackages]: [string, any[]]) => (
+              <div key={itemGroupName} className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-3xl font-bold text-primary mb-2">{itemGroupName}</h2>
+                  <p className="text-gray-600">
+                    {groupPackages.length} package{groupPackages.length !== 1 ? 's' : ''} available
+                  </p>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">📦</div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-2">No Packages Found</h3>
-              <p className="text-gray-500">
-                We couldn't find any packages in this category. Please check back later.
-              </p>
-          </div>
-          )
-        ) : (
-          // Regular display for item group or all packages view
-          sortedPackages.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-            {sortedPackages.map((pkg) => {
-              // Process accommodation list to get hotel names and distances
-              const accommodationList = pkg.custom_accommodation_list || [];
-              const hotelInfo = accommodationList.length > 0 
-                ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-                  : pkg.custom_hotel_information;
-
-              return (
-                <PackageCard
-                  key={pkg.name}
-                  id={pkg.name}
-                    title={pkg.item_name}
-                  nights="7 Nights" // Keep for compatibility
-                    duration={pkg.custom_duration}
-                    rating={pkg.custom_package_rating}
-                    price={pkg.custom_website_price_to_show}
-                    image={pkg.image}
-                    itemGroup={pkg.item_group}
-                  // Dynamic data from Item custom fields
-                    airInfo={pkg.custom_air_information}
-                    hotelMakkah={hotelInfo}
-                    hotelMadinah={hotelInfo}
-                    foodInfo={pkg.custom_food_information}
-                    specialServices={pkg.specialServices}
-                  // Pass dynamic lists for rendering
-                  accommodationList={accommodationList}
-                  specialServicesList={pkg.custom_special_services || []}
-                  primaryButtonText="View Details"
-                  secondaryButtonText="Enquire Now"
-                />
-              );
-            })}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
+                  {groupPackages.map((pkg) => {
+                    const accommodationList = pkg.custom_accommodation_list || [];
+                    const hotelInfo = accommodationList.length > 0
+                      ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
+                      : pkg.custom_hotel_information;
+                    return (
+                      <PackageCard
+                        key={pkg.name}
+                        id={pkg.name}
+                        title={pkg.item_name}
+                        nights="7 Nights"
+                        duration={pkg.custom_duration}
+                        rating={pkg.custom_package_rating}
+                        price={pkg.custom_website_price_to_show}
+                        image={pkg.image}
+                        itemGroup={pkg.item_group}
+                        airInfo={pkg.custom_air_information}
+                        hotelMakkah={hotelInfo}
+                        hotelMadinah={hotelInfo}
+                        foodInfo={pkg.custom_food_information}
+                        specialServices={pkg.specialServices}
+                        accommodationList={accommodationList}
+                        specialServicesList={pkg.custom_special_services || []}
+                        primaryButtonText="View Details"
+                        secondaryButtonText="Enquire Now"
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="text-center py-16">
@@ -540,7 +463,6 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               We couldn't find any packages matching your criteria. Try adjusting your filters.
             </p>
           </div>
-          )
         )}
           </div>
 
