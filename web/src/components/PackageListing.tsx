@@ -28,9 +28,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   const { data: cmsData, isValidating: cmsValidating } = useWebsiteCMS();
   
   const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
-  
-  console.log('📦 CMS Data:', { cmsData, cmsValidating, navigationDropdownItems });
-  
+
   // Determine if we're viewing a dropdown or specific item group
   const isDropdownView = Boolean(dropdownName && !itemGroup);
   
@@ -83,17 +81,6 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
   
   // Show loading state if either packages or CMS data (for dropdown view) is loading
   const isLoading = isValidating || (isDropdownView && cmsValidating);
-  
-  // Debug logging
-  console.log('🔍 PackageListing Component Debug:', {
-    itemGroup,
-    allPackagesCount: allPackages.length,
-    error: error ? {
-      message: error.message,
-      httpStatus: error.httpStatus
-    } : null,
-    isValidating
-  });
 
   // Get unique dropdowns and item groups from CMS data
   const availableDropdowns = React.useMemo(() => {
@@ -109,11 +96,11 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
     if (selectedDropdowns.length === 0) {
       // No category selected: show all item groups from packages
-    allPackages.forEach((pkg: any) => {
-      if (pkg.item_group) {
-        groups.add(pkg.item_group);
-      }
-    });
+      allPackages.forEach((pkg: any) => {
+        if (pkg.item_group) {
+          groups.add(pkg.item_group);
+        }
+      });
     } else {
       // Category selected: show only item groups that belong to selected dropdowns
       navigationDropdownItems
@@ -145,7 +132,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
       } else if (selectedDropdowns.length > 0) {
         // No subcategories selected, use all item groups from selected categories
         navigationDropdownItems
-        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name) && item.item_group)
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
     }
     
