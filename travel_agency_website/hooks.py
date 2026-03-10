@@ -260,7 +260,7 @@ website_route_rules = [
     {'from_route': '/terms', 'to_route': 'web'},
     {'from_route': '/branches', 'to_route': 'web'},
     {'from_route': '/category/<path:item_group>', 'to_route': 'web'},
-    {'from_route': '/dropdown/<path:dropdown_name>', 'to_route': 'web'},
+    {'from_route': '/<path:dropdown_name>', 'to_route': 'web'},
     {'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},
     {'from_route': '/sitemap.xml', 'to_route': 'sitemap'},
     {'from_route': '/robots.txt', 'to_route': 'robots'},

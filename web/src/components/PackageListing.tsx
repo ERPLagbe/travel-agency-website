@@ -214,20 +214,25 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
     );
   }
 
-  // Filter handlers
-  const handleDropdownToggle = (dropdown: string) => {
-    setSelectedDropdowns(prev => 
-      prev.includes(dropdown) 
-        ? prev.filter(d => d !== dropdown)
-        : [...prev, dropdown]
+  // Filter handlers - UPDATED for single select
+  // const handleDropdownToggle = (dropdown: string) => {
+  //   // If clicking the same dropdown, deselect it. Otherwise, select only this one.
+  //   setSelectedDropdowns(prev => 
+  //     prev.includes(dropdown) ? [] : [dropdown]
+  //   );
+  // };
+
+  const handleItemGroupToggle = (itemGroup: string) => {
+    // If clicking the same item group, deselect it. Otherwise, select only this one.
+    setSelectedItemGroups(prev => 
+      prev.includes(itemGroup) ? [] : [itemGroup]
     );
   };
 
-  const handleItemGroupToggle = (itemGroup: string) => {
-    setSelectedItemGroups(prev => 
-      prev.includes(itemGroup) 
-        ? prev.filter(g => g !== itemGroup)
-        : [...prev, itemGroup]
+  const handleRatingToggle = (rating: number) => {
+    // If clicking the same rating, deselect it. Otherwise, select only this one.
+    setSelectedRatings(prev => 
+      prev.includes(rating) ? [] : [rating]
     );
   };
 
@@ -264,7 +269,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
 
               <div className="space-y-6">
                 {/* Dropdown Categories Filter */}
-                {availableDropdowns.length > 0 && (
+                {/* {availableDropdowns.length > 0 && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -281,7 +286,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                       ))}
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
@@ -312,13 +317,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                         <input
                           type="checkbox"
                           checked={selectedRatings.includes(rating)}
-                          onChange={() => {
-                            setSelectedRatings(prev => 
-                              prev.includes(rating) 
-                                ? prev.filter(r => r !== rating)
-                                : [...prev, rating]
-                            );
-                          }}
+                          onChange={() => handleRatingToggle(rating)}
                           className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
                         />
                         <div className="flex items-center gap-1">
@@ -500,7 +499,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                 {/* Mobile Filter Content - Same as desktop sidebar */}
                 <div className="space-y-6">
                   {/* Dropdown Categories Filter */}
-                  {availableDropdowns.length > 0 && (
+                  {/* {availableDropdowns.length > 0 && (
                     <div>
                       <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
                       <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -517,7 +516,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                         ))}
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {/* Item Groups Filter */}
                   {availableItemGroups.length > 0 && (
@@ -548,13 +547,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                           <input
                             type="checkbox"
                             checked={selectedRatings.includes(rating)}
-                            onChange={() => {
-                              setSelectedRatings(prev => 
-                                prev.includes(rating) 
-                                  ? prev.filter(r => r !== rating)
-                                  : [...prev, rating]
-                              );
-                            }}
+                            onChange={() => handleRatingToggle(rating)}
                             className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
                           />
                           <div className="flex items-center gap-1">
