@@ -257,14 +257,14 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
               {/* Filter Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Filters</h2>
-                {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
+                {/* {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
                   <button
                     onClick={clearAllFilters}
                     className="text-sm text-secondary hover:text-primary font-medium transition-colors"
                   >
                     Clear All
                   </button>
-                )}
+                )} */}
               </div>
 
               <div className="space-y-6">
@@ -594,7 +594,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                   </div>
 
                   {/* Clear All Button */}
-                  {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
+                  {/* {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
                     <button
                       onClick={() => {
                         clearAllFilters();
@@ -604,7 +604,7 @@ const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGrou
                     >
                       Clear All Filters
                     </button>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
