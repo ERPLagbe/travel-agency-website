@@ -321,7 +321,7 @@ const PackageDetails: React.FC = () => {
             </div>
 
             {/* Accommodation Information */}
-            <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+            {/* <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
               <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4 sm:mb-6">Accommodation</h2>
               {packageData.custom_accommodation_information && (
                 <div className="mb-6">
@@ -356,10 +356,10 @@ const PackageDetails: React.FC = () => {
                       
                       {description && (
                         <p className="text-gray-700 mb-4">{description}</p>
-                      )}
+                      )} */}
                       
                       {/* Hotel Images */}
-                      {images.length > 0 && (
+                      {/* {images.length > 0 && (
                         <div className="mb-4">
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                             {images.map((image: any, imgIndex: number) => (
@@ -392,7 +392,8 @@ const PackageDetails: React.FC = () => {
                   No accommodation details available for this package.
                 </div>
               )}
-            </div>
+            </div> */}
+
 
             {/* Itinerary */}
             <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
