@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FrappeProvider } from 'frappe-react-sdk'
 import { Navigation, Footer, ErrorBoundary } from './components'
+import GoogleAnalytics from './components/GoogleAnalytics'
 import FloatingActionButtons from './components/FloatingActionButtons'
 import ScrollToTop from './components/ScrollToTop'
 import HomePage from './pages/HomePage'
@@ -24,6 +25,7 @@ function App() {
     <ErrorBoundary>
       <FrappeProvider url={import.meta.env.VITE_API_URL || 'http://localhost:8000'}>
         <Router>
+          <GoogleAnalytics />
           <div className="App">
             <ScrollToTop />
             <Navigation />

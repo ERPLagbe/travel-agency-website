@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/travel_agency_website/web/ && yarn copy-html-entry",
+    "build": "vite build --base=/assets/travel_agency_website/web/ && npm run copy-html-entry",
     "lint": "eslint .",
     "preview": "vite preview",
     "copy-html-entry": "cp ../travel_agency_website/public/web/index.html ../travel_agency_website/www/web.html"

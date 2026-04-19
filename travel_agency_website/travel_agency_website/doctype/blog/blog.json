@@ -17,7 +17,8 @@
   "published_on",
   "published",
   "section_break_seo",
-  "featured_image"
+  "featured_image",
+  "youtube_video_url"
  ],
  "fields": [
   {
@@ -80,6 +81,12 @@
    "fieldtype": "Attach Image",
    "label": "Featured Image",
    "description": "Main image for the blog post"
+  },
+  {
+   "fieldname": "youtube_video_url",
+   "fieldtype": "Data",
+   "label": "YouTube video URL",
+   "description": "Paste a full YouTube link (watch, youtu.be, or embed URL). Shown on the blog page when set."
   }
  ],
  "index_web_pages_for_search": 1,

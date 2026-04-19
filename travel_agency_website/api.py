@@ -311,6 +311,16 @@ def get_seo_settings(route):
 		return None
 
 @frappe.whitelist(allow_guest=True)
+def get_public_website_analytics():
+	"""Expose Google Analytics settings from Website Settings for the React SPA."""
+	settings = frappe.get_cached_doc("Website Settings")
+	return {
+		"google_analytics_id": (settings.google_analytics_id or "").strip(),
+		"google_analytics_anonymize_ip": bool(settings.google_analytics_anonymize_ip),
+	}
+
+
+@frappe.whitelist(allow_guest=True)
 def get_robots_txt():
     """Generate robots.txt for SEO"""
     try:

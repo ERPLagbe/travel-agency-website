@@ -1,5 +1,18 @@
 import { useFrappeGetDocList } from 'frappe-react-sdk';
 
+export type BlogPost = {
+  name: string;
+  title: string;
+  slug: string;
+  content?: string;
+  featured_image?: string;
+  youtube_video_url?: string;
+  author?: string;
+  published_on?: string;
+  creation?: string;
+  modified?: string;
+};
+
 // Hook to get all blogs
 export const useBlogs = () => {
   const { data: blogs, error, isValidating } = useFrappeGetDocList('Blog', {
@@ -9,6 +22,7 @@ export const useBlogs = () => {
       'slug',
       'content',
       'featured_image',
+      'youtube_video_url',
       'author',
       'published_on',
       'creation',
@@ -34,6 +48,7 @@ export const useBlogBySlug = (slug: string) => {
       'slug',
       'content',
       'featured_image',
+      'youtube_video_url',
       'author',
       'published_on',
       'creation',

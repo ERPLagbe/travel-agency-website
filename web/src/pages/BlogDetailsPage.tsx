@@ -2,7 +2,9 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { SectionContainer, Typography, Button, SEO } from '../components';
 import { useBlogBySlug } from '../hooks/useBlogs';
+import type { BlogPost } from '../hooks/useBlogs';
 import { getFileUrlWithFallback } from '../utils/frappeFileUtils';
+import { youtubeEmbedUrlFromLink } from '../utils/youtubeEmbed';
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-react';
 
 const BlogDetailsPage: React.FC = () => {
@@ -44,6 +46,8 @@ const BlogDetailsPage: React.FC = () => {
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
   const blogUrl = `/blog/${slug}`;
   const blogImage = blog.featured_image ? getFileUrlWithFallback(blog.featured_image) : '';
+  const post = blog as BlogPost;
+  const youtubeEmbedSrc = youtubeEmbedUrlFromLink(post.youtube_video_url);
   const blogDescription = blog.content 
     ? blog.content.replace(/<[^>]*>/g, '').substring(0, 160) 
     : blog.title;
@@ -139,6 +143,31 @@ const BlogDetailsPage: React.FC = () => {
               </Typography>
             </div>
           </div>
+
+          {youtubeEmbedSrc && (
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                marginBottom: 'var(--spacing-6)',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                background: 'var(--color-gray-100)'
+              }}
+            >
+              <iframe
+                src={youtubeEmbedSrc}
+                title={`YouTube video: ${blog.title}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none'
+                }}
+              />
+            </div>
+          )}
           
           {/* Content */}
           <div 

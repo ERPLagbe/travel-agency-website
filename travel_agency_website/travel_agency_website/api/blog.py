@@ -17,6 +17,7 @@ def get_published_blogs():
 				"slug",
 				"content",
 				"featured_image",
+				"youtube_video_url",
 				"author",
 				"published_on",
 				"creation",
