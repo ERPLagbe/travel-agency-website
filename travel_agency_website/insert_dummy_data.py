@@ -48,6 +48,40 @@ def clear_existing_child_data():
         frappe.db.sql("DELETE FROM `tabAccommodation List` WHERE parenttype = 'Item'")
         print("  ✓ Cleared Accommodation List records")
         
+        # Clear Website CMS child tables so seed data fully replaces old/manual entries
+        frappe.db.sql("DELETE FROM `tabHero Section` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Hero Section (sliders) records")
+        
+        frappe.db.sql("DELETE FROM `tabTestimonial` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Testimonial records")
+        
+        frappe.db.sql("DELETE FROM `tabFeatured Package` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Featured Package records")
+        
+        frappe.db.sql("DELETE FROM `tabGallery Image` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Gallery Image records")
+        
+        frappe.db.sql("DELETE FROM `tabFAQ Item` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared FAQ Item records")
+        
+        frappe.db.sql("DELETE FROM `tabFooter Link` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Footer Link records")
+        
+        frappe.db.sql("DELETE FROM `tabSocial Media Link` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Social Media Link records")
+        
+        frappe.db.sql("DELETE FROM `tabNavigation Dropdown` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Navigation Dropdown records")
+        
+        frappe.db.sql("DELETE FROM `tabNavigation Dropdown Item` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared Navigation Dropdown Item records")
+        
+        frappe.db.sql("DELETE FROM `tabCMS Visa Item` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared CMS Visa Item records")
+        
+        frappe.db.sql("DELETE FROM `tabCMS About Item` WHERE parent = 'Website CMS'")
+        print("  ✓ Cleared CMS About Item records")
+        
         frappe.db.commit()
         print("✅ Existing child table data cleared!\n")
         
@@ -476,6 +510,7 @@ def insert_items():
             item.custom_commission_rate = 5.0
             item.custom_processing_time = "7-14 days"
             item.published_in_website = 1
+            item.custom_publish_on_website = 1
             
             # Save the item with custom fields
             item.save(ignore_permissions=True)
@@ -652,37 +687,52 @@ def insert_website_cms():
         })
     
     # Business Settings
-    doc.business_name = "Bismillah Travel"
+    doc.business_name = "Travel Agency Demo"
     doc.business_phone = "+44 20 1234 5678"
-    doc.business_email = "info@bismillahtravel.co.uk"
-    doc.business_address = "123 London Street, London, UK, SW1A 1AA"
+    doc.business_email = "info@travelagencydemo.com"
+    doc.business_address = "123 Demo Street, London, UK, SW1A 1AA"
     doc.whatsapp_number = "+44 7700 900000"
     doc.company_number = "12345678"
-    doc.atol_number = "ATOL1234"
-    doc.atol_certificate_url = "https://example.com/atol-certificate.pdf"
     doc.contact_card_rating = "4.9/5"
     doc.contact_card_rating_text = "Rating"
-    doc.logo = "/files/logo.png"
     
-    # Hero Section
-    doc.hero_background_image = "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&h=1080&fit=crop"
-    doc.hero_floating_image = "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&h=400&fit=crop"
-    doc.hero_trusted_text = "Trusted Since 2008"
-    doc.hero_main_title = "ISLAMIC TRAVEL AGENCY"
-    doc.hero_subtitle = "For British Muslims"
-    doc.hero_description = "Experience the journey of a lifetime with our expertly crafted Hajj and Umrah packages"
-    doc.hero_primary_button_text = "Explore Packages"
-    doc.hero_secondary_button_text = "Contact Us"
-    doc.hero_years_experience = "17+"
-    doc.hero_happy_pilgrims = "50K+"
-    doc.hero_customer_rating = "4.9★"
+    # Hero Section (sliders child table)
+    doc.sliders = []
+    sliders = [
+        {
+            "slide_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&h=1080&fit=crop",
+            "slide_title": "ISLAMIC TRAVEL AGENCY",
+            "slide_subtitle": "For British Muslims",
+            "slide_description": "Experience the journey of a lifetime with our expertly crafted Hajj and Umrah packages",
+            "top_badge_text": "Trusted Since 2008",
+            "primary_button_text": "Explore Packages",
+            "secondary_button_text": "Contact Us",
+            "years_experience": "17+",
+            "happy_pilgrims": "50K+",
+            "customer_rating": "4.9★",
+            "slide_order": 1,
+            "is_active": 1
+        },
+        {
+            "slide_image": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=1920&h=1080&fit=crop",
+            "slide_title": "Hajj & Umrah Packages",
+            "slide_subtitle": "Trusted, Comfortable, Affordable",
+            "slide_description": "From visas to hotels, we handle every detail so you can focus on your spiritual journey",
+            "top_badge_text": "ATOL Protected",
+            "primary_button_text": "View Packages",
+            "secondary_button_text": "Get Consultation",
+            "years_experience": "17+",
+            "happy_pilgrims": "50K+",
+            "customer_rating": "4.9★",
+            "slide_order": 2,
+            "is_active": 1
+        }
+    ]
+    for slider in sliders:
+        doc.append("sliders", slider)
     
     # CTA Section
-    doc.cta_title = "Customise Your Package"
-    doc.cta_description = "We are specialists in Customised packages according to your needs."
-    doc.cta_subtitle = "Allow us to offer Umrah according to your Budget, Travel Dates, Hotel Choice."
-    doc.cta_button_text = "Customise Your Package"
-    doc.cta_button_link = "/contact"
+    doc.cta_description = "We are specialists in customised packages according to your needs. Allow us to offer Umrah according to your budget, travel dates, and hotel choice."
     
     # Featured Packages Section
     doc.featured_packages_title = "Featured Packages"
@@ -715,15 +765,13 @@ def insert_website_cms():
             "customer_location": "Birmingham, UK",
             "rating": 5,
             "testimonial_text": "Excellent service! The Hajj package was well organized and the staff was very helpful throughout the journey. Hotels were close to Haram and the guides were knowledgeable.",
-            "customer_avatar": "/files/avatar1.jpg",
             "display_order": 1
         },
         {
             "customer_name": "Fatima Ali",
             "customer_location": "London, UK",
             "rating": 5,
-            "testimonial_text": "Amazing experience with Bismillah Travel. The Umrah package exceeded our expectations. Everything was taken care of professionally.",
-            "customer_avatar": "/files/avatar2.jpg",
+            "testimonial_text": "Amazing experience with Travel Agency Demo. The Umrah package exceeded our expectations. Everything was taken care of professionally.",
             "display_order": 2
         },
         {
@@ -731,15 +779,13 @@ def insert_website_cms():
             "customer_location": "Manchester, UK",
             "rating": 5,
             "testimonial_text": "Professional service and great value for money. Highly recommended for Hajj and Umrah packages. Will definitely book again.",
-            "customer_avatar": "/files/avatar3.jpg",
             "display_order": 3
         },
         {
             "customer_name": "Aisha Rahman",
             "customer_location": "Bradford, UK",
             "rating": 5,
-            "testimonial_text": "The Ramadan Umrah package was incredible. Praying Taraweeh at Haram was a dream come true. Thank you Bismillah Travel!",
-            "customer_avatar": "/files/avatar4.jpg",
+            "testimonial_text": "The Ramadan Umrah package was incredible. Praying Taraweeh at Haram was a dream come true. Thank you Travel Agency Demo!",
             "display_order": 4
         }
     ]
@@ -748,17 +794,13 @@ def insert_website_cms():
         doc.append("testimonials", testimonial)
     
     # Welcome Section
-    doc.welcome_title = "Welcome to Bismillah Travel - Your Trusted Umrah Travel Agency in the UK"
-    doc.welcome_description = "With over 15 years of experience, Bismillah Travel has been serving the British Muslim community with exceptional Hajj and Umrah packages. We are committed to making your spiritual journey comfortable, memorable, and hassle-free."
-    doc.welcome_services_title = "Our Services - Tailored Islamic Travel Solutions"
-    doc.welcome_services_description = "We provide comprehensive travel services including accommodation, flights, visas, guided tours, and 24/7 support throughout your journey."
+    doc.welcome_title = "Welcome to Travel Agency Demo - Your Trusted Travel Agency"
+    doc.welcome_description = "With over 15 years of experience, we have been serving clients with exceptional Hajj and Umrah packages. We are committed to making your spiritual journey comfortable, memorable, and hassle-free."
     doc.welcome_image = "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=800&h=600&fit=crop"
     
-    # Packages Description
-    doc.umrah_title = "Umrah Packages"
-    doc.umrah_description = "Experience the spiritual journey of Umrah with our carefully crafted packages. We offer year-round Umrah services with 3, 4, and 5-star accommodation options close to Masjid al-Haram."
-    doc.hajj_title = "Hajj Packages"
-    doc.hajj_description = "Join us for the sacred pilgrimage of Hajj with our comprehensive packages. Our experienced team ensures all your needs are met during this once-in-a-lifetime journey."
+    # Packages Description Section
+    doc.section_title = "Umrah Packages"
+    doc.description = "Experience the spiritual journey of Umrah with our carefully crafted packages. We offer year-round Umrah services with 3, 4, and 5-star accommodation options close to Masjid al-Haram."
     doc.packages_image = "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=800&h=600&fit=crop"
     
     # FAQ Section
@@ -818,14 +860,20 @@ def insert_website_cms():
         {
             "heading": "Hajj Visa Processing",
             "content": "We handle all aspects of your Hajj visa application, from documentation to submission. Our experienced team ensures a smooth and hassle-free process.",
-            "image": "/files/hajj-visa.jpg",
+            "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=400&fit=crop",
             "display_order": 1
         },
         {
             "heading": "Umrah Visa Assistance",
             "content": "Get your Umrah visa processed quickly and efficiently. We provide complete guidance on required documents and handle the entire application process.",
-            "image": "/files/umrah-visa.jpg",
+            "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=400&fit=crop",
             "display_order": 2
+        },
+        {
+            "heading": "Tourist & Visit Visas",
+            "content": "Planning a leisure trip? We assist with tourist and visit visa applications for popular destinations worldwide, making the process simple and stress-free.",
+            "image": "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&h=400&fit=crop",
+            "display_order": 3
         }
     ]
     
@@ -833,9 +881,11 @@ def insert_website_cms():
         doc.append("visa_sections", section)
     
     # About Page
-    doc.about_title = "About Bismillah Travel"
+    doc.about_title = "About Travel Agency Demo"
     doc.about_subtitle = "Your trusted partner in spiritual journeys since 2008"
     doc.about_background_image = "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1920&h=600&fit=crop"
+    doc.about_story_title = "Our Story"
+    doc.about_story_description = "Founded in 2008, Travel Agency Demo has been dedicated to serving clients with exceptional Hajj and Umrah services. What started as a small family business has grown into one of the UK's most trusted Islamic travel agencies, with thousands of satisfied pilgrims every year."
     
     # Clear existing about sections
     clear_child_table(doc, 'about_sections')
@@ -844,20 +894,20 @@ def insert_website_cms():
     about_sections = [
         {
             "heading": "Our Story",
-            "content": "Founded in 2008, Bismillah Travel has been dedicated to serving the British Muslim community with exceptional Hajj and Umrah services. What started as a small family business has grown into one of the UK's most trusted Islamic travel agencies.",
-            "image": "/files/our-story.jpg",
+            "content": "Founded in 2008, Travel Agency Demo has been dedicated to serving clients with exceptional Hajj and Umrah services. What started as a small family business has grown into one of the UK's most trusted Islamic travel agencies.",
+            "image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=600&h=400&fit=crop",
             "display_order": 1
         },
         {
             "heading": "Our Mission",
             "content": "To provide affordable, comfortable, and spiritually enriching pilgrimage experiences while maintaining the highest standards of service and customer care.",
-            "image": "/files/our-mission.jpg",
+            "image": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&h=400&fit=crop",
             "display_order": 2
         },
         {
             "heading": "Why Choose Us",
-            "content": "With over 15 years of experience, ATOL protection, competitive prices, and thousands of satisfied customers, we are your ideal partner for Hajj and Umrah journeys.",
-            "image": "/files/why-choose-us.jpg",
+            "content": "With over 15 years of experience, competitive prices, and thousands of satisfied customers, we are your ideal partner for Hajj and Umrah journeys.",
+            "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop",
             "display_order": 3
         }
     ]
@@ -866,8 +916,8 @@ def insert_website_cms():
         doc.append("about_sections", section)
     
     # Footer Settings
-    doc.footer_copyright = "All rights reserved Bismillah Travel © 2010 - 2026"
-    doc.footer_legal_text = "ATOL Protected | Company Number: 12345678 | Registered in England and Wales"
+    doc.footer_copyright = "All rights reserved Travel Agency Demo © 2010 - 2026"
+    doc.footer_legal_text = "Company Number: 12345678 | Registered in England and Wales"
     
     # Clear existing footer links
     clear_child_table(doc, 'footer_quick_links')
@@ -931,12 +981,68 @@ Less than 30 days: 100% of total cost</p>
 
 <p>For full terms and conditions, please contact our office.</p>"""
     
-    # Navigation dropdowns skipped to avoid issues - can be configured manually later
+    # Navigation Dropdowns (item category menus)
+    doc.navigation_dropdowns = []
+    for dropdown in [
+        {"dropdown_name": "Hajj", "display_order": 1},
+        {"dropdown_name": "Umrah", "display_order": 2},
+    ]:
+        doc.append("navigation_dropdowns", dropdown)
+    
+    doc.navigation_dropdown_items = []
+    for nav_item in [
+        {"dropdown_name": "Hajj", "item_group": "Hajj Packages", "display_order": 1},
+        {"dropdown_name": "Umrah", "item_group": "Umrah Packages", "display_order": 1},
+        {"dropdown_name": "Umrah", "item_group": "Ramadan Umrah", "display_order": 2},
+        {"dropdown_name": "Umrah", "item_group": "December Umrah", "display_order": 3},
+    ]:
+        doc.append("navigation_dropdown_items", nav_item)
+    
+    # Gallery Section
+    doc.gallery_title = "Photo Gallery"
+    doc.gallery_subtitle = "Explore our travel memories and experiences"
+    doc.gallery_images = []
+    gallery_images = [
+        {
+            "title": "Kaaba at Night",
+            "image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=800&h=600&fit=crop",
+            "description": "The sacred Kaaba illuminated during evening prayers",
+            "is_active": 1
+        },
+        {
+            "title": "Pilgrims in Makkah",
+            "image": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=800&h=600&fit=crop",
+            "description": "Pilgrims gathering in the courtyard of Masjid al-Haram",
+            "is_active": 1
+        },
+        {
+            "title": "Madinah Serenity",
+            "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
+            "description": "A peaceful view from the city of the Prophet",
+            "is_active": 1
+        },
+        {
+            "title": "Group Ziyarat Tour",
+            "image": "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=800&h=600&fit=crop",
+            "description": "Guided historical visit arranged for our travelers",
+            "is_active": 1
+        },
+        {
+            "title": "Journey Moments",
+            "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
+            "description": "Captured moments from Hajj and Umrah journeys",
+            "is_active": 1
+        }
+    ]
+    for image in gallery_images:
+        doc.append("gallery_images", image)
     
     # Save the document with proper error handling
     try:
+        doc.flags.ignore_links = True
         doc.save(ignore_permissions=True)
         frappe.db.commit()
+        frappe.clear_cache()
         print("✅ Website CMS data inserted/updated successfully!")
     except Exception as e:
         print(f"❌ Error saving Website CMS: {str(e)}")
@@ -989,7 +1095,7 @@ def insert_blog_posts():
 <p>While Hajj is demanding, it's also a once-in-a-lifetime spiritual experience. Embrace every moment.</p>
 
 <p>May Allah accept your Hajj and make it easy for you. Ameen.</p>""",
-            "featured_image": "/files/blog-hajj-tips.jpg"
+            "featured_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=800&h=500&fit=crop"
         },
         {
             "title": "Umrah During Ramadan: A Complete Guide",
@@ -1031,7 +1137,7 @@ def insert_blog_posts():
 </ul>
 
 <p>May Allah grant you the opportunity to perform Umrah in Ramadan. Ameen.</p>""",
-            "featured_image": "/files/blog-ramadan-umrah.jpg"
+            "featured_image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=500&fit=crop"
         },
         {
             "title": "How to Choose the Right Hajj Package",
@@ -1097,7 +1203,7 @@ def insert_blog_posts():
 <p>Don't hesitate to ask the travel agency questions about anything you're unsure about.</p>
 
 <p>Remember, Hajj is a once-in-a-lifetime experience for many. Choose wisely and may Allah accept your Hajj.</p>""",
-            "featured_image": "/files/blog-choose-package.jpg"
+            "featured_image": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=800&h=500&fit=crop"
         },
         {
             "title": "Understanding the Umrah Rituals Step by Step",
@@ -1167,7 +1273,7 @@ def insert_blog_posts():
 </ul>
 
 <p>May Allah accept your Umrah and grant you a spiritually uplifting experience. Ameen.</p>""",
-            "featured_image": "/files/blog-umrah-rituals.jpg"
+            "featured_image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=500&fit=crop"
         },
         {
             "title": "Packing List for Hajj and Umrah: What to Bring",
@@ -1308,11 +1414,13 @@ def insert_blog_posts():
 </ul>
 
 <p>This list covers most situations. Adjust based on your personal needs and the season of travel. May your journey be smooth and blessed!</p>""",
-            "featured_image": "/files/blog-packing-list.jpg"
+            "featured_image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=500&fit=crop"
         }
     ]
     
     for blog_data in blogs:
+        blog_data["published"] = 1
+        blog_data["author"] = blog_data.get("author", "Admin")
         if not frappe.db.exists("Blog", blog_data["title"]):
             blog = frappe.get_doc({
                 "doctype": "Blog",
@@ -1321,7 +1429,6 @@ def insert_blog_posts():
             blog.insert(ignore_permissions=True)
             print(f"  ✓ Created Blog: {blog_data['title']}")
         else:
-            # Update existing blog
             blog = frappe.get_doc("Blog", blog_data["title"])
             for key, value in blog_data.items():
                 setattr(blog, key, value)
