@@ -1,65 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SectionContainer, Typography, PageLayout, PackageCard } from './index';
-import { usePackagesByItemGroup, useWebsiteCMS } from '../hooks/useWebsiteCMS';
+import PackageCard from './PackageCard';
+import { useFrappeGetCall } from 'frappe-react-sdk';
+import { useWebsiteCMS } from '../hooks/useWebsiteCMS';
 
-const PackageListing: React.FC = () => {
-  const { itemGroup, dropdownName } = useParams<{ itemGroup?: string; dropdownName?: string }>();
-  
-  const category = itemGroup || dropdownName || '';
-  const properItemGroup = category
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+interface PackageListingProps {
+  itemGroup?: string;
+}
 
-  const { data: packages, isValidating, error } = usePackagesByItemGroup(category);
-  const { data: cmsData, isValidating: cmsValidating } = useWebsiteCMS();
+const PackageListing: React.FC<PackageListingProps> = ({ itemGroup: propItemGroup }) => {
+  const { itemGroup: paramItemGroup, dropdownName } = useParams<{ itemGroup: string; dropdownName: string }>();
+  const itemGroup = propItemGroup || paramItemGroup || '';
   
-  // Get navigation dropdown items from CMS
-  const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
-  
-  // Get all packages (for filtering)
-  const allPackages = packages || [];
-  
-  // State for filters
+  // State variables
+  const [sortBy, setSortBy] = useState<'price-low' | 'price-high' | 'name'>('name');
+  const [filterPrice, setFilterPrice] = useState<{ min: number; max: number } | null>(null);
   const [selectedDropdowns, setSelectedDropdowns] = useState<string[]>([]);
   const [selectedItemGroups, setSelectedItemGroups] = useState<string[]>([]);
-  const [filterPrice, setFilterPrice] = useState<{ min: number; max: number } | null>(null);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
-  const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   
-  // Determine if we're in dropdown view
-  const isDropdownView = !!dropdownName;
+  // Fetch all packages with accommodation data using custom API
+  const { data: apiResponse, error, isValidating } = useFrappeGetCall('travel_agency_website.api.get_items_with_accommodation');
+  const allPackages = apiResponse?.message?.data || [];
   
-  // Filter handlers
-  const handleDropdownToggle = (dropdown: string) => {
-    setSelectedDropdowns(prev => 
-      prev.includes(dropdown) 
-        ? prev.filter(d => d !== dropdown)
-        : [...prev, dropdown]
-    );
-    // Clear item groups when selecting dropdown
-    setSelectedItemGroups([]);
-  };
+  // Fetch navigation data to get dropdown information
+  const { data: cmsData, isValidating: cmsValidating } = useWebsiteCMS();
   
-  const handleItemGroupToggle = (itemGroup: string) => {
-    setSelectedItemGroups(prev => 
-      prev.includes(itemGroup) 
-        ? prev.filter(g => g !== itemGroup)
-        : [...prev, itemGroup]
-    );
-  };
+  const navigationDropdownItems = cmsData?.navigation_dropdown_items || [];
+
+  // Determine if we're viewing a dropdown or specific item group
+  const isDropdownView = Boolean(dropdownName && !itemGroup);
   
-  const clearAllFilters = () => {
-    setSelectedDropdowns([]);
-    setSelectedItemGroups([]);
-    setFilterPrice(null);
-    setSelectedRatings([]);
-  };
-  
-  // Sync URL params with filter state
-  useEffect(() => {
+  // Auto-select filters based on URL (runs once when component mounts or URL changes)
+  React.useEffect(() => {
+    // Skip if viewing "all" category
+    if (itemGroup === 'all') {
+      setSelectedDropdowns([]);
+      setSelectedItemGroups([]);
+      return;
+    }
+
     if (dropdownName && navigationDropdownItems.length > 0) {
       // Find the proper dropdown name (case-insensitive)
       const properDropdownName = navigationDropdownItems.find(
@@ -98,16 +79,8 @@ const PackageListing: React.FC = () => {
     }
   }, [dropdownName, itemGroup, navigationDropdownItems, allPackages]);
   
-  // Debug logging
-  console.log('🔍 PackageListing Component Debug:', {
-    itemGroup,
-    allPackagesCount: allPackages.length,
-    error: error ? {
-      message: error.message,
-      httpStatus: error.httpStatus
-    } : null,
-    isValidating
-  });
+  // Show loading state if either packages or CMS data (for dropdown view) is loading
+  const isLoading = isValidating || (isDropdownView && cmsValidating);
 
   // Get unique dropdowns and item groups from CMS data
   const availableDropdowns = React.useMemo(() => {
@@ -123,11 +96,11 @@ const PackageListing: React.FC = () => {
 
     if (selectedDropdowns.length === 0) {
       // No category selected: show all item groups from packages
-    allPackages.forEach((pkg: any) => {
-      if (pkg.item_group) {
-        groups.add(pkg.item_group);
-      }
-    });
+      allPackages.forEach((pkg: any) => {
+        if (pkg.item_group) {
+          groups.add(pkg.item_group);
+        }
+      });
     } else {
       // Category selected: show only item groups that belong to selected dropdowns
       navigationDropdownItems
@@ -159,7 +132,7 @@ const PackageListing: React.FC = () => {
       } else if (selectedDropdowns.length > 0) {
         // No subcategories selected, use all item groups from selected categories
         navigationDropdownItems
-        .filter((item: any) => selectedDropdowns.includes(item.dropdown_name))
+          .filter((item: any) => selectedDropdowns.includes(item.dropdown_name) && item.item_group)
           .forEach((item: any) => itemGroupsToInclude.add(item.item_group));
     }
     
@@ -203,72 +176,72 @@ const PackageListing: React.FC = () => {
     return filtered;
   }, [allPackages, sortBy, filterPrice, selectedDropdowns, selectedItemGroups, selectedRatings, navigationDropdownItems]);
 
-  // Get packages based on view type (for grouped display only)
+  // Group filtered packages by item_group for title + grid display (all views)
   const groupedPackages = React.useMemo(() => {
     const grouped: { [key: string]: any[] } = {};
-    
-    if (isDropdownView && dropdownName) {
-      // Group ALL filtered packages by item group (sortedPackages is already filtered)
-      // No need to filter again - just group them
-      sortedPackages.forEach((pkg: any) => {
-        if (pkg.item_group) {
-          if (!grouped[pkg.item_group]) {
-            grouped[pkg.item_group] = [];
-          }
-          grouped[pkg.item_group].push(pkg);
-        }
-      });
-    }
-    
+    sortedPackages.forEach((pkg: any) => {
+      const key = pkg.item_group || 'Other';
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(pkg);
+    });
     return grouped;
-  }, [isDropdownView, dropdownName, sortedPackages]);
+  }, [sortedPackages]);
 
   // Show loading state if data is still loading
-  const isLoading = isValidating || (isDropdownView && cmsValidating);
-  
   if (isLoading) {
     return (
-      <PageLayout 
-        breadcrumbItems={[
-          { label: 'Home', path: '/' },
-          { label: properItemGroup || 'Packages' }
-        ]}
-      >
-        <SectionContainer>
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <Typography variant="body" color="muted">Loading packages...</Typography>
-            </div>
+      <div className="min-h-screen bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading packages...</p>
           </div>
-        </SectionContainer>
-      </PageLayout>
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <PageLayout 
-        breadcrumbItems={[
-          { label: 'Home', path: '/' },
-          { label: properItemGroup || 'Packages' }
-        ]}
-      >
-        <SectionContainer>
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <Typography variant="h2" style={{ marginBottom: 'var(--spacing-4)', color: 'var(--color-error)' }}>
-                Error Loading Packages
-              </Typography>
-              <Typography variant="body" color="muted">
-                Please try again later.
-              </Typography>
-            </div>
+      <div className="min-h-screen bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Packages</h2>
+            <p className="text-gray-600">Please try again later.</p>
           </div>
-        </SectionContainer>
-      </PageLayout>
+        </div>
+      </div>
     );
   }
+
+  // Filter handlers - UPDATED for single select
+  // const handleDropdownToggle = (dropdown: string) => {
+  //   // If clicking the same dropdown, deselect it. Otherwise, select only this one.
+  //   setSelectedDropdowns(prev => 
+  //     prev.includes(dropdown) ? [] : [dropdown]
+  //   );
+  // };
+
+  const handleItemGroupToggle = (itemGroup: string) => {
+    // If clicking the same item group, deselect it. Otherwise, select only this one.
+    setSelectedItemGroups(prev => 
+      prev.includes(itemGroup) ? [] : [itemGroup]
+    );
+  };
+
+  const handleRatingToggle = (rating: number) => {
+    // If clicking the same rating, deselect it. Otherwise, select only this one.
+    setSelectedRatings(prev => 
+      prev.includes(rating) ? [] : [rating]
+    );
+  };
+
+  const clearAllFilters = () => {
+    setSelectedDropdowns([]);
+    setSelectedItemGroups([]);
+    setFilterPrice(null);
+    setSelectedRatings([]);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-16">
@@ -284,19 +257,19 @@ const PackageListing: React.FC = () => {
               {/* Filter Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Filters</h2>
-                {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
+                {/* {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
                   <button
                     onClick={clearAllFilters}
                     className="text-sm text-secondary hover:text-primary font-medium transition-colors"
                   >
                     Clear All
                   </button>
-                )}
+                )} */}
               </div>
 
               <div className="space-y-6">
                 {/* Dropdown Categories Filter */}
-                {availableDropdowns.length > 0 && (
+                {/* {availableDropdowns.length > 0 && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -313,7 +286,7 @@ const PackageListing: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {/* Item Groups Filter */}
                 {availableItemGroups.length > 0 && (
@@ -344,13 +317,7 @@ const PackageListing: React.FC = () => {
                         <input
                           type="checkbox"
                           checked={selectedRatings.includes(rating)}
-                          onChange={() => {
-                            setSelectedRatings(prev => 
-                              prev.includes(rating) 
-                                ? prev.filter(r => r !== rating)
-                                : [...prev, rating]
-                            );
-                          }}
+                          onChange={() => handleRatingToggle(rating)}
                           className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
                         />
                         <div className="flex items-center gap-1">
@@ -443,115 +410,204 @@ const PackageListing: React.FC = () => {
               </div>
             </div>
 
-        {/* Packages Display */}
-        {isDropdownView ? (
-          // Grouped display for dropdown view
-          Object.keys(groupedPackages).length > 0 ? (
-            <div className="space-y-12">
-              {Object.entries(groupedPackages).map(([itemGroupName, groupPackages]) => (
-                <div key={itemGroupName} className="space-y-6">
-                  {/* Section Header */}
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold text-primary mb-2">{itemGroupName}</h2>
-                    <p className="text-gray-600">
-                      {groupPackages.length} package{groupPackages.length !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
-                  
-                  {/* Packages Grid for this group */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-                    {groupPackages.map((pkg) => {
-                      // Process accommodation list to get hotel names and distances
-                      const accommodationList = pkg.custom_accommodation_list || [];
-                      const hotelInfo = accommodationList.length > 0 
-                        ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-                        : pkg.custom_hotel_information;
-
-                      return (
-                        <PackageCard
-                          key={pkg.name}
-                          id={pkg.name}
-                          title={pkg.item_name}
-                          nights="7 Nights" // Keep for compatibility
-                          duration={pkg.custom_duration}
-                          rating={pkg.custom_package_rating}
-                          price={pkg.custom_website_price_to_show}
-                          image={pkg.image}
-                          itemGroup={pkg.item_group}
-                          // Dynamic data from Item custom fields
-                          airInfo={pkg.custom_air_information}
-                          hotelMakkah={hotelInfo}
-                          hotelMadinah={hotelInfo}
-                          foodInfo={pkg.custom_food_information}
-                          specialServices={pkg.specialServices}
-                          // Pass dynamic lists for rendering
-                          accommodationList={accommodationList}
-                          specialServicesList={pkg.custom_special_services || []}
-                          primaryButtonText="View Details"
-                          secondaryButtonText="Enquire Now"
-                        />
-                      );
-                    })}
-                  </div>
+        {/* Packages Display: category title + grid per group */}
+        {Object.keys(groupedPackages).length > 0 ? (
+          <div className="space-y-12">
+            {Object.entries(groupedPackages).map(([itemGroupName, groupPackages]: [string, any[]]) => (
+              <div key={itemGroupName} className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-3xl font-bold text-primary mb-2">{itemGroupName}</h2>
+                  <p className="text-gray-600">
+                    {groupPackages.length} package{groupPackages.length !== 1 ? 's' : ''} available
+                  </p>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">📦</div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-2">No Packages Found</h3>
-              <p className="text-gray-500">
-                We couldn't find any packages in this category. Please check back later.
-              </p>
-          </div>
-          )
-        ) : (
-          // Regular display for item group or all packages view
-          sortedPackages.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-            {sortedPackages.map((pkg) => {
-              // Process accommodation list to get hotel names and distances
-              const accommodationList = pkg.custom_accommodation_list || [];
-              const hotelInfo = accommodationList.length > 0 
-                ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
-                  : pkg.custom_hotel_information;
-
-              return (
-                <PackageCard
-                  key={pkg.name}
-                  id={pkg.name}
-                    title={pkg.item_name}
-                  nights="7 Nights" // Keep for compatibility
-                    duration={pkg.custom_duration}
-                    rating={pkg.custom_package_rating}
-                    price={pkg.custom_website_price_to_show}
-                    image={pkg.image}
-                    itemGroup={pkg.item_group}
-                  // Dynamic data from Item custom fields
-                    airInfo={pkg.custom_air_information}
-                    hotelMakkah={hotelInfo}
-                    hotelMadinah={hotelInfo}
-                    foodInfo={pkg.custom_food_information}
-                    specialServices={pkg.specialServices}
-                  // Pass dynamic lists for rendering
-                  accommodationList={accommodationList}
-                  specialServicesList={pkg.custom_special_services || []}
-                  primaryButtonText="View Details"
-                  secondaryButtonText="Enquire Now"
-                />
-              );
-            })}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
+                  {groupPackages.map((pkg) => {
+                    const accommodationList = pkg.custom_accommodation_list || [];
+                    const hotelInfo = accommodationList.length > 0
+                      ? accommodationList.map((acc: any) => `${acc.hotel} (${acc.distance})`).join(', ')
+                      : pkg.custom_hotel_information;
+                    return (
+                      <PackageCard
+                        key={pkg.name}
+                        id={pkg.name}
+                        title={pkg.item_name}
+                        nights="7 Nights"
+                        duration={pkg.custom_duration}
+                        rating={pkg.custom_package_rating}
+                        price={pkg.custom_website_price_to_show}
+                        image={pkg.image}
+                        itemGroup={pkg.item_group}
+                        airInfo={pkg.custom_air_information}
+                        hotelMakkah={hotelInfo}
+                        hotelMadinah={hotelInfo}
+                        foodInfo={pkg.custom_food_information}
+                        specialServices={pkg.specialServices}
+                        accommodationList={accommodationList}
+                        specialServicesList={pkg.custom_special_services || []}
+                        primaryButtonText="View Details"
+                        secondaryButtonText="Enquire Now"
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">📦</div>
             <h3 className="text-2xl font-bold text-gray-600 mb-2">No Packages Found</h3>
             <p className="text-gray-500">
-              We couldn't find any packages matching your filters. Please try adjusting your search criteria.
+              We couldn't find any packages matching your criteria. Try adjusting your filters.
             </p>
           </div>
-        )
         )}
+          </div>
+
+        {/* Mobile Filter Panel */}
+        <div className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ease-in-out ${
+          isMobileFilterOpen 
+            ? 'opacity-100 visible' 
+            : 'opacity-0 invisible pointer-events-none'
+        }`}>
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out"
+            onClick={() => setIsMobileFilterOpen(false)}
+          />
+          {/* Drawer */}
+          <div className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+            isMobileFilterOpen 
+              ? 'translate-x-0' 
+              : 'translate-x-full'
+          }`}>
+              <div className="p-6">
+                {/* Mobile Filter Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                  <button
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 ease-in-out hover:scale-110"
+                  >
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Mobile Filter Content - Same as desktop sidebar */}
+                <div className="space-y-6">
+                  {/* Dropdown Categories Filter */}
+                  {/* {availableDropdowns.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Categories</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableDropdowns.map(dropdown => (
+                          <label key={dropdown} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={selectedDropdowns.includes(dropdown)}
+                              onChange={() => handleDropdownToggle(dropdown)}
+                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                            />
+                            <span className="text-sm text-gray-700">{dropdown}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )} */}
+
+                  {/* Item Groups Filter */}
+                  {availableItemGroups.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">Item Groups</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableItemGroups.map(itemGroup => (
+                          <label key={itemGroup} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={selectedItemGroups.includes(itemGroup)}
+                              onChange={() => handleItemGroupToggle(itemGroup)}
+                              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                            />
+                            <span className="text-sm text-gray-700">{itemGroup}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Rating Filter */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Rating</h3>
+                    <div className="space-y-2">
+                      {[5, 4, 3, 2, 1].map(rating => (
+                        <label key={rating} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={selectedRatings.includes(rating)}
+                            onChange={() => handleRatingToggle(rating)}
+                            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                          />
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <span
+                                key={i}
+                                className={`text-sm ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                            <span className="text-sm text-gray-700 ml-1">{rating} Star{rating !== 1 ? 's' : ''}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Price Range Filter */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Price Range</h3>
+                    <div className="space-y-3">
+                      <input
+                        type="number"
+                        placeholder="Min Price"
+                        value={filterPrice?.min || ''}
+                        onChange={(e) => {
+                          const min = Number(e.target.value) || 0;
+                          setFilterPrice(prev => prev ? { ...prev, min } : { min, max: 1000000 });
+                        }}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max Price"
+                        value={filterPrice?.max || ''}
+                        onChange={(e) => {
+                          const max = Number(e.target.value) || 1000000;
+                          setFilterPrice(prev => prev ? { ...prev, max } : { min: 0, max });
+                        }}
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clear All Button */}
+                  {/* {(selectedDropdowns.length > 0 || selectedItemGroups.length > 0 || filterPrice || selectedRatings.length > 0) && (
+                    <button
+                      onClick={() => {
+                        clearAllFilters();
+                        setIsMobileFilterOpen(false);
+                      }}
+                      className="w-full bg-red-50 text-red-600 py-2 px-4 rounded-lg font-medium hover:bg-red-100 transition-colors"
+                    >
+                      Clear All Filters
+                    </button>
+                  )} */}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -152,7 +152,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         }));
 
         const navItem: NavItem = {
-          path: `/dropdown/${dropdown.dropdown_name.toLowerCase()}`,
+          path: `/${dropdown.dropdown_name.toLowerCase()}`,
           label: dropdown.dropdown_name, // Keep original dynamic dropdown name
           submenu: submenu.length > 0 ? submenu : undefined
         };
